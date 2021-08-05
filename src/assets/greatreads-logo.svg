@@ -1,14 +1,21 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 811.78 191.8" width="100">
+<svg id="greatreads" data-name="greatreads" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 811.78 191.8" width="100">
   <defs>
     <style>
-      .cls-1{font-size:200px;fill:#4d5499;font-family:FuturaPT-Light, Futura PT;font-weight:300;}
-      .cls-2,.cls-3{font-family:FuturaPT-Book, Futura PT;font-weight:400;}
-      .cls-2{letter-spacing:-0.02em;}
+      .logo {
+        font-size: 200px;
+        fill: #4d5499;
+        font-family: FuturaPT-Light, Futura PT;
+        font-weight: 300;
+      }
+
+      .reads {
+        font-weight: 400;
+        letter-spacing: -0.02em;
+      }
     </style>
   </defs>
-  <text class="cls-1" transform="translate(-8.6 145.8)">
-    great
-    <tspan class="cls-2" x="394.59" y="0">r</tspan>
-    <tspan class="cls-3" x="448.99" y="0">eads</tspan>
+  <text class="logo" transform="translate(-8.6 145.8)">
+    <tspan>great</tspan>
+    <tspan class="reads" x="394.59" y="0">reads</tspan>
   </text>
 </svg>
