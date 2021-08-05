@@ -3,6 +3,7 @@ import {
   Box,
   Container,
   Heading,
+  Text,
   Stack,
   Button
 } from '@chakra-ui/react';
@@ -16,16 +17,21 @@ export default function Hero() {
         textAlign={'center'}
         align={'center'}
         spacing={{ base: 8, md: 10 }}
-        py={{ base: 20, md: 28 }}>
+        py={{ base: 14, md: 20 }}>
         <Heading
           fontWeight={700}
-          fontSize={{ base: '2xl', sm: '3xl', md: '4xl', lg: '5xl' }}
+          fontSize={{ base: '2rem', lg: '3rem' }}
           lineHeight={'110%'}
         >
           Track books you've read.
           <br/>
           Tell your friends what's great.
         </Heading>
+        <Text color={'gray.500'} maxW={'3xl'} fontSize={{base: 'md', md: 'lg', lg: 'xl'}}>
+          greatreads is is a social network for sharing your taste in literature. 
+          <br/>
+          Use it as a diary to record your opinion about books as you read them, or just to keep track of books you’ve read in the past. 
+        </Text>
         <Stack spacing={6} direction={'row'}>
           <Button
             px={6}
@@ -41,7 +47,7 @@ export default function Hero() {
           </Button>
         </Stack>
         <Flex w={'full'} justifyContent={'center'}>
-          <Box mt={12} w={[400, 500, 600, 700]}>
+          <Box mt={12} w={[400, 500, 600]}>
             <Illustration/>
           </Box>
         </Flex>
