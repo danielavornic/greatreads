@@ -18,7 +18,7 @@ export default function Hero() {
         spacing={{ base: 8, md: 10 }}
         py={{ base: 20, md: 28 }}>
         <Heading
-          fontWeight={600}
+          fontWeight={700}
           fontSize={{ base: '2xl', sm: '3xl', md: '4xl', lg: '5xl' }}
           lineHeight={'110%'}
         >
