@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   chakra,
   Flex,
@@ -15,12 +13,13 @@ const Header = () => {
   const bg = useColorModeValue('white', 'gray.800');
 
   return (
-    <React.Fragment>
       <chakra.header
         bg={bg}
         w='full'
         px={{ base: 4, md: 8, lg: 10 }}
         py={4}
+        borderBottom="1px" 
+        borderColor="gray.200"
       >
         <Flex alignItems='center' justifyContent='space-between' mx='auto'>
           <Flex>
@@ -49,7 +48,6 @@ const Header = () => {
           </HStack>
         </Flex>
       </chakra.header>
-    </React.Fragment>
   );
 };
 
