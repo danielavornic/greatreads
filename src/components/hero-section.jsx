@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import {
   Flex,
   Box,
@@ -33,18 +35,22 @@ const Hero = () => (
         Use it as a diary to record your opinion about books as you read them, or just to keep track of books you’ve read in the past.
       </Text>
       <Stack spacing={6} direction={'row'}>
-        <Button
-          px={6}
-          colorScheme={'brand'}
-          bg={'brand.500'}
-          _hover={{ bg: 'brand.600' }}
-          size='lg'
-        >
-          Get started
-        </Button>
-        <Button px={6} size='lg'>
-          Learn more
-        </Button>
+        <Link to='signin'>
+          <Button
+            px={6}
+            colorScheme={'brand'}
+            bg={'brand.500'}
+            _hover={{ bg: 'brand.600' }}
+            size='lg'
+          >
+            Get started
+          </Button>
+        </Link>
+        <Link to='about'>
+          <Button px={6} size='lg'>
+            Learn more
+          </Button>
+        </Link>
       </Stack>
       <Flex w={'full'} justifyContent={'center'}>
         <Box mt={12} w={[ 400, 500, 600 ]}>

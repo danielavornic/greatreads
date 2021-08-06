@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import {
   chakra,
   Flex,
@@ -13,41 +15,40 @@ const Header = () => {
   const bg = useColorModeValue('white', 'gray.800');
 
   return (
-      <chakra.header
-        bg={bg}
-        w='full'
-        px={{ base: 4, md: 8, lg: 10 }}
-        py={4}
-        borderBottom="1px" 
-        borderColor="gray.200"
-      >
-        <Flex alignItems='center' justifyContent='space-between' mx='auto'>
-          <Flex>
-            <chakra.a
-              href='/'
-              title='greatreads homepage'
-              display='flex'
-              alignItems='center'
-            >
-                <Logo />
-              <VisuallyHidden>greatreads</VisuallyHidden>
-            </chakra.a>
-          </Flex>
-          <HStack display='flex' alignItems='center' spacing={1}>
-            <HStack
-              spacing={1}
-              mr={1}
-              color='brand.500'
-              display={{ base: 'inline-flex' }}
-            >
+    <chakra.header
+      bg={bg}
+      w='full'
+      px={{ base: 4, md: 8, lg: 10 }}
+      py={4}
+      borderBottom="1px"
+      borderColor="gray.200"
+    >
+      <Flex alignItems='center' justifyContent='space-between' mx='auto'>
+        <Flex>
+          <Link to='/'>
+            <Logo />
+            <VisuallyHidden>greatreads</VisuallyHidden>
+          </Link>
+        </Flex>
+        <HStack display='flex' alignItems='center' spacing={1}>
+          <HStack
+            spacing={1}
+            mr={1}
+            color='brand.500'
+            display={{ base: 'inline-flex' }}
+          >
+            <Link to='signin'>
               <Button variant='ghost' size='sm'>Sign in</Button>
-            </HStack>
+            </Link>
+          </HStack>
+          <Link to='/signup'>
             <Button colorScheme='brand' size='sm'>
               Sign up
             </Button>
-          </HStack>
-        </Flex>
-      </chakra.header>
+          </Link>
+        </HStack>
+      </Flex>
+    </chakra.header>
   );
 };
 
