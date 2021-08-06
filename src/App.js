@@ -2,7 +2,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import Homepage from './pages/homepage';
 
-import Header from './components/header.component';
+import Header from './components/header';
 
 import './App.css';
 
