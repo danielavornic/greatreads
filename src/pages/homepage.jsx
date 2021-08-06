@@ -1,6 +1,6 @@
 import { Divider } from '@chakra-ui/layout';
 
-import Hero from '../components/hero';
+import Hero from '../components/hero-section';
 import ExploreSection from '../components/explore-section';
 
 const Homepage = () => (
