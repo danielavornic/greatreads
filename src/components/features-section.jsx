@@ -3,6 +3,9 @@ import {
   Grid,
   Heading,
   Stack,
+  Box,
+  VStack,
+  Text
 } from '@chakra-ui/react';
 
 import {
@@ -11,12 +14,20 @@ import {
   RiFileTextFill
 } from 'react-icons/ri';
 
-import FeatureItem from './feature-item';
+const FeatureItem = ({ children, text }) => (
+  <Box bg={'brand.25'} borderRadius='6px'>
+    <VStack padding='36px'>
+      <Box padding='12px' bg={'brand.200'} borderRadius='50%' mb='12px'>
+        {children}
+      </Box>
+      <Text>{text}</Text>
+    </VStack>
+  </Box>
+);
 
 const FeaturesSection = () => (
   <Stack
     w='full'
-    bg={'brand.25'}
     align={'center'}
     spacing={{ base: 8, md: 12 }}
     py={{ base: 16, md: 24 }}
@@ -37,18 +48,15 @@ const FeaturesSection = () => (
         gap={[ 4, 4, 6 ]}
         w={'full'}
       >
-        <FeatureItem 
-          icon={<RiBook2Fill color='white' size='24px'/>} 
-          text='Keep track of every book you’ve ever read (or just start from the day you join)'
-        />
-        <FeatureItem 
-          icon={<RiStarFill color='white' size='24px'/>} 
-          text='Rate each book on a five-star scale (with halves) to record and share your reaction'
-        />
-        <FeatureItem 
-          icon={<RiFileTextFill color='white' size='24px'/>} 
-          text='Write and share reviews, and follow friends and other members to read theirs'
-        />
+        <FeatureItem text='Keep track of every book you’ve ever read (or just start from the day you join)'>
+          <RiBook2Fill color='white' size='24px' />
+        </FeatureItem>
+        <FeatureItem text='Rate each book on a five-star scale (with halves) to record and share your reaction'>
+          <RiStarFill color='white' size='24px' />
+        </FeatureItem>
+        <FeatureItem text='Write and share reviews, and follow friends and other members to read theirs'>
+          <RiFileTextFill color='white' size='24px' />
+        </FeatureItem>
       </Grid>
     </Container>
   </Stack>
