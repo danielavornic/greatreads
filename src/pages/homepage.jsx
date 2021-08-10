@@ -9,6 +9,7 @@ const Homepage = () => (
     <Hero/>
     <Divider/>
     <ExploreSection/>
+    <Divider/>
     <FeaturesSection/>
   </div>
 );
