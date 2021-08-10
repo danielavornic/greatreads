@@ -6,7 +6,7 @@ import {
   Text
 } from '@chakra-ui/react';
 
-const GenreItem = ({ name, icon }) => {
+const GenreItem = ({ name, children }) => {
   const genrePath = (name !== 'More') ? name.toLowerCase() : '';
 
   return (
@@ -17,7 +17,7 @@ const GenreItem = ({ name, icon }) => {
         borderRadius='10px'
       >
         <VStack padding='28px'>
-          {icon}
+          {children}
           <Text pt={2}>{name}</Text>
         </VStack>
       </Box>

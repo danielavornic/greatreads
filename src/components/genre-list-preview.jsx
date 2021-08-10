@@ -10,17 +10,29 @@ import { ReactComponent as DetectiveGenre } from '../assets/genre-icons/detectiv
 import { ReactComponent as More } from '../assets/genre-icons/more.svg';
 
 const GenreListPreview = () => (
-  <Grid 
-    templateColumns={['repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(6, 1fr)']}
-    gap={[4, 4, 6, 6]} 
+  <Grid
+    templateColumns={[ 'repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(6, 1fr)' ]}
+    gap={[ 4, 4, 6, 6 ]}
     w={'full'}
   >
-    <GenreItem name='Romance' icon={<RomanceGenre height='56px'/>} />
-    <GenreItem name='Art' icon={<ArtGenre height='56px'/>} />
-    <GenreItem name='History' icon={<HistoryGenre height='56px'/>} />
-    <GenreItem name='Fantasy' icon={<FantasyGenre height='56px'/>} />
-    <GenreItem name='Detective' icon={<DetectiveGenre height='56px'/>} />
-    <GenreItem name='More' icon={<More height='56px'/>} />
+    <GenreItem name='Romance'>
+      <RomanceGenre height='56px' />
+    </GenreItem>
+    <GenreItem name='Art'>
+      <ArtGenre height='56px' />
+    </GenreItem>
+    <GenreItem name='History'>
+      <HistoryGenre height='56px' />
+    </GenreItem>
+    <GenreItem name='Fantasy'>
+      <FantasyGenre height='56px' />
+    </GenreItem>
+    <GenreItem name='Detective'>
+      <DetectiveGenre height='56px' />
+    </GenreItem>
+    <GenreItem name='More'>
+      <More height='56px' />
+    </GenreItem>
   </Grid>
 );
 
