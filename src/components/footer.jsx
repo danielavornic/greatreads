@@ -53,7 +53,7 @@ const Footer = () => (
     >
       <Logo />
       <Stack direction={'row'} spacing={6}>
-        <Link exact to='/'>Home</Link>
+        <Link to='/'>Home</Link>
         <Link to='/books'>Books</Link>
         <Link to='/genres'>Genres</Link>
         <Link to='/authors'>Authors</Link>
