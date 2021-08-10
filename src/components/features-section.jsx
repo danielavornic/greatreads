@@ -20,7 +20,7 @@ const FeatureItem = ({ children, text }) => (
       <Box padding='12px' bg={'brand.200'} borderRadius='50%' mb='12px'>
         {children}
       </Box>
-      <Text>{text}</Text>
+      <Text color={'gray.800'} fontSize={{ base: 'md', md: 'lg' }}>{text}</Text>
     </VStack>
   </Box>
 );
