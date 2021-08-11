@@ -10,13 +10,15 @@ import './App.css';
 
 function App() {
   return (
-    <div>
-      <Header/>
-      <Switch>
-        <Route exact path='/' component={HomePage}/>
-        <Route path='/search' component={SearchPage}/>
-      </Switch>
-      <Footer/>
+    <div id='container'>
+      <Header />
+      <div id='main-content'>
+        <Switch>
+          <Route exact path='/' component={HomePage} />
+          <Route path='/search' component={SearchPage} />
+        </Switch>
+      </div>
+      <Footer />
     </div>
   );
 }
