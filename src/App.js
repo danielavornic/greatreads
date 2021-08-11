@@ -1,6 +1,7 @@
 import { Switch, Route } from 'react-router-dom';
 
-import Homepage from './pages/homepage';
+import HomePage from './pages/homepage';
+import SearchPage from './pages/search';
 
 import Header from './components/header';
 import Footer from './components/footer';
@@ -12,7 +13,8 @@ function App() {
     <div>
       <Header/>
       <Switch>
-        <Route exact path='/' component={Homepage}/>
+        <Route exact path='/' component={HomePage}/>
+        <Route path='/search' component={SearchPage}/>
       </Switch>
       <Footer/>
     </div>
