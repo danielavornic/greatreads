@@ -30,8 +30,10 @@ const SearchInput = ({ searchStart, searchQuery, history }) => {
   }
 
   const handleKeyPress = event => {
-    if (event.key === 'Enter' || event.keyCode === 13)
+    if (event.key === 'Enter' || event.keyCode === 13) {
       handleSubmit();
+      event.currentTarget.blur();
+    }
   }
 
   const handleSubmit = () => {
