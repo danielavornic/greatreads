@@ -8,7 +8,7 @@ export function* searchAsync({ payload: { category, query } }) {
   try {
     const formattedQuery = yield query.replace(/ /g, '+').toLowerCase();
     const urlCategory = (category === 'all') ? 'q' : category;
-    const response = yield fetch(`http://openlibrary.org/search.json?${urlCategory}=${formattedQuery}`);
+    const response = yield fetch(`https://openlibrary.org/search.json?${urlCategory}=${formattedQuery}`);
     const searchResults = yield response.json();
     console.log(searchResults);
     yield put(searchSuccess(searchResults));
