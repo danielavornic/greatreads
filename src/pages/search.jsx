@@ -2,22 +2,26 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { selectSearchQuery, selectSearchResults } from '../redux/library/library.selectors';
-import { clearSearchResults, clearSearchQuery } from '../redux/library/library.actions';
+import { selectAreSearchResultsFetching, selectSearchResults } from '../redux/library/library.selectors';
+import { clearSearchResults } from '../redux/library/library.actions';
 
 import {
   Container,
+  VStack,
   Heading,
-  Box
+  Text,
+  Box,
+  Flex
 } from '@chakra-ui/layout';
+
+import { Spinner } from '@chakra-ui/spinner';
 
 import SearchInput from '../components/search-input';
 
-const SearchPage = ({ searchResults, clearSearchResults, clearSearchQuery, searchQuery }) => {
+const SearchPage = ({ searchResults, clearSearchResults, areSearchResultsFetching }) => {
   useEffect(() => {
-    clearSearchResults();
-    clearSearchQuery()
-  }, [searchQuery]);
+    if (searchResults) clearSearchResults();
+  }, []);
 
   return (
     <Container maxW={'5xl'}>
@@ -33,28 +37,49 @@ const SearchPage = ({ searchResults, clearSearchResults, clearSearchQuery, searc
         Search
       </Heading>
       <Box align='center'>
-        <SearchInput />
+        <SearchInput storeValue />
       </Box>
 
-      <div>
+      <VStack align='left'>
+        <Text pt={{ base: 8, md: 12 }} pb='20px'>
+          {searchResults ? `${searchResults.numFound} hits` : ''}
+        </Text>
+
         {
           searchResults
-          ? searchResults.slice(0, 10).map(result => <div key={result.key}>{result.title}</div>)
+            ? searchResults.docs
+              .slice(0, 10)
+              .map(
+                result => 
+                <div key={result.key}>{result.title}</div>
+              )
+            : null
+        }
+        {
+          areSearchResultsFetching
+          ? <Flex justifyContent='center'>
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color={'brand.400'}
+                size="xl"
+              />
+            </Flex>
           : null
         }
-      </div>
+      </VStack>
     </Container>
   )
 };
 
 const mapStateToProps = createStructuredSelector({
   searchResults: selectSearchResults,
-  searchQuery: selectSearchQuery
+  areSearchResultsFetching: selectAreSearchResultsFetching
 });
 
 const mapDispatchToProps = dispatch => ({
-  clearSearchResults: () => dispatch(clearSearchResults()),
-  clearSearchQuery: () => dispatch(clearSearchQuery())
+  clearSearchResults: () => dispatch(clearSearchResults())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);

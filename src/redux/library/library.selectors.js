@@ -11,3 +11,8 @@ export const selectSearchResults = createSelector(
   [selectLibrary],
   library => library.searchResults
 );
+
+export const selectAreSearchResultsFetching = createSelector(
+  [selectLibrary],
+  library => library.areSearchResultsFetching
+)

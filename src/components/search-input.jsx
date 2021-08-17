@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 
-import { searchStart } from '../redux/library/library.actions';
+import { searchStart, clearSearchQuery, clearSearchResults } from '../redux/library/library.actions';
 
 import {
   HStack,
@@ -14,13 +14,29 @@ import {
 } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 
-import { selectSearchQuery } from '../redux/library/library.selectors';
+import { selectSearchQuery, selectSearchResults } from '../redux/library/library.selectors';
 
-const SearchInput = ({ searchStart, searchQuery, history }) => {
+const SearchInput = ({ searchStart, searchQuery, searchResults, storeValue, clearSearchResults, clearSearchQuery, history }) => {
   const [ searchRequest, setSearchRequest ] = useState({
-    category: 'all',
-    query: ''
+    category: (storeValue && searchQuery) ? searchQuery.category : 'all',
+    query: (storeValue && searchQuery) ? searchQuery.query : ''
   });
+
+  const clearSearchData = () => {
+    if (searchResults) clearSearchResults();
+    if (searchQuery) clearSearchQuery();
+    setSearchRequest({...searchRequest});
+  }
+ 
+  useEffect(() => {
+    if (!storeValue) clearSearchData();
+
+    window.addEventListener('beforeunload', () => clearSearchData());
+
+    return () => {
+      if (storeValue) clearSearchData();
+    }
+  }, [])
 
   const { category, query } = searchRequest;
 
@@ -37,6 +53,7 @@ const SearchInput = ({ searchStart, searchQuery, history }) => {
   }
 
   const handleSubmit = () => {
+    if (searchResults) clearSearchResults();
     if (query !== '') {
       searchStart(category, query);
       history.push('/search');
@@ -51,7 +68,7 @@ const SearchInput = ({ searchStart, searchQuery, history }) => {
         w={{ base: '42%', md: '30%', lg: '20%' }}
         colorScheme={'brand'}
         bg={'brand.50'}
-        defaultValue={searchQuery ? searchQuery.category : 'all'}
+        defaultValue={category}
         onChange={handleChange}
       >
         <option fontSize={{ base: 'md', md: 'lg' }} value='all'>All</option>
@@ -66,7 +83,7 @@ const SearchInput = ({ searchStart, searchQuery, history }) => {
           placeholder='Search...'
           onChange={handleChange}
           onKeyPress={handleKeyPress}
-          defaultValue={searchQuery ? searchQuery.query : ''}
+          defaultValue={query}
         />
         <InputRightElement
           children={<AiOutlineSearch />}
@@ -79,11 +96,17 @@ const SearchInput = ({ searchStart, searchQuery, history }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  searchQuery: selectSearchQuery
+  searchQuery: selectSearchQuery,
+  searchResults: selectSearchResults
 });
 
 const mapDispatchToProps = dispatch => ({
-  searchStart: (category, query) => dispatch(searchStart({ category, query }))
+  searchStart: (category, query) => dispatch(searchStart({ category, query })),
+  clearSearchResults: () => dispatch(clearSearchResults()),
+  clearSearchQuery: () => dispatch(clearSearchQuery())
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchInput));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)
+  (SearchInput)
+);

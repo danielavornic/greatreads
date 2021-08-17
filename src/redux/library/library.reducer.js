@@ -3,7 +3,7 @@ import LibraryActionTypes from './library.types';
 const INITIAL_STATE = {
   searchQuery: undefined,
   searchResults: null,
-  isFetching: false,
+  areSearchResultsFetching: false,
   error: undefined
 };
 
@@ -13,31 +13,31 @@ const libraryReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         searchQuery: action.payload,
-        isFetching: true
+        areSearchResultsFetching: true
       };
     case LibraryActionTypes.SEARCH_SUCCESS:
       return {
         ...state,
-        isFetching: false,
+        areSearchResultsFetching: false,
         searchResults: action.payload
       };
     case LibraryActionTypes.SEARCH_FAILURE:
       return {
         ...state,
-        isFetching: false,
+        areSearchResultsFetching: false,
         error: action.payload
       };
     case LibraryActionTypes.CLEAR_SEARCH_RESULTS:
       return {
         ...state,
-        isFetching: false,
+        areSearchResultsFetching: false,
         searchResults: null
       };
     case LibraryActionTypes.CLEAR_SEARCH_QUERY:
       return {
         ...state,
-        isFetching: false,
-        searchQuery: undefined
+        areSearchResultsFetching: false,
+        searchQuery: null
       };
     default:
       return state;

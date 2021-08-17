@@ -1,8 +1,4 @@
-import { useEffect } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
-import { clearSearchResults, clearSearchQuery } from '../redux/library/library.actions';
 
 import {
   Container,
@@ -181,26 +177,14 @@ const FeaturesSection = () => (
   </Stack>
 );
 
-const HomePage = ({ clearSearchQuery, clearSearchResults }) => {
-  useEffect(() => {
-    clearSearchResults();
-    clearSearchQuery()
-  }, []);
+const HomePage = () => (
+  <div>
+    <Hero />
+    <Divider />
+    <ExploreSection />
+    <Divider />
+    <FeaturesSection />
+  </div>
+)
 
-  return (
-    <div>
-      <Hero />
-      <Divider />
-      <ExploreSection />
-      <Divider />
-      <FeaturesSection />
-    </div>
-  )
-};
-
-const mapDispatchToProps = dispatch => ({
-  clearSearchResults: () => dispatch(clearSearchResults()),
-  clearSearchQuery: () => dispatch(clearSearchQuery())
-});
-
-export default connect(null, mapDispatchToProps)(HomePage);
+export default HomePage;
