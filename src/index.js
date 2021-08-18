@@ -11,6 +11,8 @@ import { store, persistor } from './redux/store';
 
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 
+import '@fontsource/lora';
+
 const colors = {
   brand: {
     25: '#f5f6ff',
@@ -27,12 +29,16 @@ const colors = {
   }
 };
 
+const fonts = {
+  heading: 'Lora'
+};
+
 const config = {
   initialColorMode: 'light',
   useSystemColorMode: false
 };
 
-const theme = extendTheme({ colors, config });
+const theme = extendTheme({ colors, fonts, config });
 
 const rootElement = document.getElementById('root');
 
