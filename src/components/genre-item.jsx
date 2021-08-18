@@ -12,8 +12,8 @@ const GenreItem = ({ name, children }) => {
   return (
     <Link to={`/genres/${genrePath}`}>
       <Box
-        border="1px"
-        borderColor="gray.200"
+        border='1px'
+        borderColor='gray.200'
         borderRadius='10px'
       >
         <VStack padding='28px'>
