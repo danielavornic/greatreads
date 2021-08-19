@@ -13,6 +13,7 @@ const libraryReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         searchQuery: action.payload,
+        searchResults: null,
         areSearchResultsFetching: true
       };
     case LibraryActionTypes.SEARCH_SUCCESS:
