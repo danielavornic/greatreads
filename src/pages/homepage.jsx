@@ -108,22 +108,22 @@ const GenreListPreview = () => (
     gap={[ 4, 4, 6, 6 ]}
     w={'full'}
   >
-    <GenreItem name='Romance'>
+    <GenreItem name='Romance' color='#FF8080'>
       <RomanceGenre height='56px' />
     </GenreItem>
-    <GenreItem name='Art'>
+    <GenreItem name='Art' color='#4FD1C5'>
       <ArtGenre height='56px' />
     </GenreItem>
-    <GenreItem name='History'>
+    <GenreItem name='History' color='#F6AD55'>
       <HistoryGenre height='56px' />
     </GenreItem>
-    <GenreItem name='Fantasy'>
+    <GenreItem name='Fantasy' color='#F6E05E'>
       <FantasyGenre height='56px' />
     </GenreItem>
-    <GenreItem name='Detective'>
+    <GenreItem name='Detective' color='#63B3ED'>
       <DetectiveGenre height='56px' />
     </GenreItem>
-    <GenreItem name='More'>
+    <GenreItem name='More' color='#9F7AEA'>
       <MoreGenres height='56px' />
     </GenreItem>
   </Grid>
