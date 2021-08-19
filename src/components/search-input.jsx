@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
+import { useBeforeunload } from 'react-beforeunload';
 
 import { searchStart, clearSearchQuery, clearSearchResults } from '../redux/library/library.actions';
 
@@ -14,31 +15,27 @@ import {
 } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 
-import { selectSearchQuery, selectSearchResults } from '../redux/library/library.selectors';
+import { selectSearchQuery} from '../redux/library/library.selectors';
 
-const SearchInput = ({ searchStart, searchQuery, searchResults, storeValue, clearSearchResults, clearSearchQuery, history }) => {
+const SearchInput = ({ searchStart, searchQuery, storeValue, clearSearchQuery, history }) => {
   const [ searchRequest, setSearchRequest ] = useState({
     category: (storeValue && searchQuery) ? searchQuery.category : 'all',
     query: (storeValue && searchQuery) ? searchQuery.query : ''
   });
-
-  const clearSearchData = () => {
-    if (searchResults) clearSearchResults();
-    if (searchQuery) clearSearchQuery();
-    setSearchRequest({...searchRequest});
-  }
- 
-  useEffect(() => {
-    if (!storeValue) clearSearchData();
-
-    window.addEventListener('beforeunload', () => clearSearchData());
-
-    return () => {
-      if (storeValue) clearSearchData();
-    }
-  }, [])
-
   const { category, query } = searchRequest;
+
+  useEffect(() => setSearchRequest({ ...searchRequest }), [searchQuery]);
+
+  useEffect(() => {
+    if (!storeValue && searchQuery) clearSearchQuery();
+    return () => {
+      if (searchQuery) clearSearchQuery();
+    }
+  }, []);
+
+  useBeforeunload(() => {
+    if (searchQuery) clearSearchQuery();
+  });
 
   const handleChange = event => {
     const { value, name } = event.target;
@@ -53,7 +50,6 @@ const SearchInput = ({ searchStart, searchQuery, searchResults, storeValue, clea
   }
 
   const handleSubmit = () => {
-    if (searchResults) clearSearchResults();
     if (query !== '') {
       searchStart(category, query);
       history.push('/search');
@@ -96,8 +92,7 @@ const SearchInput = ({ searchStart, searchQuery, searchResults, storeValue, clea
 };
 
 const mapStateToProps = createStructuredSelector({
-  searchQuery: selectSearchQuery,
-  searchResults: selectSearchResults
+  searchQuery: selectSearchQuery
 });
 
 const mapDispatchToProps = dispatch => ({
