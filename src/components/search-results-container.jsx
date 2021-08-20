@@ -24,7 +24,7 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
   const [ current, setCurrent ] = React.useState(1);
   const pageSize = 10;
   const offset = (current - 1) * pageSize;
-  const results = data.slice(offset, offset + pageSize);
+  const results = data ? data.slice(offset, offset + pageSize) : [];
 
   const Prev = forwardRef((props, ref) => (
     <Button ref={ref} {...props}>Prev</Button>
@@ -43,11 +43,13 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
     if (searchResults && !urlSearchQuery) clearSearchResults();
   }
 
-  useEffect(() => { return () => clearResults() }, []);
+  useEffect(() => { 
+    return () => clearResults() 
+  }, []);
   useBeforeunload(() => clearResults());
 
   useEffect(() => {
-    if (searchResults && urlSearchQuery) {
+    if (searchResults) {
       setData(searchResults.docs);
       setCurrent(1);
     }
@@ -70,7 +72,7 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
                   ) 
                 }
                 {
-                  data.length > pageSize
+                  data && data.length > pageSize
                     ? <Pagination
                         current={current}
                         onChange={(page) => {
