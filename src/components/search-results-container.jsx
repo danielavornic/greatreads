@@ -1,5 +1,6 @@
 import React, { useEffect, forwardRef } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { useBeforeunload } from 'react-beforeunload';
 
@@ -18,7 +19,7 @@ import Pagination from '@choc-ui/paginator';
 
 import BookListItem from './book-list-item';
 
-const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchResultsLoading }) => {
+const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchResultsLoading, location }) => {
   const [ data, setData ] = React.useState([]);
   const [ current, setCurrent ] = React.useState(1);
   const pageSize = 10;
@@ -37,29 +38,37 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
     if (type === 'next') return Next;
   };
 
+  const urlSearchQuery = location.pathname.split('/')[3];
+  const clearResults = () => {
+    if (searchResults && !urlSearchQuery) clearSearchResults();
+  }
+
+  useEffect(() => { return () => clearResults() }, []);
+  useBeforeunload(() => clearResults());
+
   useEffect(() => {
-    if (searchResults) {
+    if (searchResults && urlSearchQuery) {
       setData(searchResults.docs);
       setCurrent(1);
     }
   }, [searchResults]);
 
-  useEffect(() => {
-    return () => clearSearchResults();
-  }, []);
-  useBeforeunload(() => clearSearchResults());
-
   return (
     <Stack width={'full'}>
       {
-        searchResults && searchResults.numFound > 0
+        searchResults && searchResults.numFound > 0 && urlSearchQuery
           ? <Stack width='100%' maxW={'full'}>
               <Text pt={{ base: 8, md: 12 }} pb='20px'>
                 Page {current} of {searchResults.numFound} results
               </Text>
 
               <VStack spacing='36px' pb='48px' width={'full'} align='center'>
-                { results.map(({ key, ...otherBookProps }) => <BookListItem key={key} {...otherBookProps} />) }
+                { 
+                  results.map(
+                    ({ key, ...otherBookProps }) => 
+                    <BookListItem key={key} bookKey={key} {...otherBookProps} />
+                  ) 
+                }
                 {
                   data.length > pageSize
                     ? <Pagination
@@ -83,7 +92,7 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
       }
 
       {
-        searchResults && searchResults.numFound === 0
+        searchResults && searchResults.numFound === 0 && urlSearchQuery
           ? <Flex justifyContent='center' mt='48px'>
               <Text>No results found.</Text>
             </Flex>
@@ -116,4 +125,7 @@ const mapDispatchToProps = dispatch => ({
   clearSearchResults: () => dispatch(clearSearchResults())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsContainer);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)
+  (SearchResultsContainer)
+);

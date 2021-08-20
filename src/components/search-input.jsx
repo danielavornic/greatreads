@@ -17,25 +17,31 @@ import { AiOutlineSearch } from 'react-icons/ai';
 
 import { selectSearchQuery} from '../redux/library/library.selectors';
 
-const SearchInput = ({ searchStart, searchQuery, storeValue, clearSearchQuery, history }) => {
+const SearchInput = ({ searchStart, searchQuery, storeValue, clearSearchQuery, history, location }) => {
+  const urlCategory = location.pathname.split('/')[2];
+  const urlQuery = location.pathname.split('/')[3];
+  
   const [ searchRequest, setSearchRequest ] = useState({
-    category: (storeValue && searchQuery) ? searchQuery.category : 'all',
-    query: (storeValue && searchQuery) ? searchQuery.query : ''
+    category: (storeValue && urlCategory) ? urlCategory : 'all',
+    query: (storeValue && urlQuery) ? urlQuery : ''
   });
   const { category, query } = searchRequest;
-
   useEffect(() => setSearchRequest({ ...searchRequest }), [searchQuery]);
 
+  const clearQuery = () => {
+    if (searchQuery && !urlQuery) clearSearchQuery();
+  }
+
   useEffect(() => {
-    if (!storeValue && searchQuery) clearSearchQuery();
-    return () => {
-      if (searchQuery) clearSearchQuery();
-    }
+    if (searchQuery && (urlQuery !== searchQuery.query || urlCategory !== searchQuery.category)) 
+      searchStart(urlCategory, urlQuery);
+    else if (!storeValue && searchQuery) 
+      clearQuery();
+
+    return () => clearQuery();
   }, []);
 
-  useBeforeunload(() => {
-    if (searchQuery) clearSearchQuery();
-  });
+  useBeforeunload(() => clearQuery());
 
   const handleChange = event => {
     const { value, name } = event.target;
@@ -52,7 +58,7 @@ const SearchInput = ({ searchStart, searchQuery, storeValue, clearSearchQuery, h
   const handleSubmit = () => {
     if (query !== '') {
       searchStart(category, query);
-      history.push('/search');
+      history.push(`/search/${category}/${query}`);
     }
   }
 
