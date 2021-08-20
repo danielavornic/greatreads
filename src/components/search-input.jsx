@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
-import { useBeforeunload } from 'react-beforeunload';
 
-import { searchStart, clearSearchQuery, clearSearchResults } from '../redux/library/library.actions';
+import { searchStart, clearSearchQuery } from '../redux/library/library.actions';
 
 import {
   HStack,
@@ -26,22 +25,15 @@ const SearchInput = ({ searchStart, searchQuery, storeValue, clearSearchQuery, h
     query: (storeValue && urlQuery) ? urlQuery : ''
   });
   const { category, query } = searchRequest;
-  useEffect(() => setSearchRequest({ ...searchRequest }), [searchQuery]);
-
-  const clearQuery = () => {
-    if (searchQuery && !urlQuery) clearSearchQuery();
-  }
 
   useEffect(() => {
-    if (searchQuery && (urlQuery !== searchQuery.query || urlCategory !== searchQuery.category)) 
-      searchStart(urlCategory, urlQuery);
-    else if (!storeValue && searchQuery) 
-      clearQuery();
-
-    return () => clearQuery();
+    if (storeValue) {
+      if (searchQuery && (urlQuery !== searchQuery.query || urlCategory !== searchQuery.category)) 
+        searchStart(urlCategory, urlQuery);
+    } else {
+      if (searchQuery) clearSearchQuery();
+    }
   }, []);
-
-  useBeforeunload(() => clearQuery());
 
   const handleChange = event => {
     const { value, name } = event.target;
@@ -103,7 +95,6 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   searchStart: (category, query) => dispatch(searchStart({ category, query })),
-  clearSearchResults: () => dispatch(clearSearchResults()),
   clearSearchQuery: () => dispatch(clearSearchQuery())
 });
 
