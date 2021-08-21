@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 
 import { searchStart, clearSearchQuery } from '../redux/library/library.actions';
+import { selectSearchQuery} from '../redux/library/library.selectors';
 
 import {
   HStack,
@@ -13,8 +14,6 @@ import {
   Input
 } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
-
-import { selectSearchQuery} from '../redux/library/library.selectors';
 
 const SearchInput = ({ searchStart, searchQuery, storeValue, clearSearchQuery, history, location }) => {
   const urlCategory = location.pathname.split('/')[2];
