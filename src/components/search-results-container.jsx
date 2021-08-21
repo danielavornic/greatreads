@@ -19,7 +19,7 @@ import Pagination from '@choc-ui/paginator';
 
 import BookListItem from './book-list-item';
 
-const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchResultsLoading, location }) => {
+const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchResultsLoading, match }) => {
   const [ data, setData ] = React.useState([]);
   const [ current, setCurrent ] = React.useState(1);
   const pageSize = 10;
@@ -38,7 +38,7 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
     if (type === 'next') return Next;
   };
 
-  const urlSearchQuery = location.pathname.split('/')[3];
+  const urlSearchQuery = match.params.query;;
   const clearResults = () => {
     if (searchResults && !urlSearchQuery) clearSearchResults();
   }

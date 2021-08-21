@@ -15,9 +15,9 @@ import {
 } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 
-const SearchInput = ({ searchStart, searchQuery, storeValue, clearSearchQuery, history, location }) => {
-  const urlCategory = location.pathname.split('/')[2];
-  const urlQuery = location.pathname.split('/')[3];
+const SearchInput = ({ searchStart, searchQuery, storeValue, clearSearchQuery, history, match }) => {
+  const urlCategory = match.params.category;
+  const urlQuery = match.params.query;
   
   const [ searchRequest, setSearchRequest ] = useState({
     category: (storeValue && urlCategory) ? urlCategory : 'all',
