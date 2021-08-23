@@ -43,7 +43,7 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading, clearBook }) => 
                                    : 'https://openlibrary.org/images/icons/avatar_book.png'} 
                   width='200px'
                   height='auto'
-                  boxShadow='xl'
+                  boxShadow='lg'
                 />
               </Box>
               
