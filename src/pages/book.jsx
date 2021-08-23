@@ -39,7 +39,7 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading, clearBook }) => 
             >
               <Box>
                 <Image 
-                  src={book.covers ? `http://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg`
+                  src={book.covers ? `https://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg`
                                    : 'https://openlibrary.org/images/icons/avatar_book.png'} 
                   width='200px'
                   height='auto'

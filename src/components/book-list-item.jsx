@@ -10,7 +10,7 @@ import {
 import { Image } from '@chakra-ui/react';
 
 const BookListItem = ({ bookKey, title, author_name, cover_i, first_publish_year}) => {
-  const bookCoverUrl = cover_i ? `http://covers.openlibrary.org/b/id/${cover_i}-M.jpg` 
+  const bookCoverUrl = cover_i ? `https://covers.openlibrary.org/b/id/${cover_i}-M.jpg` 
                                : 'https://openlibrary.org/images/icons/avatar_book.png';
 
   return (
