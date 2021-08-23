@@ -21,7 +21,7 @@ const SearchPage = () => (
       Search
     </Heading>
     <Box align='center'>
-      <SearchInput storeValue />
+      <SearchInput />
     </Box>
     <SearchResultsContainer />
   </Container>
