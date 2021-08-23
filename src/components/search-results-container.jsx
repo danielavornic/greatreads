@@ -59,7 +59,7 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
         searchResults && urlQuery
         ? searchResults.numFound > 0
           ? <Stack width='100%' maxW={'full'}>
-              <Text pt={{ base: 8, md: 12 }}>
+              <Text>
                 Page {current} of {searchResults.numFound} results
               </Text>
 
