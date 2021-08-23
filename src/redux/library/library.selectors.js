@@ -15,4 +15,14 @@ export const selectSearchResults = createSelector(
 export const selectAreSearchResultsFetching = createSelector(
   [selectLibrary],
   library => library.areSearchResultsFetching
+);
+
+export const selectBook = createSelector(
+  [selectLibrary],
+  library => library.book
+);
+
+export const selectIsBookFetching = createSelector(
+  [selectLibrary],
+  library => library.isBookFetching
 )
