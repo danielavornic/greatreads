@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 
-import { searchStart, clearSearchQuery } from '../redux/library/library.actions';
+import { searchStart, clearSearchQuery, clearSearchResults } from '../redux/library/library.actions';
 import { selectSearchQuery} from '../redux/library/library.selectors';
 
 import {
@@ -15,20 +15,24 @@ import {
 } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 
-const SearchInput = ({ searchStart, searchQuery, storeValue, clearSearchQuery, history, match }) => {
+const SearchInput = ({ searchStart, searchQuery, clearSearchQuery, clearSearchResults, history, match }) => {
   const urlCategory = match.params.category;
   const urlQuery = match.params.query;
   
   const [ searchRequest, setSearchRequest ] = useState({
-    category: (storeValue && urlCategory) ? urlCategory : 'all',
-    query: (storeValue && urlQuery) ? urlQuery : ''
+    category: urlCategory ? urlCategory : 'all',
+    query: urlQuery ? urlQuery : ''
   });
   const { category, query } = searchRequest;
 
   useEffect(() => {
-    if (storeValue) {
-      if (searchQuery && (urlQuery !== searchQuery.query || urlCategory !== searchQuery.category)) 
-        searchStart(urlCategory, urlQuery);
+    setSearchRequest({ ...searchRequest });
+  }, [match])
+
+  useEffect(() => {
+    if (urlQuery) {
+      clearSearchResults();
+      searchStart(urlCategory, urlQuery);
     } else {
       if (searchQuery) clearSearchQuery();
     }
@@ -94,7 +98,8 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   searchStart: (category, query) => dispatch(searchStart({ category, query })),
-  clearSearchQuery: () => dispatch(clearSearchQuery())
+  clearSearchQuery: () => dispatch(clearSearchQuery()),
+  clearSearchResults: () => dispatch(clearSearchResults())
 });
 
 export default withRouter(

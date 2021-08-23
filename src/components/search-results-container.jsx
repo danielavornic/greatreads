@@ -13,11 +13,11 @@ import {
   Text,
   Flex
 } from '@chakra-ui/layout';
-import { Spinner } from '@chakra-ui/spinner';
 import { Button } from '@chakra-ui/react';
 import Pagination from '@choc-ui/paginator';
 
 import BookListItem from './book-list-item';
+import CustomSpinner from './custom-spinner';
 
 const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchResultsLoading, match }) => {
   const [ data, setData ] = React.useState([]);
@@ -38,14 +38,12 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
     if (type === 'next') return Next;
   };
 
-  const urlSearchQuery = match.params.query;;
+  const urlQuery = match.params.query;
   const clearResults = () => {
-    if (searchResults && !urlSearchQuery) clearSearchResults();
+    if (searchResults && !urlQuery) clearSearchResults();
   }
 
-  useEffect(() => { 
-    return () => clearResults() 
-  }, []);
+  useEffect(() => { return () => clearResults() }, []);
   useBeforeunload(() => clearResults());
 
   useEffect(() => {
@@ -56,19 +54,22 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
   }, [searchResults]);
 
   return (
-    <Stack width={'full'}>
+    <Stack width={'full'} mt='48px'>
       {
-        searchResults && searchResults.numFound > 0 && urlSearchQuery
+        searchResults && urlQuery
+        ? searchResults.numFound > 0
           ? <Stack width='100%' maxW={'full'}>
-              <Text pt={{ base: 8, md: 12 }} pb='20px'>
+              <Text pt={{ base: 8, md: 12 }}>
                 Page {current} of {searchResults.numFound} results
               </Text>
 
-              <VStack spacing='36px' pb='48px' width={'full'} align='center'>
+              <VStack spacing='36px' width={'full'} align='center'>
                 { 
                   results.map(
-                    ({ key, ...otherBookProps }) => 
-                    <BookListItem key={key} bookKey={key} {...otherBookProps} />
+                    ({ key, cover_edition_key, edition_key, ...otherBookProps }) => {
+                      const bookKey = cover_edition_key ? cover_edition_key : edition_key;
+                      return <BookListItem key={key} bookKey={bookKey} {...otherBookProps} />
+                    }
                   ) 
                 }
                 {
@@ -90,29 +91,12 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
                 }
               </VStack>
             </Stack>
-          : null
-      }
-
-      {
-        searchResults && searchResults.numFound === 0 && urlSearchQuery
-          ? <Flex justifyContent='center' mt='48px'>
+          : <Flex justifyContent='center'>
               <Text>No results found.</Text>
             </Flex>
-          : null
-      }
-
-      {
-        areSearchResultsLoading
-          ? <Flex justifyContent='center' mt='48px'>
-              <Spinner
-                thickness='4px'
-                speed='0.65s'
-                emptyColor='gray.200'
-                color={'brand.400'}
-                size='xl'
-              />
-            </Flex>
-          : null
+        : areSearchResultsLoading
+          ? <CustomSpinner/>
+        : null
       }
     </Stack>
   )
