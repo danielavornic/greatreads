@@ -6,7 +6,7 @@
 }
 
 #main-content {
-  flex: 1
+  flex: 1;
 }
 
 /* remove 'x' clear sign on search inputs */
@@ -27,4 +27,16 @@ input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
   display: none;
+}
+
+.displayed-text {
+  white-space: pre-line;
+}
+
+.read-more-button {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #4d5499;
+  display: inline-block;
+  padding-left: 4px
 }
