@@ -31,14 +31,19 @@ export function* fetchBookAsync({ payload }) {
     const json = yield response.json();
     const book = yield json[Object.keys(json)[0]].details;
 
-    const worksResponse = yield fetch(`https://openlibrary.org${book.works[0].key}.json`);
-    const works = yield worksResponse.json();
-    const description = yield works.description 
-                            ? works.description.value 
+    if (book.works) {
+      const worksResponse = yield fetch(`https://openlibrary.org${book.works[0].key}.json`);
+      const works = yield worksResponse.json();
+      const description = yield works.description 
                               ? works.description.value 
-                              : works.description
-                            : '';
-    book.description = description;
+                                ? works.description.value 
+                                : works.description
+                              : '';
+      book.description = description;
+    } else {
+      book.description = '';
+    }
+    
     yield put(fetchBookSuccess(book));
   } catch(error) {
     yield put(fetchBookFailure(error.message));
