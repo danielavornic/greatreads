@@ -71,6 +71,7 @@ const SearchInput = ({ searchStart, searchQuery, clearSearchQuery, clearSearchRe
         <option fontSize={{ base: 'md', md: 'lg' }} value='all'>All</option>
         <option fontSize={{ base: 'md', md: 'lg' }} value='title'>Title</option>
         <option fontSize={{ base: 'md', md: 'lg' }} value='author'>Author</option>
+        <option fontSize={{ base: 'md', md: 'lg' }} value='subject'>Genre</option>
       </Select>
 
       <InputGroup size='lg'>
