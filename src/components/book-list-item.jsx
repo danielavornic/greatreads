@@ -21,7 +21,7 @@ const BookListItem = ({ bookKey, title, author_name, cover_i, first_publish_year
       padding='28px'
       width={'full'}
     >
-      <Link to={`/book/${bookKey}`} >
+      <Link to={`/books/${bookKey}`} >
         <Grid 
           templateColumns={[ 'repeat(1, 1fr)', '100px 1fr']}
           gap={[ 4, 4, 6 ]}

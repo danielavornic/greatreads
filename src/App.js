@@ -17,7 +17,7 @@ function App() {
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/search/:category?/:query?' component={SearchPage} />
-          <Route path='/book/:bookKey' component={BookPage} />
+          <Route path='/books/:bookKey' component={BookPage} />
         </Switch>
       </div>
       <Footer />
