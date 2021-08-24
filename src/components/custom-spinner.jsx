@@ -5,7 +5,7 @@ const CustomSpinner = () => (
   <Flex justifyContent='center'>
     <Spinner
       thickness='4px'
-      speed='0.65s'
+      speed='0.45s'
       emptyColor='gray.200'
       color={'brand.400'}
       size='xl'
