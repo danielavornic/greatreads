@@ -23,7 +23,7 @@ const SearchPage = () => (
     <Box align='center'>
       <SearchInput />
     </Box>
-    <SearchResultsContainer />
+    <SearchResultsContainer view='table'/>
   </Container>
 );
 

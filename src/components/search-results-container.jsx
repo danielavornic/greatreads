@@ -1,14 +1,14 @@
-import React, { useEffect, forwardRef } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
-import { useBeforeunload } from 'react-beforeunload';
 
 import { selectAreSearchResultsFetching, selectSearchResults } from '../redux/library/library.selectors';
 import { clearSearchResults } from '../redux/library/library.actions';
 
 import {
   VStack,
+  Grid,
   Stack,
   Text,
   Flex
@@ -19,10 +19,10 @@ import Pagination from '@choc-ui/paginator';
 import BookListItem from './book-list-item';
 import CustomSpinner from './custom-spinner';
 
-const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchResultsLoading, match }) => {
-  const [ data, setData ] = React.useState([]);
-  const [ current, setCurrent ] = React.useState(1);
-  const pageSize = 10;
+const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchResultsLoading, view }) => {
+  const [ data, setData ] = useState([]);
+  const [ current, setCurrent ] = useState(1);
+  const pageSize = (view === 'table') ? 10 : 30;
   const offset = (current - 1) * pageSize;
   const results = data ? data.slice(offset, offset + pageSize) : [];
 
@@ -38,13 +38,11 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
     if (type === 'next') return Next;
   };
 
-  const urlQuery = match.params.query;
-  const clearResults = () => {
-    if (searchResults && !urlQuery) clearSearchResults();
-  }
-
-  useEffect(() => { return () => clearResults() }, []);
-  useBeforeunload(() => clearResults());
+  useEffect(() => { 
+    return () => {
+      if (searchResults) clearSearchResults();
+    } 
+  }, []);
 
   useEffect(() => {
     if (searchResults) {
@@ -54,28 +52,38 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
   }, [searchResults]);
 
   return (
-    <Stack width={'full'} my='48px'>
+    <Stack width={'full'} my={['36px', '48px']}>
       {
-        searchResults && urlQuery
+        searchResults
         ? searchResults.numFound > 0
           ? <Stack width='100%' maxW={'full'}>
               <Text mb='8px'>
                 Page {current} of {searchResults.numFound} results
               </Text>
-
               <VStack 
                 spacing={['28px', '36px']} 
                 width={'full'} 
                 align='center'
               >
-                { 
-                  results.map(
-                    ({ key, cover_edition_key, edition_key, ...otherBookProps }) => {
-                      const bookKey = cover_edition_key ? cover_edition_key : edition_key;
-                      return <BookListItem key={key} bookKey={bookKey} {...otherBookProps} />
-                    }
-                  ) 
-                }
+                <Grid
+                  templateColumns={
+                    view === 'table'
+                    ? 'repeat(1, 1fr)'
+                    : [ 'repeat(3, 1fr)', 'repeat(5, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']
+                  }
+                  align={view === 'table' ? 'left' : 'center'}
+                  gap={[ 4, 4, 6 ]}
+                  w={'full'}
+                >
+                  {
+                    results.map(
+                      ({ key, cover_edition_key, edition_key, ...otherBookProps }) => {
+                        const bookKey = cover_edition_key ? cover_edition_key : edition_key;
+                        return <BookListItem key={key} bookKey={bookKey} view={view} {...otherBookProps} />
+                      }
+                    ) 
+                  }
+                </Grid>
                 {
                   data && data.length > pageSize
                     ? <Pagination
