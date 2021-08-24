@@ -59,11 +59,15 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
         searchResults && urlQuery
         ? searchResults.numFound > 0
           ? <Stack width='100%' maxW={'full'}>
-              <Text>
+              <Text mb='8px'>
                 Page {current} of {searchResults.numFound} results
               </Text>
 
-              <VStack spacing='36px' width={'full'} align='center'>
+              <VStack 
+                spacing={['28px', '36px']} 
+                width={'full'} 
+                align='center'
+              >
                 { 
                   results.map(
                     ({ key, cover_edition_key, edition_key, ...otherBookProps }) => {

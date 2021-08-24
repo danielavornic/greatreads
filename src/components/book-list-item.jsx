@@ -18,12 +18,12 @@ const BookListItem = ({ bookKey, title, author_name, cover_i, first_publish_year
       border='1px'
       borderColor='gray.200'
       borderRadius='10px'
-      padding='28px'
+      padding={['24px', '28px']}
       width={'full'}
     >
       <Link to={`/books/${bookKey}`} >
         <Grid 
-          templateColumns={[ 'repeat(1, 1fr)', '100px 1fr']}
+          templateColumns={[ '80px 1fr', '100px 1fr']}
           gap={[ 4, 4, 6 ]}
           w={'full'}
         >
@@ -31,7 +31,7 @@ const BookListItem = ({ bookKey, title, author_name, cover_i, first_publish_year
             <Image 
               src={bookCoverUrl}
               alt={`Cover of "${title}"`}
-              boxSize='100px'
+              width={['80px', '100px']}
               height='auto'
             />
           </Box>
