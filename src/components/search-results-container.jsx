@@ -54,7 +54,7 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
   }, [searchResults]);
 
   return (
-    <Stack width={'full'} mt='48px'>
+    <Stack width={'full'} my='48px'>
       {
         searchResults && urlQuery
         ? searchResults.numFound > 0
