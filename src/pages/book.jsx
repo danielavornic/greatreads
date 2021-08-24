@@ -33,9 +33,9 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading, clearBook }) => 
         ? book.error === 'notfound'
           ? <Text align='center'>Book not found</Text>
           : <Grid 
-            templateColumns={[ 'repeat(1, 1fr)', '200px 1fr']}
-            gap={[ 4, 6, 8 ]}
-            w={'full'}
+              templateColumns={[ 'repeat(1, 1fr)', '200px 1fr']}
+              gap={[ 4, 6, 8 ]}
+              w={'full'}
             >
               <Box>
                 <Image 
