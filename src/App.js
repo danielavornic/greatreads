@@ -1,4 +1,4 @@
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import HomePage from './pages/homepage';
 import SearchPage from './pages/search';
@@ -17,6 +17,9 @@ function App() {
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/search/:category?/:query?' component={SearchPage} />
+          <Route exact path='/books/'>
+            <Redirect to='/search/' />
+          </Route>
           <Route path='/books/:bookKey' component={BookPage} />
         </Switch>
       </div>
