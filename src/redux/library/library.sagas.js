@@ -40,6 +40,12 @@ export function* fetchBookAsync({ payload }) {
                                 : works.description
                               : '';
       book.description = description;
+      
+      if (!book.authors && !book.by_statement && works.authors) {
+        const authorResponse = yield fetch(`https://openlibrary.org${works.authors[0].author.key}.json`);
+        const author = yield authorResponse.json();
+        book.authors = [{name: author.name}];
+      }
     } else {
       book.description = '';
     }
