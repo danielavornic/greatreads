@@ -30,7 +30,7 @@ const SearchInput = ({ searchStart, searchQuery, clearSearchQuery, clearSearchRe
   }, [match])
 
   useEffect(() => {
-    if (urlCategory) clearSearchResults();
+    clearSearchResults();
     if (urlQuery) {
       searchStart(urlCategory, urlQuery);
     } else {
