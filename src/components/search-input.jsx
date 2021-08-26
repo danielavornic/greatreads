@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 
-import { searchStart, clearSearchQuery, clearSearchResults } from '../redux/library/library.actions';
-import { selectSearchQuery} from '../redux/library/library.selectors';
+import { searchStart, clearSearchQuery, clearSearchResults } from '../redux/books/books.actions';
+import { selectSearchQuery} from '../redux/books/books.selectors';
 
 import {
   HStack,
@@ -30,8 +30,8 @@ const SearchInput = ({ searchStart, searchQuery, clearSearchQuery, clearSearchRe
   }, [match])
 
   useEffect(() => {
+    if (urlCategory) clearSearchResults();
     if (urlQuery) {
-      clearSearchResults();
       searchStart(urlCategory, urlQuery);
     } else {
       if (searchQuery) clearSearchQuery();

@@ -1,13 +1,13 @@
 import { takeLatest, put, all, call } from 'redux-saga/effects';
 
-import LibraryActionTypes from './library.types';
+import BooksActionTypes from './books.types';
 
 import { 
   searchSuccess, 
   searchFailure, 
   fetchBookSuccess, 
   fetchBookFailure
-} from './library.actions';
+} from './books.actions';
 
 export function* searchAsync({ payload: { category, query } }) {
   try {
@@ -22,7 +22,7 @@ export function* searchAsync({ payload: { category, query } }) {
 }
 
 export function* searchStart() {
-  yield takeLatest(LibraryActionTypes.SEARCH_START, searchAsync);
+  yield takeLatest(BooksActionTypes.SEARCH_START, searchAsync);
 }
 
 export function* fetchBookAsync({ payload }) {
@@ -57,10 +57,10 @@ export function* fetchBookAsync({ payload }) {
 }
 
 export function* fetchBookStart() {
-  yield takeLatest(LibraryActionTypes.FETCH_BOOK_START, fetchBookAsync);
+  yield takeLatest(BooksActionTypes.FETCH_BOOK_START, fetchBookAsync);
 }
 
-export function* librarySagas() {
+export function* booksSagas() {
   yield all([
     call(searchStart),
     call(fetchBookStart)

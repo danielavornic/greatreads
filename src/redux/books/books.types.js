@@ -1,4 +1,4 @@
-const LibraryActionTypes = {
+const BooksActionTypes = {
   SEARCH_START: 'SEARCH_START',
   SEARCH_SUCCESS: 'SEARCH_SUCCESS',
   SEARCH_FAILURE: 'SEARCH_SUCCESS',
@@ -10,4 +10,4 @@ const LibraryActionTypes = {
   CLEAR_BOOK: 'CLEAR_BOOK'
 };
 
-export default LibraryActionTypes;
+export default BooksActionTypes;

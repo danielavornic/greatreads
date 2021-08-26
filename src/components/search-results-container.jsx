@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 
-import { selectAreSearchResultsFetching, selectSearchResults } from '../redux/library/library.selectors';
-import { clearSearchResults } from '../redux/library/library.actions';
+import { selectAreSearchResultsFetching, selectSearchResults } from '../redux/books/books.selectors';
+import { clearSearchResults } from '../redux/books/books.actions';
 
 import {
   VStack,
@@ -39,7 +39,6 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
   };
 
   useEffect(() => { 
-    if (searchResults) clearSearchResults()
     return () => {
       if (searchResults) clearSearchResults();
     } 

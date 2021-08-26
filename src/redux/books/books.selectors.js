@@ -1,28 +1,28 @@
 import { createSelector } from 'reselect';
 
-const selectLibrary = state => state.library;
+const selectBooks = state => state.books;
 
 export const selectSearchQuery = createSelector(
-  [selectLibrary],
-  library => library.searchQuery
+  [selectBooks],
+  books => books.searchQuery
 );
 
 export const selectSearchResults = createSelector(
-  [selectLibrary],
-  library => library.searchResults
+  [selectBooks],
+  books => books.searchResults
 );
 
 export const selectAreSearchResultsFetching = createSelector(
-  [selectLibrary],
-  library => library.areSearchResultsFetching
+  [selectBooks],
+  books => books.areSearchResultsFetching
 );
 
 export const selectBook = createSelector(
-  [selectLibrary],
-  library => library.book
+  [selectBooks],
+  books => books.book
 );
 
 export const selectIsBookFetching = createSelector(
-  [selectLibrary],
-  library => library.isBookFetching
+  [selectBooks],
+  books => books.isBookFetching
 )

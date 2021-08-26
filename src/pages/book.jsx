@@ -3,8 +3,8 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { fetchBookStart, clearBook } from '../redux/library/library.actions';
-import { selectBook, selectIsBookFetching } from '../redux/library/library.selectors';
+import { fetchBookStart, clearBook } from '../redux/books/books.actions';
+import { selectBook, selectIsBookFetching } from '../redux/books/books.selectors';
 
 import {
   Container,

@@ -1,4 +1,4 @@
-import LibraryActionTypes from './library.types';
+import BooksActionTypes from './books.types';
 
 const INITIAL_STATE = {
   searchQuery: undefined,
@@ -11,40 +11,40 @@ const INITIAL_STATE = {
   bookError: undefined
 };
 
-const libraryReducer = (state = INITIAL_STATE, action) => {
+const booksReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case LibraryActionTypes.SEARCH_START:
+    case BooksActionTypes.SEARCH_START:
       return {
         ...state,
         searchQuery: action.payload,
         searchResults: null,
         areSearchResultsFetching: true
       };
-    case LibraryActionTypes.SEARCH_SUCCESS:
+    case BooksActionTypes.SEARCH_SUCCESS:
       return {
         ...state,
         areSearchResultsFetching: false,
         searchResults: action.payload
       };
-    case LibraryActionTypes.SEARCH_FAILURE:
+    case BooksActionTypes.SEARCH_FAILURE:
       return {
         ...state,
         areSearchResultsFetching: false,
         searchError: action.payload
       };
-    case LibraryActionTypes.CLEAR_SEARCH_RESULTS:
+    case BooksActionTypes.CLEAR_SEARCH_RESULTS:
       return {
         ...state,
         areSearchResultsFetching: false,
         searchResults: null
       };
-    case LibraryActionTypes.CLEAR_SEARCH_QUERY:
+    case BooksActionTypes.CLEAR_SEARCH_QUERY:
       return {
         ...state,
         areSearchResultsFetching: false,
         searchQuery: null
       };
-    case LibraryActionTypes.FETCH_BOOK_START:
+    case BooksActionTypes.FETCH_BOOK_START:
       return {
         ...state, 
         bookKey: action.payload,
@@ -52,21 +52,21 @@ const libraryReducer = (state = INITIAL_STATE, action) => {
         isBookFetching: true,
         bookError: undefined
       };
-    case LibraryActionTypes.FETCH_BOOK_SUCCESS:
+    case BooksActionTypes.FETCH_BOOK_SUCCESS:
       return {
         ...state, 
         book: action.payload,
         isBookFetching: false,
         bookError: undefined
       };
-    case LibraryActionTypes.FETCH_BOOK_FAILURE:
+    case BooksActionTypes.FETCH_BOOK_FAILURE:
       return {
         ...state, 
         book: undefined,
         isBookFetching: false,
         bookError: action.payload
       };
-    case LibraryActionTypes.CLEAR_BOOK:
+    case BooksActionTypes.CLEAR_BOOK:
       return {
         ...state,
         book: undefined,
@@ -78,4 +78,4 @@ const libraryReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default libraryReducer;
+export default booksReducer;
