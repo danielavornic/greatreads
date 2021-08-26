@@ -8,7 +8,7 @@ import SearchInput from '../components/search-input';
 import SearchResultsContainer from '../components/search-results-container';
 
 const SearchPage = () => (
-  <Container maxW={'5xl'}>
+  <Container maxW={'5xl'} my='48px'>
     <Heading
       as='h1'
       textAlign='center'
@@ -16,7 +16,6 @@ const SearchPage = () => (
       fontSize={{ base: '3xl', md: '4xl' }}
       lineHeight={'110%'}
       pb='30px'
-      pt={{ base: 8, md: 12 }}
     >
       Search
     </Heading>
