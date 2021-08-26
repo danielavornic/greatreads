@@ -39,6 +39,7 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
   };
 
   useEffect(() => { 
+    if (searchResults) clearSearchResults()
     return () => {
       if (searchResults) clearSearchResults();
     } 
