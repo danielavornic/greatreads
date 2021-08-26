@@ -78,7 +78,7 @@ const SearchInput = ({ searchStart, searchQuery, clearSearchQuery, clearSearchRe
         <Input
           name='query'
           type='search'
-          placeholder='Search...'
+          placeholder='Search books...'
           onChange={handleChange}
           onKeyPress={handleKeyPress}
           defaultValue={query}
