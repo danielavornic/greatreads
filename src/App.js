@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import HomePage from './pages/homepage';
 import SearchPage from './pages/search';
 import BookPage from './pages/book';
+import GenresPage from './pages/genres';
 
 import Header from './components/header';
 import Footer from './components/footer';
@@ -21,6 +22,7 @@ function App() {
             <Redirect to='/search/' />
           </Route>
           <Route path='/books/:bookKey' component={BookPage} />
+          <Route exact path='/genres/' component={GenresPage} />
         </Switch>
       </div>
       <Footer />
