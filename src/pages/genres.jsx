@@ -33,7 +33,7 @@ const Genre = ({ genre, subgenres }) => (
         subgenres.map(
           subgenre =>
           <ListItem key={subgenre}>
-            <Link to={`/genres/${subgenre.toLowerCase().replace(/ /g, '_')}/`}>
+            <Link to={`/genres/${subgenre.toLowerCase().replace(/ /g, '_')}`}>
               <Text color={'gray.600'} textDecor='underline'>
                 {subgenre}
               </Text>
