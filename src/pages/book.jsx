@@ -20,11 +20,11 @@ import CustomSpinner from '../components/custom-spinner';
 import ReadMoreReact from 'read-more-react';
 
 const BookPage = ({ match, fetchBookStart, book, isBookLoading, clearBook }) => {
+  const bookKey = match.params.bookKey;
   useEffect(() => {
-    fetchBookStart(match.params.bookKey);
-
+    fetchBookStart(bookKey);
     return () => clearBook();
-  }, []);
+  }, [bookKey]);
 
   return (
     <Container maxW={'5xl'} my='48px'>
