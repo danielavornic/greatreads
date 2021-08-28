@@ -19,7 +19,6 @@ import {
 import { Divider } from '@chakra-ui/layout';
 
 import SearchInput from '../components/search-input';
-import GenreItem from '../components/genre-item';
 
 import { ReactComponent as Illustration } from '../assets/hero-illustration.svg';
 import { ReactComponent as RomanceGenre } from '../assets/genre-icons/romance.svg';
@@ -101,6 +100,28 @@ const ExploreSection = () => (
     </Stack>
   </Container>
 );
+
+const GenreItem = ({ name, children, color }) => {
+  const genrePath = (name !== 'More') ? name.toLowerCase() : '';
+
+  return (
+    <Link to={`/genres/${genrePath}`}>
+      <Box
+        border='1px'
+        borderColor='gray.200'
+        borderRadius='10px'
+        _hover={{
+          borderColor: color
+        }}
+      >
+        <VStack padding='28px'>
+          {children}
+          <Text pt={2}>{name}</Text>
+        </VStack>
+      </Box>
+    </Link>
+  )
+};
 
 const GenreListPreview = () => (
   <Grid
