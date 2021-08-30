@@ -8,10 +8,9 @@ import { clearSearchResults } from '../redux/books/books.actions';
 
 import {
   VStack,
-  Grid,
   Stack,
+  Flex,
   Text,
-  Flex
 } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 import Pagination from '@choc-ui/paginator';
@@ -19,10 +18,10 @@ import Pagination from '@choc-ui/paginator';
 import BookListItem from './book-list-item';
 import CustomSpinner from './custom-spinner';
 
-const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchResultsLoading, view }) => {
+const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchResultsLoading }) => {
   const [ data, setData ] = useState([]);
   const [ current, setCurrent ] = useState(1);
-  const pageSize = (view === 'table') ? 10 : 30;
+  const pageSize = 10;
   const offset = (current - 1) * pageSize;
   const results = data ? data.slice(offset, offset + pageSize) : [];
 
@@ -65,25 +64,14 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
                 width={'full'} 
                 align='center'
               >
-                <Grid
-                  templateColumns={
-                    view === 'table'
-                    ? 'repeat(1, 1fr)'
-                    : [ 'repeat(3, 1fr)', 'repeat(5, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']
-                  }
-                  align={view === 'table' ? 'left' : 'center'}
-                  gap={[ 4, 4, 6 ]}
-                  w={'full'}
-                >
-                  {
-                    results.map(
-                      ({ key, cover_edition_key, edition_key, ...otherBookProps }) => {
-                        const bookKey = cover_edition_key ? cover_edition_key : edition_key;
-                        return <BookListItem key={key} bookKey={bookKey} view={view} {...otherBookProps} />
-                      }
-                    ) 
-                  }
-                </Grid>
+                {
+                  results.map(
+                    ({ key, cover_edition_key, edition_key, ...otherBookProps }) => {
+                      const bookKey = cover_edition_key ? cover_edition_key : edition_key;
+                      return <BookListItem key={key} bookKey={bookKey} view='table' {...otherBookProps} />
+                    }
+                  ) 
+                }
                 {
                   data && data.length > pageSize
                     ? <Pagination
