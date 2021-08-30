@@ -1,0 +1,7 @@
+const GenresActionTypes = {
+  FETCH_GENRE_START: 'FETCH_GENRE_START',
+  FETCH_GENRE_SUCCESS: 'FETCH_GENRE_SUCCESS',
+  FETCH_GENRE_FAILURE: 'FETCH_GENRE_FAILURE',
+};
+
+export default GenresActionTypes;
