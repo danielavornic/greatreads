@@ -16,6 +16,8 @@ import {
   ListItem
 } from '@chakra-ui/react';
 
+import SearchInput from '../components/search-input';
+
 const Genre = ({ genre, subgenres }) => (
   <Box
     border='1px'
@@ -23,7 +25,7 @@ const Genre = ({ genre, subgenres }) => (
     borderRadius='10px'
     padding={['24px', '28px']}
   >
-    <Text fontWeight='700' fontSize='lg' pb='12px' color={'brand.600'} align='center'>
+    <Text fontWeight='700' fontSize='lg' pb='12px' color={'brand.700'} align='center'>
       <Link to={`/genres/${genre.toLowerCase().replace(/ /g, '_')}`}>
         {genre}
       </Link>
@@ -34,7 +36,7 @@ const Genre = ({ genre, subgenres }) => (
           subgenre =>
           <ListItem key={subgenre}>
             <Link to={`/genres/${subgenre.toLowerCase().replace(/ /g, '_')}`}>
-              <Text color={'gray.600'} textDecor='underline'>
+              <Text color={'brand.600'} textDecor='underline'>
                 {subgenre}
               </Text>
             </Link>
@@ -57,6 +59,10 @@ const GenresPage = ({ genres }) => (
       Genres
     </Heading>
 
+    <Box align='center' mb={['28px', '36px']}>
+      <SearchInput inputCategory='genres' />
+    </Box>
+
     <Grid
       templateColumns={['repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(4, 1fr)']}
       gap={[ 4, 4, 6 ]}
@@ -68,7 +74,6 @@ const GenresPage = ({ genres }) => (
         )
       }
     </Grid>
-
   </Container>
 );
 

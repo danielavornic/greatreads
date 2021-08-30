@@ -24,7 +24,7 @@ const RelatedList = ({ genre, data }) => {
 
   return (
     <Stack mb={['36px', '48px']}>
-      <Text fontWeight='700' textTransform='capitalize' color={'brand.600'}>
+      <Text fontWeight='700' textTransform='capitalize' color={'brand.700'}>
         Related { data }
       </Text>
       <List>
@@ -36,7 +36,7 @@ const RelatedList = ({ genre, data }) => {
               <ListItem key={name}>
                 <Link to={`/${data}/${key.split('/')[2]}`}>
                   <Text 
-                    color={'gray.600'} 
+                    color={'brand.600'} 
                     textDecor='underline' 
                     textOverflow='ellipsis'
                     overflow='hidden'
