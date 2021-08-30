@@ -23,7 +23,7 @@ const Genre = ({ genre, subgenres }) => (
     borderRadius='10px'
     padding={['24px', '28px']}
   >
-    <Text fontWeight='700' fontSize='lg' pb='12px' color={'brand.500'} align='center'>
+    <Text fontWeight='700' fontSize='lg' pb='12px' color={'brand.600'} align='center'>
       <Link to={`/genres/${genre.toLowerCase().replace(/ /g, '_')}`}>
         {genre}
       </Link>
