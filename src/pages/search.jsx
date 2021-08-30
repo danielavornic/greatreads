@@ -1,3 +1,5 @@
+import { withRouter } from 'react-router';
+
 import {
   Container,
   Heading,
@@ -7,7 +9,7 @@ import {
 import SearchInput from '../components/search-input';
 import SearchResultsContainer from '../components/search-results-container';
 
-const SearchPage = () => (
+const SearchPage = ({ match }) => (
   <Container maxW={'5xl'} my='48px'>
     <Heading
       as='h1'
@@ -20,10 +22,10 @@ const SearchPage = () => (
       Search
     </Heading>
     <Box align='center'>
-      <SearchInput />
+      <SearchInput inputCategory={match.params.category} />
     </Box>
-    <SearchResultsContainer view='table'/>
+    <SearchResultsContainer />
   </Container>
 );
 
-export default SearchPage;
+export default withRouter(SearchPage);

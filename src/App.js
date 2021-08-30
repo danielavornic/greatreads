@@ -18,9 +18,12 @@ function App() {
       <div id='main-content'>
         <Switch>
           <Route exact path='/' component={HomePage} />
-          <Route path='/search/:category?/:query?' component={SearchPage} />
+          <Route exact path='/search/:category?/:term?/:facet?' component={SearchPage} />
           <Route exact path='/books/'>
-            <Redirect to='/search/' />
+            <Redirect to='/search/books/' />
+          </Route>
+          <Route exact path='/authors/'>
+            <Redirect to='/search/authors/' />
           </Route>
           <Route exact path='/books/:bookKey' component={BookPage} />
           <Route exact path='/genres/' component={GenresPage} />

@@ -95,7 +95,7 @@ const ExploreSection = () => (
       >
         Explore the extensive library
       </Heading>
-      <SearchInput />
+      <SearchInput inputCategory='books'/>
       <GenreListPreview />
     </Stack>
   </Container>

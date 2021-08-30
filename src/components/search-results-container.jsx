@@ -1,7 +1,7 @@
 import { useState, useEffect, forwardRef } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
+import { withRouter } from 'react-router';
 
 import { selectAreSearchResultsFetching, selectSearchResults } from '../redux/books/books.selectors';
 import { clearSearchResults } from '../redux/books/books.actions';
@@ -18,7 +18,9 @@ import Pagination from '@choc-ui/paginator';
 import BookListItem from './book-list-item';
 import CustomSpinner from './custom-spinner';
 
-const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchResultsLoading }) => {
+const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchResultsLoading, match }) => {
+  const urlCategory = match.params.category;
+  
   const [ data, setData ] = useState([]);
   const [ current, setCurrent ] = useState(1);
   const pageSize = 10;
@@ -65,12 +67,14 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
                 align='center'
               >
                 {
-                  results.map(
+                  urlCategory === 'books'
+                  ? results.map(
                     ({ key, cover_edition_key, edition_key, ...otherBookProps }) => {
-                      const bookKey = cover_edition_key ? cover_edition_key : edition_key;
+                      const bookKey = cover_edition_key ? cover_edition_key : edition_key[0];
                       return <BookListItem key={key} bookKey={bookKey} view='table' {...otherBookProps} />
                     }
                   ) 
+                  : null
                 }
                 {
                   data && data.length > pageSize
@@ -111,7 +115,4 @@ const mapDispatchToProps = dispatch => ({
   clearSearchResults: () => dispatch(clearSearchResults())
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)
-  (SearchResultsContainer)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchResultsContainer));

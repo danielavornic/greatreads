@@ -23,6 +23,7 @@ const booksReducer = (state = INITIAL_STATE, action) => {
     case BooksActionTypes.SEARCH_SUCCESS:
       return {
         ...state,
+        searchQuery: undefined,
         areSearchResultsFetching: false,
         searchResults: action.payload
       };

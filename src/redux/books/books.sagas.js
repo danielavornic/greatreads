@@ -9,11 +9,14 @@ import {
   fetchBookFailure
 } from './books.actions';
 
-export function* searchAsync({ payload: { category, query } }) {
+export function* searchAsync({ payload: { category, term, facet } }) {
   try {
-    const formattedQuery = yield query.replace(/ /g, '+').toLowerCase();
-    const urlCategory = (category === 'all') ? 'q' : category;
-    const response = yield fetch(`https://openlibrary.org/search.json?${urlCategory}=${formattedQuery}`);
+    const formattedTerm = yield term.replace(/ /g, '+').toLowerCase();
+    const urlFacet = (facet === 'all') ? 'q' : facet;
+    if (category === 'genres') category = 'subjects';
+    const fetchUrl = (category === 'books') ? `https://openlibrary.org/search.json?${urlFacet}=${formattedTerm}`
+                                            : `https://openlibrary.org/search/${category}.json?q=${formattedTerm}`;
+    const response = yield fetch(fetchUrl);
     const searchResults = yield response.json();
     yield put(searchSuccess(searchResults));
   } catch(error) {
