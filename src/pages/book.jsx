@@ -16,7 +16,7 @@ import {
   Grid,
   Image 
 } from '@chakra-ui/react';
-import CustomSpinner from '../components/custom-spinner';
+import CustomSpinner from '../components/common/custom-spinner';
 import ReadMoreReact from 'read-more-react';
 
 const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {

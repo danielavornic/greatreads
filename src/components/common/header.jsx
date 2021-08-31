@@ -9,7 +9,7 @@ import {
   Button
 } from '@chakra-ui/react';
 
-import { ReactComponent as Logo } from '../assets/greatreads-logo.svg';
+import { ReactComponent as Logo } from '../../assets/greatreads-logo.svg';
 
 const Header = () => {
   const bg = useColorModeValue('white', 'gray.800');

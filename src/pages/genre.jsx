@@ -15,7 +15,7 @@ import {
   Text
  } from '@chakra-ui/layout';
  
-import CustomSpinner from '../components/custom-spinner';
+import CustomSpinner from '../components/common/custom-spinner';
 import GenreBooksContainer from '../components/genre-books-container';
 import RelatedList from '../components/related-list';
 

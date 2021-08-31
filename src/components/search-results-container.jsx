@@ -16,7 +16,7 @@ import {
 import { Button } from '@chakra-ui/react';
 import Pagination from '@choc-ui/paginator';
 
-import CustomSpinner from './custom-spinner';
+import CustomSpinner from './common/custom-spinner';
 import BookListItem from './book-list-item';
 import GenreListItem from './genre-list-item';
 import AuthorListItem from './author-list-item';

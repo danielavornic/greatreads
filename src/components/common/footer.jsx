@@ -12,7 +12,7 @@ import {
 
 import { FaGithub, FaDribbble } from 'react-icons/fa';
 
-import { ReactComponent as Logo } from '../assets/greatreads-logo.svg';
+import { ReactComponent as Logo } from '../../assets/greatreads-logo.svg';
 
 const SocialButton = ({ children, label, href }) => (
   <chakra.button

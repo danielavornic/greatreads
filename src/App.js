@@ -6,8 +6,8 @@ import BookPage from './pages/book';
 import GenresPage from './pages/genres';
 import GenrePage from './pages/genre';
 
-import Header from './components/header';
-import Footer from './components/footer';
+import Header from './components/common/header';
+import Footer from './components/common/footer';
 
 import './App.css';
 
