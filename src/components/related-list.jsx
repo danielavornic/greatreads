@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { Link } from 'react-router-dom';
 
 import { selectGenre } from '../redux/genres/genres.selectors';
 
@@ -24,7 +24,10 @@ const RelatedList = ({ genre, data }) => {
 
   return (
     <Stack mb={['36px', '48px']}>
-      <Text fontWeight='700' textTransform='capitalize' color={'brand.700'}>
+      <Text 
+        fontWeight='700' 
+        textTransform='uppercase'
+      >
         Related { data }
       </Text>
       <List>
@@ -34,17 +37,17 @@ const RelatedList = ({ genre, data }) => {
             ? items.slice(1, 11).map(
               ({ name, key }) =>
               <ListItem key={name}>
-                <Link to={`/${data}/${key.split('/')[2]}`}>
-                  <Text 
-                    color={'brand.600'} 
-                    textDecor='underline' 
-                    textOverflow='ellipsis'
-                    overflow='hidden'
-                    whiteSpace='nowrap'
-                  >
+                <Text 
+                  color={'brand.600'} 
+                  textDecor='underline' 
+                  textOverflow='ellipsis'
+                  overflow='hidden'
+                  whiteSpace='nowrap'
+                >
+                  <Link to={`/${data}/${key.split('/')[2]}`}>
                     {name}
-                  </Text>
-                </Link>
+                  </Link>
+                </Text>
               </ListItem>
             )
             : null
@@ -57,6 +60,6 @@ const RelatedList = ({ genre, data }) => {
 
 const mapStateToProps = createStructuredSelector({
   genre: selectGenre
-})
+});
 
 export default connect(mapStateToProps)(RelatedList);

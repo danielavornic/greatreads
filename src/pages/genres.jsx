@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { Link } from 'react-router-dom';
 
 import { selectGenresData } from '../redux/genres/genres.selectors';
 
@@ -25,7 +25,13 @@ const Genre = ({ genre, subgenres }) => (
     borderRadius='10px'
     padding={['24px', '28px']}
   >
-    <Text fontWeight='700' fontSize='lg' pb='12px' color={'brand.700'} align='center'>
+    <Text 
+      fontWeight='700' 
+      fontSize='lg' 
+      align='center'
+      textTransform='uppercase'
+      pb='12px' 
+    >
       <Link to={`/genres/${genre.toLowerCase().replace(/ /g, '_')}`}>
         {genre}
       </Link>
@@ -35,11 +41,11 @@ const Genre = ({ genre, subgenres }) => (
         subgenres.map(
           subgenre =>
           <ListItem key={subgenre}>
-            <Link to={`/genres/${subgenre.toLowerCase().replace(/ /g, '_')}`}>
-              <Text color={'brand.600'} textDecor='underline'>
+            <Text color={'brand.600'} textDecor='underline'>
+              <Link to={`/genres/${subgenre.toLowerCase().replace(/ /g, '_')}`}>
                 {subgenre}
-              </Text>
-            </Link>
+              </Link>
+            </Text>
           </ListItem>
         )
       }
@@ -58,11 +64,9 @@ const GenresPage = ({ genres }) => (
     >
       Genres
     </Heading>
-
     <Box align='center' mb={['28px', '36px']}>
       <SearchInput inputCategory='genres' />
     </Box>
-
     <Grid
       templateColumns={['repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(4, 1fr)']}
       gap={[ 4, 4, 6 ]}
