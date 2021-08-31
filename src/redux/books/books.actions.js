@@ -14,7 +14,3 @@ export const fetchBookFailure = error => ({
   type: BooksActionTypes.FETCH_BOOK_FAILURE,
   payload: error
 });
-
-export const clearBook = () => ({
-  type: BooksActionTypes.CLEAR_BOOK
-})

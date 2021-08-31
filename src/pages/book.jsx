@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { fetchBookStart, clearBook } from '../redux/books/books.actions';
+import { fetchBookStart } from '../redux/books/books.actions';
 import { selectBook, selectIsBookFetching } from '../redux/books/books.selectors';
 
 import {
@@ -19,11 +19,10 @@ import {
 import CustomSpinner from '../components/custom-spinner';
 import ReadMoreReact from 'read-more-react';
 
-const BookPage = ({ match, fetchBookStart, book, isBookLoading, clearBook }) => {
+const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
   const bookKey = match.params.bookKey;
   useEffect(() => {
     fetchBookStart(bookKey);
-    return () => clearBook();
   }, [bookKey]);
 
   return (
@@ -102,8 +101,7 @@ const mapStateToProps = createStructuredSelector({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchBookStart: (bookKey) => dispatch(fetchBookStart(bookKey)),
-  clearBook: () => dispatch(clearBook())
+  fetchBookStart: (bookKey) => dispatch(fetchBookStart(bookKey))
 });
 
 export default withRouter(

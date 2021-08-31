@@ -31,13 +31,6 @@ const booksReducer = (state = INITIAL_STATE, action) => {
         isBookFetching: false,
         bookError: action.payload
       };
-    case BooksActionTypes.CLEAR_BOOK:
-      return {
-        ...state,
-        book: undefined,
-        isBookFetching: false,
-        bookError: false
-      }
     default:
       return state;
   }
