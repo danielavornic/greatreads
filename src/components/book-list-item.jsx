@@ -1,4 +1,3 @@
-import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import {
@@ -96,4 +95,4 @@ const BookListItem = ({ view, cover_i, ...otherBookProps }) => {
   )
 };
 
-export default withRouter(BookListItem);
+export default BookListItem;

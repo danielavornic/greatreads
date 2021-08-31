@@ -11,19 +11,22 @@ import {
   Stack,
   Flex,
   Text,
+  UnorderedList
 } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 import Pagination from '@choc-ui/paginator';
 
-import BookListItem from './book-list-item';
 import CustomSpinner from './custom-spinner';
+import BookListItem from './book-list-item';
+import GenreListItem from './genre-list-item';
+import AuthorListItem from './author-list-item';
 
 const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchResultsLoading, match }) => {
   const urlCategory = match.params.category;
   
   const [ data, setData ] = useState([]);
   const [ current, setCurrent ] = useState(1);
-  const pageSize = 10;
+  const pageSize = (urlCategory === 'books') ? 10 : 30;
   const offset = (current - 1) * pageSize;
   const results = data ? data.slice(offset, offset + pageSize) : [];
 
@@ -66,6 +69,7 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
                 width={'full'} 
                 align='center'
               >
+                <Stack align='left' w={'full'}>
                 {
                   urlCategory === 'books'
                   ? results.map(
@@ -74,8 +78,27 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
                       return <BookListItem key={key} bookKey={bookKey} view='table' {...otherBookProps} />
                     }
                   ) 
+                  : urlCategory === 'genres'
+                    ? <UnorderedList align='left'>
+                        {
+                          results.map(
+                            ({ key, ...otherProps }) => 
+                            <GenreListItem key={key} path={key} {...otherProps} />
+                          )
+                        }
+                      </UnorderedList>
+                  : urlCategory === 'authors'
+                    ? <UnorderedList align='left'>
+                        {
+                          results.map(
+                            ({ key, ...otherProps }) => 
+                            <AuthorListItem key={key} path={key} {...otherProps} />
+                          )
+                        }
+                      </UnorderedList>
                   : null
                 }
+                </Stack>
                 {
                   data && data.length > pageSize
                     ? <Pagination
@@ -115,4 +138,7 @@ const mapDispatchToProps = dispatch => ({
   clearSearchResults: () => dispatch(clearSearchResults())
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchResultsContainer));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)
+  (SearchResultsContainer)
+);

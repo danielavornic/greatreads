@@ -22,7 +22,7 @@ const SearchInput = ({ inputCategory, searchStart, clearSearchResults, match, hi
   const facets = ['all', 'title', 'author', 'genre'];
   
   const [ searchRequest, setSearchRequest ] = useState({
-    category: urlCategory ? urlCategory : 'books',
+    category: inputCategory,
     term: urlTerm ? urlTerm : '',
     facet: urlFacet ? urlFacet : 'all'
   });
@@ -30,9 +30,7 @@ const SearchInput = ({ inputCategory, searchStart, clearSearchResults, match, hi
 
   useEffect(() => {
     setSearchRequest({ ...searchRequest });
-  }, [match]);
 
-  useEffect(() => {
     if (urlCategory && !categories.includes(urlCategory)) {
       history.push(`/search/books/${term}`);
       window.location.reload();
@@ -47,7 +45,7 @@ const SearchInput = ({ inputCategory, searchStart, clearSearchResults, match, hi
     } else {
       clearSearchResults();
     }
-  }, []);
+  }, [match]);
 
   const handleChange = event => {
     const { value, name } = event.target;
@@ -65,7 +63,8 @@ const SearchInput = ({ inputCategory, searchStart, clearSearchResults, match, hi
     if (term !== '') {
       clearSearchResults();
       searchStart(category, term, facet);
-      history.push(`/search/${category}/${term}/${facet}`);
+      const pathFacet = (category === 'books') ? `/${facet}` : '';
+      history.push(`/search/${category}/${term}${pathFacet}`);
     }
   }
 
