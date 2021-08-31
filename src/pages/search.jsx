@@ -6,8 +6,8 @@ import {
   Box
 } from '@chakra-ui/layout';
 
-import SearchInput from '../components/search-input';
-import SearchResultsContainer from '../components/search-results-container';
+import SearchInput from '../components/search/search-input';
+import SearchResults from '../components/search/search-results';
 
 const SearchPage = ({ match }) => (
   <Container maxW={'5xl'} my='48px'>
@@ -24,7 +24,7 @@ const SearchPage = ({ match }) => (
     <Box align='center'>
       <SearchInput inputCategory={match.params.category} />
     </Box>
-    <SearchResultsContainer />
+    <SearchResults />
   </Container>
 );
 

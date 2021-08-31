@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { searchStart, clearSearchResults } from '../redux/search/search.actions';
+import { searchStart, clearSearchResults } from '../../redux/search/search.actions';
 
 import {
   HStack,

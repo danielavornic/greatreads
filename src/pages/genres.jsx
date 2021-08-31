@@ -16,7 +16,7 @@ import {
   ListItem
 } from '@chakra-ui/react';
 
-import SearchInput from '../components/search-input';
+import SearchInput from '../components/search/search-input';
 
 const Genre = ({ genre, subgenres }) => (
   <Box

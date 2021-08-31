@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router';
 
-import { selectAreSearchResultsFetching, selectSearchResults } from '../redux/search/search.selectors';
-import { clearSearchResults } from '../redux/search/search.actions';
+import { selectAreSearchResultsFetching, selectSearchResults } from '../../redux/search/search.selectors';
+import { clearSearchResults } from '../../redux/search/search.actions';
 
 import {
   VStack,
@@ -16,12 +16,12 @@ import {
 import { Button } from '@chakra-ui/react';
 import Pagination from '@choc-ui/paginator';
 
-import CustomSpinner from './common/custom-spinner';
-import BookListItem from './book-list-item';
-import GenreListItem from './genre-list-item';
-import AuthorListItem from './author-list-item';
+import CustomSpinner from '../common/custom-spinner';
+import BookListItem from '../book-list-item';
+import GenreListItem from '../genre-list-item';
+import AuthorListItem from '../author-list-item';
 
-const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchResultsLoading, match }) => {
+const SearchResults = ({ searchResults, clearSearchResults, areSearchResultsLoading, match }) => {
   const urlCategory = match.params.category;
   
   const [ data, setData ] = useState([]);
@@ -140,5 +140,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)
-  (SearchResultsContainer)
+  (SearchResults)
 );

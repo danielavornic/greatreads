@@ -18,7 +18,7 @@ import {
 } from 'react-icons/ri';
 import { Divider } from '@chakra-ui/layout';
 
-import SearchInput from '../components/search-input';
+import SearchInput from '../components/search/search-input';
 
 import { ReactComponent as Illustration } from '../assets/hero-illustration.svg';
 import { ReactComponent as RomanceGenre } from '../assets/genre-icons/romance.svg';
