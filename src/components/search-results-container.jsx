@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router';
 
-import { selectAreSearchResultsFetching, selectSearchResults } from '../redux/books/books.selectors';
-import { clearSearchResults } from '../redux/books/books.actions';
+import { selectAreSearchResultsFetching, selectSearchResults } from '../redux/search/search.selectors';
+import { clearSearchResults } from '../redux/search/search.actions';
 
 import {
   VStack,

@@ -2,31 +2,7 @@ import { takeLatest, put, all, call } from 'redux-saga/effects';
 
 import BooksActionTypes from './books.types';
 
-import { 
-  searchSuccess, 
-  searchFailure, 
-  fetchBookSuccess, 
-  fetchBookFailure
-} from './books.actions';
-
-export function* searchAsync({ payload: { category, term, facet } }) {
-  try {
-    const formattedTerm = yield term.replace(/ /g, '+').toLowerCase();
-    const urlFacet = (facet === 'all') ? 'q' : facet;
-    if (category === 'genres') category = 'subjects';
-    const fetchUrl = (category === 'books') ? `https://openlibrary.org/search.json?${urlFacet}=${formattedTerm}`
-                                            : `https://openlibrary.org/search/${category}.json?q=${formattedTerm}`;
-    const response = yield fetch(fetchUrl);
-    const searchResults = yield response.json();
-    yield put(searchSuccess(searchResults));
-  } catch(error) {
-    yield put(searchFailure(error.message));
-  }
-}
-
-export function* searchStart() {
-  yield takeLatest(BooksActionTypes.SEARCH_START, searchAsync);
-}
+import { fetchBookSuccess, fetchBookFailure } from './books.actions';
 
 export function* fetchBookAsync({ payload }) {
   try {
@@ -65,7 +41,6 @@ export function* fetchBookStart() {
 
 export function* booksSagas() {
   yield all([
-    call(searchStart),
     call(fetchBookStart)
   ]);
 }
