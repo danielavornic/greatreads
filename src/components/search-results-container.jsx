@@ -62,7 +62,7 @@ const SearchResultsContainer = ({ searchResults, clearSearchResults, areSearchRe
         ? searchResults.numFound > 0
           ? <Stack width='100%' maxW={'full'}>
               <Text mb='8px'>
-                Page {current} of {searchResults.numFound} results
+                Page {current} of {searchResults.docs.length} results
               </Text>
               <VStack 
                 spacing={['28px', '36px']} 
