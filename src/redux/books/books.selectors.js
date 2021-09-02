@@ -10,4 +10,4 @@ export const selectBook = createSelector(
 export const selectIsBookFetching = createSelector(
   [selectBooks],
   books => books.isBookFetching
-)
+);
