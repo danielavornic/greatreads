@@ -17,7 +17,7 @@ import {
   Image 
 } from '@chakra-ui/react';
 import CustomSpinner from '../components/common/custom-spinner';
-import ReadMoreReact from 'read-more-react';
+import ReadMore from '../components/common/read-more';
 
 const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
   const bookKey = match.params.bookKey;
@@ -78,13 +78,7 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
                 <Text pb='20px' color={'gray.600'}>
                   This edition was published in <b>{book.publish_date}</b>
                 </Text>
-                <ReadMoreReact 
-                  text={book.description}
-                  readMoreText='…more'
-                  min={200}
-                  ideal={300}
-                  max={400}
-                />
+                <ReadMore text={book.description} />
               </Box>
             </Grid>
         : isBookLoading
