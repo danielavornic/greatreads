@@ -26,6 +26,7 @@ const searchReducer = (state = INITIAL_STATE, action) => {
     case SearchActionTypes.SEARCH_FAILURE:
       return {
         ...state,
+        searchResults: null,
         areSearchResultsFetching: false,
         searchError: action.payload
       };
