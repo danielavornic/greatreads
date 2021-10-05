@@ -3,16 +3,16 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 
+import { selectAuthorWorks } from '../redux/authors/authors.selectors';
+
 import {
   VStack,
-  Grid,
   Stack
 } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
-import Pagination from '@choc-ui/paginator';
 
 import BookListItem from './book-list-item';
-import { selectAuthorWorks } from '../redux/authors/authors.selectors';
+import CustomPagination from './common/custom-pagination';
 
 const AuthorBooksContainer = ({ works }) => {
   const [ data, setData ] = useState([]);
@@ -58,19 +58,12 @@ const AuthorBooksContainer = ({ works }) => {
                 </Stack>
                 {
                   data && data.length > pageSize
-                    ? <Pagination
-                        current={current}
-                        onChange={(page) => {
-                          setCurrent(page);
-                          window.scrollTo(0, 0);
-                        }}
-                        pageSize={pageSize}
-                        total={data.length}
-                        itemRender={itemRender}
-                        paginationProps={{
-                          display: 'flex'
-                        }}
-                        responsive
+                    ? <CustomPagination 
+                        current={current} 
+                        pageSize={pageSize} 
+                        data={data} 
+                        itemRender={itemRender} 
+                        setCurrent={setCurrent}
                       />
                     : null
                 }

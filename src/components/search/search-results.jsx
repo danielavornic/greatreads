@@ -14,9 +14,9 @@ import {
   UnorderedList
 } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
-import Pagination from '@choc-ui/paginator';
 
 import CustomSpinner from '../common/custom-spinner';
+import CustomPagination from '../common/custom-pagination';
 import BookListItem from '../book-list-item';
 import GenreListItem from '../genre-list-item';
 import AuthorListItem from '../author-list-item';
@@ -101,18 +101,12 @@ const SearchResults = ({ searchResults, clearSearchResults, areSearchResultsLoad
                 </Stack>
                 {
                   data && data.length > pageSize
-                    ? <Pagination
-                        current={current}
-                        onChange={(page) => {
-                          setCurrent(page);
-                          window.scrollTo(0, 0);
-                        }}
-                        pageSize={pageSize}
-                        total={data.length}
-                        itemRender={itemRender}
-                        paginationProps={{
-                          display: 'flex'
-                        }}
+                    ? <CustomPagination 
+                        current={current} 
+                        pageSize={pageSize} 
+                        data={data} 
+                        itemRender={itemRender} 
+                        setCurrent={setCurrent}
                       />
                     : null
                 }

@@ -11,9 +11,9 @@ import {
   Stack
 } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
-import Pagination from '@choc-ui/paginator';
 
 import BookListItem from './book-list-item';
+import CustomPagination from './common/custom-pagination';
 
 const GenreBooksContainer = ({ genre }) => {
   const [ data, setData ] = useState([]);
@@ -69,18 +69,12 @@ const GenreBooksContainer = ({ genre }) => {
                 </Grid>
                 {
                   data && data.length > pageSize
-                    ? <Pagination
-                        current={current}
-                        onChange={(page) => {
-                          setCurrent(page);
-                          window.scrollTo(0, 0);
-                        }}
-                        pageSize={pageSize}
-                        total={data.length}
-                        itemRender={itemRender}
-                        paginationProps={{
-                          display: 'flex'
-                        }}
+                    ? <CustomPagination 
+                        current={current} 
+                        pageSize={pageSize} 
+                        data={data} 
+                        itemRender={itemRender} 
+                        setCurrent={setCurrent}
                       />
                     : null
                 }
