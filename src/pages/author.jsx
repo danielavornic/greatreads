@@ -40,8 +40,11 @@ const AuthorPage = ({ match, fetchAuthorStart, author, isAuthorLoading }) => {
                 mb={8}
               >
                 <Image 
-                  src={author.photos[0] !== -1 ? `https://covers.openlibrary.org/a/id/${author.photos[0]}-L.jpg`
-                                               : 'https://openlibrary.org/images/icons/avatar_author-lg.png'} 
+                  src={
+                    author.photos && author.photos[0] !== -1 
+                    ? `https://covers.openlibrary.org/a/id/${author.photos[0]}-L.jpg`
+                    : 'https://openlibrary.org/images/icons/avatar_author-lg.png'
+                  } 
                   width='200px'
                   height='auto'
                   boxShadow='lg'
