@@ -51,7 +51,7 @@ const GenrePage = ({ match, genre, fetchGenreStart, isGenreLoading }) => {
               </Box>
               <Box>
                 <RelatedList data='genres' />
-                <RelatedList data='authors' />
+                {/* <RelatedList data='authors' /> */}
               </Box>
             </Grid>
           : <Flex justifyContent='center'>
