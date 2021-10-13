@@ -1,3 +1,20 @@
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f7fafc; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4d5499; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3c4178; 
+}
+
 /* make footer stick at the bottom of the page */
 #container {
   display: flex;
