@@ -29,7 +29,7 @@ const CoverView = ({ bookKey, bookCoverUrl, title }) => (
   </Box>
 );
 
-const TableView = ({ bookKey, bookCoverUrl, title, author_name, first_publish_year }) => (
+const TableView = ({ bookKey, bookCoverUrl, title, author_name, author_key, first_publish_year }) => (
   <Box 
     border='1px'
     borderColor='gray.200'
@@ -37,21 +37,23 @@ const TableView = ({ bookKey, bookCoverUrl, title, author_name, first_publish_ye
     padding={['24px', '28px']}
     width={'full'}
   >
-    <Link to={`/books/${bookKey}`}>
-      <Grid 
-        templateColumns={[ '80px 1fr', '100px 1fr']}
-        gap={[ 4, 4, 6 ]}
-        w={'full'}
-      >
-        <Box>
+    <Grid 
+      templateColumns={[ '80px 1fr', '100px 1fr']}
+      gap={[ 4, 4, 6 ]}
+      w={'full'}
+    >
+      <Box>
+        <Link to={`/books/${bookKey}`}>
           <Image 
             src={bookCoverUrl}
             alt={`Cover of "${title}"`}
             width={['80px', '100px']}
             height='auto'
           />
-        </Box>
-        <Box>
+        </Link>
+      </Box>
+      <Box>
+        <Link to={`/books/${bookKey}`}>
           <Heading 
             as={'h5'} 
             fontSize={{ base: 'xl', md: '2xl' }}
@@ -59,28 +61,30 @@ const TableView = ({ bookKey, bookCoverUrl, title, author_name, first_publish_ye
           >
             {title}
           </Heading>
-          <Heading 
-            as={'h6'} 
-            fontWeight='400' 
-            fontSize={{ base: 'lg', md: 'xl' }} 
-            mb='12px'
-          >
-            by 
-            {
-              author_name 
-              ? author_name.map(
-                  (name, idx) => 
-                  (idx < author_name.length - 1) ? ` ${name},` : ` ${name}`
-                ) 
-              : ' Unknown author'
-            }
-          </Heading>
-          <Text color='gray.500'>
-            first published in {first_publish_year}
-          </Text>
-        </Box>
-      </Grid>
-    </Link>
+        </Link>
+        <Heading 
+          as={'h6'} 
+          fontWeight='400' 
+          fontSize={{ base: 'lg', md: 'xl' }} 
+          mb='12px'
+        >
+          by 
+          {
+            author_name 
+            ? author_name.map(
+                (name, idx) => 
+                (idx < author_name.length - 1) 
+                ? <Link to={`/authors/${author_key[idx]}`}> {name},</Link>
+                : <Link to={`/authors/${author_key[idx]}`}> {name}</Link>
+              ) 
+            : ' Unknown author'
+          }
+        </Heading>
+        <Text color='gray.500'>
+          first published in {first_publish_year}
+        </Text>
+      </Box>
+    </Grid>
   </Box>
 );
 
