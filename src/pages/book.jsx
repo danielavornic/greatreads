@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { fetchBookStart } from '../redux/books/books.actions';
 import { selectBook, selectIsBookFetching } from '../redux/books/books.selectors';
@@ -60,19 +61,16 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
                   fontSize={{ base: 'lg', md: 'xl' }}
                   pb='20px'
                 >
+                  by
                   {
                     book.authors
                     ? book.authors.map(
                       (author, idx) => 
-                      (idx === 0) 
-                      ? `by ${author.name}` 
-                      : (idx < book.authors.length - 1) 
-                        ? ` ${author.name},` 
-                      : ` ${author.name}`
+                      (idx === 0 || idx === book.authors.length - 1) 
+                      ? <Link to={author.key}> {author.name}</Link> 
+                      : <Link to={author.key}> {author.name},</Link> 
                     )
-                    : book.by_statement
-                      ? `${book.by_statement}`
-                    : 'by Unknown author'
+                    : ' Unknown author'
                   }
                 </Heading>
                 <Text pb='20px' color={'gray.600'}>
