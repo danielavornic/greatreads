@@ -1,4 +1,5 @@
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 
 import HomePage from './pages/homepage';
 import SearchPage from './pages/search';
@@ -12,11 +13,22 @@ import Footer from './components/common/footer';
 
 import './App.css';
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <div id='container'>
       <Header />
       <div id='main-content'>
+        <ScrollToTop/>
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route exact path='/search/:category?/:term?/:facet?' component={SearchPage} />
