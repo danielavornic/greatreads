@@ -1,6 +1,6 @@
 import { extendTheme } from '@chakra-ui/react';
 
-import '@fontsource/lora';
+// import '@fontsource/lora';
 
 const colors = {
   brand: {
@@ -18,15 +18,15 @@ const colors = {
   }
 };
 
-const fonts = {
-  heading: 'Lora'
-};
+// const fonts = {
+  // heading: 'Lora'
+// };
 
 const config = {
   initialColorMode: 'light',
   useSystemColorMode: false
 };
 
-const theme = extendTheme({ colors, fonts, config });
+const theme = extendTheme({ colors, config });
 
 export default theme;
