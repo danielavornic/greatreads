@@ -20,7 +20,7 @@ const RelatedList = ({ genre, data }) => {
       setItems(genre.relatedGenres.docs);
     else if (data === 'authors')
       setItems(genre.authors);
-  }, [genre])
+  }, [data, genre]);
 
   return (
     <Stack mb={['36px', '48px']}>
