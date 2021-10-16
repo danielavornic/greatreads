@@ -13,7 +13,6 @@ import {
   Text
 } from '@chakra-ui/layout';
 import { 
-  Grid,
   Flex,
   Image 
 } from '@chakra-ui/react';
