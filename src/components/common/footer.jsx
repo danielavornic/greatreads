@@ -57,7 +57,6 @@ const Footer = () => (
         <Link to='/books'>Books</Link>
         <Link to='/genres'>Genres</Link>
         <Link to='/authors'>Authors</Link>
-        <Link to='/about'>About</Link>
       </Stack>
     </Container>
 
