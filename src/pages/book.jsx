@@ -13,10 +13,7 @@ import {
   Heading,
   Text
 } from '@chakra-ui/layout';
-import { 
-  Grid,
-  Image 
-} from '@chakra-ui/react';
+import { Grid, Image } from '@chakra-ui/react';
 import CustomSpinner from '../components/common/custom-spinner';
 import ReadMore from '../components/common/read-more';
 
@@ -27,23 +24,23 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
   }, [bookKey]);
 
   return (
-    <Container maxW={'5xl'} my='48px'>
+    <Container maxW={'5xl'} my='64px'>
       {
         book
         ? book.error === 'notfound'
           ? <Text align='center'>Book not found</Text>
           : <Grid 
-              templateColumns={[ 'repeat(1, 1fr)', '200px 1fr']}
-              gap={[ 4, 6, 8 ]}
+              templateColumns={[ 'repeat(1, 1fr)', '240px 1fr']}
+              gap={[ 4, 6, 10 ]}
               w={'full'}
             >
               <Box>
                 <Image 
                   src={book.covers ? `https://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg`
                                    : 'https://openlibrary.org/images/icons/avatar_book.png'} 
-                  width='200px'
+                  width='240px'
                   height='auto'
-                  boxShadow='lg'
+                  boxShadow='sm'
                 />
               </Box>
               
@@ -52,7 +49,7 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
                   as='h1'
                   fontWeight={700}
                   fontSize={{ base: '3xl', md: '4xl' }}
-                  pb='12px'
+                  pb='8px'
                 >
                   {book.title}
                 </Heading>
@@ -66,17 +63,40 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
                     book.authors
                     ? book.authors.map(
                       (author, idx) => 
-                      (idx === 0 || idx === book.authors.length - 1) 
-                      ? <Link to={author.key}> {author.name}</Link> 
-                      : <Link to={author.key}> {author.name},</Link> 
+                      <Link to={author.key}>
+                        <Text 
+                          display='inline' 
+                          pl='6px'
+                          _hover={{textDecoration: 'underline'}}
+                        >
+                          {author.name}
+                          {
+                            (idx !== 0 || idx !== book.authors.length - 1) 
+                            ? ','
+                            : null
+                          }
+                        </Text>
+                      </Link>
                     )
                     : ' Unknown author'
                   }
                 </Heading>
-                <Text pb='20px' color={'gray.600'}>
+                <Text pb='4px' color={'gray.600'}>
                   This edition was published in <b>{book.publish_date}</b>
                 </Text>
-                <ReadMore text={book.description} />
+                <Text color={'gray.600'}>
+                  {book.physical_format ? book.physical_format : null} 
+                  {book.physical_format && book.number_of_pages ? ', ' : null}
+                  {book.number_of_pages ? book.number_of_pages + ' pages' : null}
+                </Text>
+                {
+                  book.description
+                  ? <Box pt='28px'>
+                      <Text color={'brand.500'} pb='4px'><b>Description</b></Text>
+                      <ReadMore text={book.description.replace(/\r\n\r/g, '')} />
+                    </Box>
+                  : null
+                }
               </Box>
             </Grid>
         : isBookLoading
@@ -90,7 +110,7 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
 const mapStateToProps = createStructuredSelector({
   book: selectBook,
   isBookLoading: selectIsBookFetching
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   fetchBookStart: (bookKey) => dispatch(fetchBookStart(bookKey))
