@@ -21,7 +21,7 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
   const bookKey = match.params.bookKey;
   useEffect(() => {
     fetchBookStart(bookKey);
-  }, [bookKey]);
+  }, [bookKey, fetchBookStart]);
 
   return (
     <Container maxW={'5xl'} my='64px'>

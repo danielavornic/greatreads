@@ -24,7 +24,7 @@ const AuthorPage = ({ match, fetchAuthorStart, author, isAuthorLoading }) => {
   const authorKey = match.params.authorKey;
   useEffect(() => {
     fetchAuthorStart(authorKey);
-  }, [authorKey]);
+  }, [authorKey, fetchAuthorStart]);
 
   return (
     <Container maxW={'5xl'} my='48px'>
