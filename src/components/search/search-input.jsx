@@ -19,7 +19,7 @@ const SearchInput = ({ inputCategory, searchStart, clearSearchResults, match, hi
   const urlFacet = match.params.facet;
 
   const categories = ['books', 'authors'];
-  const facets = ['all', 'title', 'author', 'genre'];
+  const facets = ['all', 'title', 'author'];
   
   const [ searchRequest, setSearchRequest ] = useState({
     category: inputCategory,
@@ -30,7 +30,7 @@ const SearchInput = ({ inputCategory, searchStart, clearSearchResults, match, hi
 
   useEffect(() => {
     setSearchRequest({ ...searchRequest });
-
+    
     if (urlCategory && !categories.includes(urlCategory)) {
       history.push(`/search/books/${term}`);
       window.location.reload();
@@ -84,7 +84,6 @@ const SearchInput = ({ inputCategory, searchStart, clearSearchResults, match, hi
             <option fontSize={{ base: 'md', md: 'lg' }} value='all'>All</option>
             <option fontSize={{ base: 'md', md: 'lg' }} value='title'>Title</option>
             <option fontSize={{ base: 'md', md: 'lg' }} value='author'>Author</option>
-            <option fontSize={{ base: 'md', md: 'lg' }} value='subject'>Genre</option>
           </Select>
           : null
       }
