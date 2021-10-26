@@ -55,9 +55,6 @@ const Footer = () => (
         <Link to='/books'>
           <Text _hover={{ textDecoration: 'underline' }}>Books</Text>
         </Link>
-        <Link to='/genres'>
-          <Text _hover={{ textDecoration: 'underline' }}>Genres</Text>
-        </Link>
         <Link to='/authors'>
           <Text _hover={{ textDecoration: 'underline' }}>Authors</Text>
         </Link>

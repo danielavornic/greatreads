@@ -4,7 +4,6 @@ import storage from 'redux-persist/lib/storage';
 
 import searchReducer from './search/search.reducer';
 import booksReducer from './books/books.reducer';
-import genresReducer from './genres/genres.reducer';
 import authorsReducer from './authors/authors.reducer';
 
 const persistConfig = {
@@ -15,7 +14,6 @@ const persistConfig = {
 const rootReducer = combineReducers({
   search: searchReducer,
   books: booksReducer,
-  genres: genresReducer,
   authors: authorsReducer
 });
 

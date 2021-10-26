@@ -19,14 +19,7 @@ import {
 import { Divider } from '@chakra-ui/layout';
 
 import SearchInput from '../components/search/search-input';
-
 import { ReactComponent as Illustration } from '../assets/hero-illustration.svg';
-import { ReactComponent as RomanceGenre } from '../assets/genre-icons/romance.svg';
-import { ReactComponent as ArtGenre } from '../assets/genre-icons/art.svg';
-import { ReactComponent as HistoryGenre } from '../assets/genre-icons/history.svg';
-import { ReactComponent as FantasyGenre } from '../assets/genre-icons/fantasy.svg';
-import { ReactComponent as DetectiveGenre } from '../assets/genre-icons/detective.svg';
-import { ReactComponent as MoreGenres } from '../assets/genre-icons/more.svg';
 
 const Hero = () => (
   <Container maxW={'5xl'}>
@@ -78,78 +71,6 @@ const Hero = () => (
   </Container>
 );
 
-const ExploreSection = () => (
-  <Container maxW={'5xl'}>
-    <Stack
-      textAlign={'center'}
-      align={'center'}
-      spacing={{ base: 8, md: 12 }}
-      py={{ base: 16, md: 24 }}
-    >
-      <Heading
-        as='h2'
-        fontWeight={700}
-        fontSize={{ base: '3xl', md: '4xl' }}
-        lineHeight={'110%'}
-        pb='16px'
-      >
-        Explore the extensive library
-      </Heading>
-      <SearchInput inputCategory='books'/>
-      <GenreListPreview />
-    </Stack>
-  </Container>
-);
-
-const GenreItem = ({ name, children, color }) => {
-  const genrePath = (name !== 'More') ? name.toLowerCase() : '';
-
-  return (
-    <Link to={`/genres/${genrePath}`}>
-      <Box
-        border='1px'
-        borderColor='gray.200'
-        borderRadius='10px'
-        _hover={{
-          borderColor: color
-        }}
-      >
-        <VStack padding='28px'>
-          {children}
-          <Text pt={2}>{name}</Text>
-        </VStack>
-      </Box>
-    </Link>
-  )
-};
-
-const GenreListPreview = () => (
-  <Grid
-    templateColumns={[ 'repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(6, 1fr)' ]}
-    gap={[ 4, 4, 6, 6 ]}
-    w={'full'}
-  >
-    <GenreItem name='Romance' color='#FF8080'>
-      <RomanceGenre height='56px' />
-    </GenreItem>
-    <GenreItem name='Art' color='#4FD1C5'>
-      <ArtGenre height='56px' />
-    </GenreItem>
-    <GenreItem name='History' color='#F6AD55'>
-      <HistoryGenre height='56px' />
-    </GenreItem>
-    <GenreItem name='Fantasy' color='#F6E05E'>
-      <FantasyGenre height='56px' />
-    </GenreItem>
-    <GenreItem name='Detective' color='#63B3ED'>
-      <DetectiveGenre height='56px' />
-    </GenreItem>
-    <GenreItem name='More' color='#9F7AEA'>
-      <MoreGenres height='56px' />
-    </GenreItem>
-  </Grid>
-);
-
 const FeatureItem = ({ children, text }) => (
   <Box bg={'brand.25'} borderRadius='6px'>
     <VStack padding='36px'>
@@ -178,6 +99,7 @@ const FeaturesSection = () => (
     >
       Features
     </Heading>
+    <SearchInput inputCategory='books'/>
     <Container maxW='5xl'>
       <Grid
         templateColumns={[ 'repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(3, 1fr)' ]}
@@ -201,8 +123,6 @@ const FeaturesSection = () => (
 const HomePage = () => (
   <div>
     <Hero />
-    <Divider />
-    <ExploreSection />
     <Divider />
     <FeaturesSection />
   </div>

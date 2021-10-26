@@ -18,7 +18,7 @@ const SearchInput = ({ inputCategory, searchStart, clearSearchResults, match, hi
   const urlTerm = match.params.term;
   const urlFacet = match.params.facet;
 
-  const categories = ['books', 'genres', 'authors'];
+  const categories = ['books', 'authors'];
   const facets = ['all', 'title', 'author', 'genre'];
   
   const [ searchRequest, setSearchRequest ] = useState({

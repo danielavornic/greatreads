@@ -18,12 +18,10 @@ import { Button } from '@chakra-ui/react';
 import CustomSpinner from '../common/custom-spinner';
 import CustomPagination from '../common/custom-pagination';
 import BookListItem from '../book-list-item';
-import GenreListItem from '../genre-list-item';
 import AuthorListItem from '../author-list-item';
 
 const SearchResults = ({ searchResults, clearSearchResults, areSearchResultsLoading, match }) => {
   const urlCategory = match.params.category;
-  
   const [ data, setData ] = useState([]);
   const [ current, setCurrent ] = useState(1);
   const pageSize = (urlCategory === 'books') ? 10 : 30;
@@ -78,15 +76,6 @@ const SearchResults = ({ searchResults, clearSearchResults, areSearchResultsLoad
                       return <BookListItem key={key} bookKey={bookKey} view='table' {...otherBookProps} />
                     }
                   ) 
-                  : urlCategory === 'genres'
-                    ? <UnorderedList align='left'>
-                        {
-                          results.map(
-                            ({ key, ...otherProps }) => 
-                            <GenreListItem key={key} path={key} {...otherProps} />
-                          )
-                        }
-                      </UnorderedList>
                   : urlCategory === 'authors'
                     ? <UnorderedList align='left'>
                         {

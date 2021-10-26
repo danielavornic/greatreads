@@ -8,7 +8,6 @@ export function* searchAsync({ payload: { category, term, facet } }) {
   try {
     const formattedTerm = yield term.replace(/ /g, '+').toLowerCase();
     const urlFacet = (facet === 'all') ? 'q' : facet;
-    if (category === 'genres') category = 'subjects';
     const fetchUrl = (category === 'books') ? `https://openlibrary.org/search.json?${urlFacet}=${formattedTerm}`
                                             : `https://openlibrary.org/search/${category}.json?q=${formattedTerm}`;
     const response = yield fetch(fetchUrl);
