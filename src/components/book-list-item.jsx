@@ -74,8 +74,12 @@ const TableView = ({ bookKey, bookCoverUrl, title, author_name, author_key, firs
             ? author_name.map(
                 (name, idx) => 
                 (idx < author_name.length - 1) 
-                ? <Link to={`/authors/${author_key[idx]}`}> {name},</Link>
-                : <Link to={`/authors/${author_key[idx]}`}> {name}</Link>
+                ? <Link to={`/authors/${author_key[idx]}`}>
+                    <Text display='inline' pl='6px' _hover={{textDecoration: 'underline'}}>{name},</Text>
+                  </Link>
+                : <Link to={`/authors/${author_key[idx]}`}>
+                    <Text display='inline' pl='6px' _hover={{textDecoration: 'underline'}}>{name}</Text>
+                  </Link>
               ) 
             : ' Unknown author'
           }
