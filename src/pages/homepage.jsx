@@ -45,7 +45,7 @@ const Hero = () => (
         or just to keep track of books you’ve read in the past.
       </Text>
       <Stack spacing={6} direction={'row'}>
-        <Link to='signin'>
+        <Link to='signup'>
           <Button
             px={6}
             colorScheme={'brand'}
@@ -56,9 +56,9 @@ const Hero = () => (
             Get started
           </Button>
         </Link>
-        <Link to='about'>
+        <Link to='signin'>
           <Button px={6} size='lg'>
-            Learn more
+            Sign in
           </Button>
         </Link>
       </Stack>
