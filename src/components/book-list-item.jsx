@@ -32,7 +32,7 @@ const CoverView = ({ bookKey, bookCoverUrl, title }) => (
 const TableView = ({ bookKey, bookCoverUrl, title, author_name, author_key, first_publish_year }) => (
   <Box 
     border='1px'
-    borderColor='gray.200'
+    borderColor='brand.50'
     borderRadius='10px'
     padding={['24px', '28px']}
     width={'full'}
