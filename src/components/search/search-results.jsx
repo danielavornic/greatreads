@@ -24,7 +24,7 @@ const SearchResults = ({ searchResults, clearSearchResults, areSearchResultsLoad
   const urlCategory = match.params.category;
   const [ data, setData ] = useState([]);
   const [ current, setCurrent ] = useState(1);
-  const pageSize = (urlCategory === 'books') ? 10 : 30;
+  const pageSize = (urlCategory === 'books') ? 10 : 20;
   const offset = (current - 1) * pageSize;
   const results = data ? data.slice(offset, offset + pageSize) : [];
 
@@ -77,14 +77,10 @@ const SearchResults = ({ searchResults, clearSearchResults, areSearchResultsLoad
                     }
                   ) 
                   : urlCategory === 'authors'
-                    ? <UnorderedList align='left'>
-                        {
-                          results.map(
-                            ({ key, ...otherProps }) => 
-                            <AuthorListItem key={key} path={key} {...otherProps} />
-                          )
-                        }
-                      </UnorderedList>
+                    ? results.map(
+                        ({ key, ...otherProps }) => 
+                        <AuthorListItem key={key} path={key} {...otherProps} />
+                      )
                   : null
                 }
                 </Stack>
