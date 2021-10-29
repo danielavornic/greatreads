@@ -7,7 +7,8 @@ import { selectAuthorWorks } from '../redux/authors/authors.selectors';
 
 import {
   VStack,
-  Stack
+  Stack,
+  Grid
 } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 
@@ -46,16 +47,21 @@ const AuthorBooksContainer = ({ works }) => {
         works
         ? works.numFound > 0
           ? <VStack spacing={['28px', '36px']}>
-                <Stack w={'full'} >
+                <Grid 
+                  w={'full'} 
+                  templateColumns={[ 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)']}
+                  align='center'
+                  gap={[ 4, 4, 6 ]} 
+                >
                   {
                     results.map(
                       ({ key, cover_edition_key, edition_key, ...otherBookProps }) => {
                         const bookKey = cover_edition_key ? cover_edition_key : edition_key;
-                        return <BookListItem key={key} bookKey={bookKey} view='table' {...otherBookProps} />
+                        return <BookListItem key={key} bookKey={bookKey} view='cover' {...otherBookProps} />
                       }
                     ) 
                   }
-                </Stack>
+                </Grid>
                 {
                   data && data.length > pageSize
                     ? <CustomPagination 
