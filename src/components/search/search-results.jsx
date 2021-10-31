@@ -10,8 +10,7 @@ import {
   VStack,
   Stack,
   Flex,
-  Text,
-  UnorderedList
+  Text
 } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 
