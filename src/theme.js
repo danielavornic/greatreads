@@ -1,7 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
 
-// import '@fontsource/lora';
-
 const colors = {
   brand: {
     25: '#f5f6ff',
@@ -15,12 +13,12 @@ const colors = {
     700: '#2a2f57',
     800: '#181c37',
     900: '#080819'
+  },
+  google: {
+    500: '#4285F4',
+    600: '#357ae8'
   }
 };
-
-// const fonts = {
-  // heading: 'Lora'
-// };
 
 const config = {
   initialColorMode: 'light',
