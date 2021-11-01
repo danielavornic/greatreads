@@ -63,7 +63,7 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
                     book.authors
                     ? book.authors.map(
                       (author, idx) => 
-                      <Link to={author.key}>
+                      <Link to={author.key ? author.key : '#'}>
                         <Text 
                           display='inline' 
                           pl='6px'
