@@ -6,6 +6,7 @@ import SearchPage from './pages/search';
 import BookPage from './pages/book';
 import AuthorPage from './pages/author';
 import SignInPage from './pages/signin';
+import SignUpPage from './pages/signup';
 
 import Header from './components/common/header';
 import Footer from './components/common/footer';
@@ -40,6 +41,7 @@ function App() {
           <Route exact path='/books/:bookKey' component={BookPage} />
           <Route exact path='/authors/:authorKey' component={AuthorPage} />
           <Route path='/signin/' component={SignInPage} />
+          <Route path='/signup/' component={SignUpPage} />
         </Switch>
       </div>
       <Footer />
