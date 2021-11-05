@@ -122,7 +122,7 @@ const SignInPage = () => {
             color={'brand.500'} 
             _hover={{ textDecoration: 'underline' }}
           > 
-            <Link to='signup'>Sign up now</Link>
+            <Link to='/signup'>Sign up now</Link>
           </Text>
         </Flex>
       </Stack>

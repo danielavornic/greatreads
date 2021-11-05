@@ -37,7 +37,7 @@ const Header = () => {
             color='brand.500'
             display={{ base: 'inline-flex' }}
           >
-            <Link to='signin'>
+            <Link to='/signin'>
               <Button variant='ghost' size='sm'>Sign in</Button>
             </Link>
           </HStack>
