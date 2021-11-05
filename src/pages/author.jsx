@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import CustomSpinner from '../components/common/custom-spinner';
 import ReadMore from '../components/common/read-more';
-import AuthorBooksContainer from '../components/author-books-container';
+import AuthorBooksContainer from '../components/author/author-books-container';
 
 const AuthorPage = ({ match, fetchAuthorStart, author, isAuthorLoading }) => {
   const authorKey = match.params.authorKey;

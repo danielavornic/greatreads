@@ -17,7 +17,7 @@ import { Button } from '@chakra-ui/react';
 import CustomSpinner from '../common/custom-spinner';
 import CustomPagination from '../common/custom-pagination';
 import BookListItem from '../book-list-item';
-import AuthorListItem from '../author-list-item';
+import AuthorListItem from '../author/author-list-item';
 
 const SearchResults = ({ searchResults, clearSearchResults, areSearchResultsLoading, match }) => {
   const urlCategory = match.params.category;

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 
-import { selectAuthorWorks } from '../redux/authors/authors.selectors';
+import { selectAuthorWorks } from '../../redux/authors/authors.selectors';
 
 import {
   VStack,
@@ -12,8 +12,8 @@ import {
 } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 
-import BookListItem from './book-list-item';
-import CustomPagination from './common/custom-pagination';
+import BookListItem from '../book-list-item';
+import CustomPagination from '../common/custom-pagination';
 
 const AuthorBooksContainer = ({ works }) => {
   const [ data, setData ] = useState([]);
