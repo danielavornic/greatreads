@@ -39,6 +39,14 @@ const SearchResults = ({ searchResults, clearSearchResults, areSearchResultsLoad
     if (type === 'next') return Next;
   };
 
+  const bookKey = (cover_edition_key, edition_key) => (
+    cover_edition_key 
+      ? cover_edition_key 
+        : edition_key
+        ? edition_key[0]
+      : edition_key
+  );
+
   useEffect(() => { 
     return () => {
       if (searchResults) clearSearchResults();
@@ -70,10 +78,9 @@ const SearchResults = ({ searchResults, clearSearchResults, areSearchResultsLoad
                 {
                   urlCategory === 'books'
                   ? results.map(
-                    ({ key, cover_edition_key, edition_key, ...otherBookProps }) => {
-                      const bookKey = cover_edition_key ? cover_edition_key : edition_key[0];
-                      return <BookListItem key={key} bookKey={bookKey} view='table' {...otherBookProps} />
-                    }
+                    ({ key, cover_edition_key, edition_key, ...otherBookProps }) => (
+                      <BookListItem key={key} bookKey={bookKey(cover_edition_key, edition_key)} view='table' {...otherBookProps} />
+                    )
                   ) 
                   : urlCategory === 'authors'
                     ? results.map(
