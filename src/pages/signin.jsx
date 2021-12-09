@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { connect } from 'react-redux';
 
 import { Link } from 'react-router-dom';
 import {
@@ -14,14 +15,15 @@ import {
 } from '@chakra-ui/react';
 
 import { validateEmail, validatePassword } from '../utils/auth-validation';
+import { googleSignInStart } from '../redux/user/user.actions';
 
-const SignInPage = () => {
+const SignInPage = ({ googleSignInStart }) => {
   const [ userCredentials, setUserCredentials ] = useState({
     email: '',
     password: '',
   });
   const { email, password } = userCredentials;
-
+  
   const [ passwordErrors, setPasswordErrors ] = useState([]);
   const [ emailErrors, setEmailErrors ] = useState([]);
 
@@ -51,7 +53,7 @@ const SignInPage = () => {
           Sign in
         </Heading>
 
-        <Button colorScheme='google'>Continue with Google</Button>
+        <Button colorScheme='google' onClick={googleSignInStart}>Continue with Google</Button>
 
         <Flex alignItems={'center'}>
           <hr width='100%' />
@@ -110,4 +112,11 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+const mapDispatchToProps = dispatch => ({
+  googleSignInStart: () => dispatch(googleSignInStart()),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SignInPage);
