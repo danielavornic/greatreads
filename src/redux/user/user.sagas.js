@@ -1,6 +1,5 @@
 import { takeLatest, put, all, call } from 'redux-saga/effects';
-import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
-
+import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
 import { FirebaseApp, auth, provider } from '../../firebase/firebase.utils';
 
 import UserActionTypes from './user.types';
