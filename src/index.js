@@ -5,8 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from './redux/store';
+// import { PersistGate } from 'redux-persist/integration/react';
+import { store} from './redux/store';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from './theme';
@@ -17,9 +17,9 @@ ReactDOM.render(
   <Provider store={store}>
     <ChakraProvider theme={theme}>
       <BrowserRouter>
-        <PersistGate persistor={persistor}>
+        {/* <PersistGate persistor={persistor}> */}
           <App />
-        </PersistGate>
+        {/* </PersistGate> */}
       </BrowserRouter>
     </ChakraProvider>
   </Provider>,
