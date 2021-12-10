@@ -1,5 +1,6 @@
 import { takeLatest, put, all, call } from 'redux-saga/effects';
 import { signInWithRedirect } from "firebase/auth";
+import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 
 import { FirebaseApp, auth, provider } from '../../firebase/firebase.utils';
 
@@ -12,6 +13,13 @@ import {
 export function* signInWithGoogle() {
   try {
     const { user } = yield signInWithRedirect(auth, provider);
+    const { user } = yield signInWithPopup(auth, provider);
+    yield put(signInSuccess(user));
+  } catch (error) {
+    yield put(signInFailure(error));
+  }
+}
+
     yield put(signInSuccess(user));
   } catch (error) {
     yield put(signInFailure(error));
