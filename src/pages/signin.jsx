@@ -1,31 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-
-import { Link } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+import { Link, withRouter } from 'react-router-dom';
 import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
   Input,
   Flex,
   Stack,
   Button,
   Heading,
   Text,
+  Alert,
+  AlertIcon
 } from '@chakra-ui/react';
 
-import { validateEmail, validatePassword } from '../utils/auth-validation';
-import { googleSignInStart } from '../redux/user/user.actions';
+import { googleSignInStart, emailSignInStart } from '../redux/user/user.actions';
+import { selectUserError } from '../redux/user/user.selectors';
 
-const SignInPage = ({ googleSignInStart }) => {
+const SignInPage = ({ googleSignInStart, emailSignInStart, userError }) => {
   const [ userCredentials, setUserCredentials ] = useState({
-    email: '',
-    password: '',
+    email: null,
+    password: null,
   });
   const { email, password } = userCredentials;
-  
-  const [ passwordErrors, setPasswordErrors ] = useState([]);
-  const [ emailErrors, setEmailErrors ] = useState([]);
+  const [ authError, setAuthError ] = useState(null);
 
   const handleChange = (event) => {
     const { value, name } = event.target;
@@ -34,10 +33,18 @@ const SignInPage = ({ googleSignInStart }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    setEmailErrors(validateEmail(email));
-    setPasswordErrors(validatePassword(password));
+    emailSignInStart(email, password);
   };
+
+  useEffect(() => {
+    if (!password || !email) setAuthError(null)
+  })
+
+  useEffect(() => {
+    setAuthError(userError ? 'Your credentials don\'t match.' : null)
+
+    return () => setAuthError(null);
+  }, [userError])
 
   return (
     <Flex align={'center'} justify={'center'}>
@@ -63,9 +70,15 @@ const SignInPage = ({ googleSignInStart }) => {
           <hr width='100%' />
         </Flex>
 
-        <form>
+        <form onSubmit={handleSubmit}>
+
+          <Alert status='error' display={authError ? 'flex' : 'none'} mb={4} borderRadius={'md'}>
+            <AlertIcon />
+            {authError}
+          </Alert>
+
           <Stack spacing={4}>
-            <FormControl id='email' isInvalid={emailErrors.length} isRequired>
+            <FormControl id='email' isInvalid={authError} isRequired>
               <FormLabel>Email address</FormLabel>
               <Input
                 name='email'
@@ -73,13 +86,10 @@ const SignInPage = ({ googleSignInStart }) => {
                 placeholder='Email adress'
                 onChange={handleChange}
               />
-              <FormErrorMessage>
-                {emailErrors[emailErrors.length - 1]}
-              </FormErrorMessage>
             </FormControl>
             <FormControl
               id='password'
-              isInvalid={passwordErrors.length}
+              isInvalid={authError}
               isRequired
             >
               <FormLabel>Password</FormLabel>
@@ -89,11 +99,14 @@ const SignInPage = ({ googleSignInStart }) => {
                 placeholder='Password'
                 onChange={handleChange}
               />
-              <FormErrorMessage>
-                {passwordErrors[passwordErrors.length - 1]}
-              </FormErrorMessage>
             </FormControl>
-            <Button type='submit' onClick={handleSubmit} colorScheme='brand'>
+            <Button 
+              type='submit' 
+              onClick={handleSubmit} 
+              colorScheme='brand' 
+              title='Fill out all fields!' 
+              disabled={!password || !email} 
+            >
               Sign in
             </Button>
           </Stack>
@@ -112,11 +125,17 @@ const SignInPage = ({ googleSignInStart }) => {
   );
 };
 
+const mapStateToProps = createStructuredSelector({
+  userError: selectUserError
+});
+
 const mapDispatchToProps = dispatch => ({
   googleSignInStart: () => dispatch(googleSignInStart()),
+  emailSignInStart: (email, password) =>
+    dispatch(emailSignInStart({ email, password }))
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
-)(SignInPage);
+)(withRouter(SignInPage));
