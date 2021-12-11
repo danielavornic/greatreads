@@ -34,6 +34,11 @@ const SignInForm = ({ emailSignInStart, userError }) => {
 	};
 
 	useEffect(() => {
+		if (!email || !password) 
+			setAuthError(null);
+		else if (userError)
+			setAuthError('Your credentials don\'t match.');
+		
 		return () => setAuthError(null);
 	}, [userError]);
 
