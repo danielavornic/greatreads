@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import {
 	FormControl,
@@ -12,9 +13,9 @@ import {
 } from '@chakra-ui/react';
 
 import { emailSignInStart } from '../../redux/user/user.actions';
-import { selectUserError } from '../../redux/user/user.selectors';
+import { selectCurrentUser, selectUserError } from '../../redux/user/user.selectors';
 
-const SignInForm = ({ emailSignInStart, userError }) => {
+const SignInForm = ({ emailSignInStart, userError, user }) => {
 	const [userCredentials, setUserCredentials] = useState({
 		email: null,
 		password: null,
@@ -22,6 +23,8 @@ const SignInForm = ({ emailSignInStart, userError }) => {
 	const { email, password } = userCredentials;
 
 	const [authError, setAuthError] = useState(null);
+
+	const history = useHistory();
 
 	const handleChange = (event) => {
 		const { value, name } = event.target;
@@ -33,12 +36,14 @@ const SignInForm = ({ emailSignInStart, userError }) => {
 		emailSignInStart(email, password);
 	};
 
+	useEffect(() => history.push(user ? '/home' : '/'), [user]);
+
 	useEffect(() => {
 		if (!email || !password) 
 			setAuthError(null);
 		else if (userError)
 			setAuthError('Your credentials don\'t match.');
-		
+
 		return () => setAuthError(null);
 	}, [userError]);
 
@@ -88,7 +93,8 @@ const SignInForm = ({ emailSignInStart, userError }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-	userError: selectUserError,
+	user: selectCurrentUser,
+	userError: selectUserError
 });
 
 const mapDispatchToProps = (dispatch) => ({
