@@ -8,7 +8,7 @@ import {
 	Stack,
 	Button,
 	Alert,
-	AlertIcon,
+	AlertIcon
 } from '@chakra-ui/react';
 
 import { emailSignInStart } from '../../redux/user/user.actions';
@@ -34,12 +34,6 @@ const SignInForm = ({ emailSignInStart, userError }) => {
 	};
 
 	useEffect(() => {
-		if (!password || !email) setAuthError(null);
-	});
-
-	useEffect(() => {
-		setAuthError(userError ? "Your credentials don't match." : null);
-
 		return () => setAuthError(null);
 	}, [userError]);
 
@@ -79,7 +73,7 @@ const SignInForm = ({ emailSignInStart, userError }) => {
 					onClick={handleSubmit}
 					colorScheme='brand'
 					title='Fill out all fields!'
-					disabled={!password || !email}
+					disabled={!email || !password}
 				>
 					Sign in
 				</Button>
