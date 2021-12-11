@@ -1,33 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import {
 	FormControl,
 	FormLabel,
 	Input,
 	Stack,
 	Button,
-	FormErrorMessage,
+	Alert,
+	AlertIcon
 } from '@chakra-ui/react';
 
-import {
-	validateName,
-	validateEmail,
-	validatePassword,
-	validatePasswordConfirm,
-} from '../../utils/auth-validation';
+import { signUpStart } from '../../redux/user/user.actions';
+import { selectUserError } from '../../redux/user/user.selectors';
 
-const SignUpForm = () => {
+const SignUpForm = ({ signUpStart, userError }) => {
 	const [userCredentials, setUserCredentials] = useState({
-		name: '',
-		email: '',
-		password: '',
-		passwordConfirm: '',
+		name: null,
+		email: null,
+		password: null,
+		passwordConfirm: null,
 	});
 	const { name, email, password, passwordConfirm } = userCredentials;
 
-	const [nameErrors, setNameErrors] = useState([]);
-	const [emailErrors, setEmailErrors] = useState([]);
-	const [passwordErrors, setPasswordErrors] = useState([]);
-	const [passwordConfirmErrors, setPasswordConfirmErrors] = useState([]);
+	const [authError, setAuthError] = useState({ message: '', type: '' });
 
 	const handleChange = (event) => {
 		const { value, name } = event.target;
@@ -37,18 +33,63 @@ const SignUpForm = () => {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		setNameErrors(validateName(name));
-		setEmailErrors(validateEmail(email));
-		setPasswordErrors(validatePassword(password));
-		setPasswordConfirmErrors(
-			validatePasswordConfirm(password, passwordConfirm)
-		);
+		if (password !== passwordConfirm)
+			setAuthError({
+				message: 'Your passwords do not match.',
+				type: 'password',
+			});
+		else signUpStart(name, email, password);
 	};
+
+	useEffect(() => {
+		if (userError) {
+			switch (userError.code) {
+				case 'auth/invalid-email':
+					setAuthError({
+						message: 'Please use a valid email adress.',
+						type: 'email',
+					});
+					break;
+				case 'auth/email-already-in-use':
+					setAuthError({
+						message: 'This email is already connected to an account.',
+						type: 'email',
+					});
+					break;
+				case 'auth/weak-password':
+					setAuthError({
+						message: 'Password should be at least 6 characters.',
+						type: 'password',
+					});
+					break;
+				default:
+					setAuthError({
+						message: 'An internal error has occured.',
+						type: '',
+					});
+			}
+
+			if (!password || !email || !name || !passwordConfirm)
+				setAuthError({ message: '', type: '' });
+		}
+
+		return () => setAuthError({ message: '', type: '' });
+	}, [userError]);
 
 	return (
 		<form>
+			<Alert
+				status='error'
+				display={authError.message ? 'flex' : 'none'}
+				mb={4}
+				borderRadius={'md'}
+			>
+				<AlertIcon />
+				{authError.message}
+			</Alert>
+
 			<Stack spacing={4}>
-				<FormControl id='name' isInvalid={nameErrors.length} isRequired>
+				<FormControl id='name' isRequired>
 					<FormLabel>Name</FormLabel>
 					<Input
 						name='name'
@@ -56,9 +97,12 @@ const SignUpForm = () => {
 						placeholder='Name'
 						onChange={handleChange}
 					/>
-					<FormErrorMessage>{nameErrors[0]}</FormErrorMessage>
 				</FormControl>
-				<FormControl id='email' isInvalid={emailErrors.length} isRequired>
+				<FormControl
+					id='email'
+					isInvalid={authError.type === 'email'}
+					isRequired
+				>
 					<FormLabel>Email address</FormLabel>
 					<Input
 						name='email'
@@ -66,12 +110,12 @@ const SignUpForm = () => {
 						placeholder='Email adress'
 						onChange={handleChange}
 					/>
-					<FormErrorMessage>
-						{emailErrors[emailErrors.length - 1]}
-					</FormErrorMessage>
 				</FormControl>
-
-				<FormControl id='password' isInvalid={passwordErrors.length} isRequired>
+				<FormControl
+					id='password'
+					isInvalid={authError.type === 'password'}
+					isRequired
+				>
 					<FormLabel>Password</FormLabel>
 					<Input
 						name='password'
@@ -79,13 +123,10 @@ const SignUpForm = () => {
 						placeholder='Password'
 						onChange={handleChange}
 					/>
-					<FormErrorMessage>
-						{passwordErrors[passwordErrors.length - 1]}
-					</FormErrorMessage>
 				</FormControl>
 				<FormControl
 					id='passwordConfirm'
-					isInvalid={passwordConfirmErrors.length}
+					isInvalid={authError.type === 'password'}
 					isRequired
 				>
 					<FormLabel>Confirm password</FormLabel>
@@ -95,12 +136,15 @@ const SignUpForm = () => {
 						placeholder='Confirm Password'
 						onChange={handleChange}
 					/>
-					<FormErrorMessage>
-						{passwordConfirmErrors[passwordConfirmErrors.length - 1]}
-					</FormErrorMessage>
 				</FormControl>
 
-				<Button type='submit' onClick={handleSubmit} colorScheme='brand'>
+				<Button
+					type='submit'
+					disabled={!email || !name || !password || !passwordConfirm}
+					title='Fill out all fields!'
+					onClick={handleSubmit}
+					colorScheme='brand'
+				>
 					Sign up
 				</Button>
 			</Stack>
@@ -108,4 +152,13 @@ const SignUpForm = () => {
 	);
 };
 
-export default SignUpForm;
+const mapStateToProps = createStructuredSelector({
+	userError: selectUserError
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	signUpStart: (name, email, password) =>
+		dispatch(signUpStart({ name, email, password })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
