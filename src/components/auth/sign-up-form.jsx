@@ -44,7 +44,7 @@ const SignUpForm = ({ signUpStart, userError, user }) => {
 		else signUpStart(name, email, password);
 	};
 
-	useEffect(() => history.push(user ? '/home' : '/'), [user]);
+	useEffect(() => history.push(user ? '/' : '/signup'), [user]);
 
 	useEffect(() => {
 		if (userError) {
