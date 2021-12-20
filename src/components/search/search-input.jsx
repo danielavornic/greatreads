@@ -57,7 +57,6 @@ const SearchInput = ({ inputCategory, searchStart, match, history }) => {
 
 	const handleSubmit = () => {
 		if (term !== '') {
-			searchStart(category, term, facet);
 			const pathFacet = category === 'books' ? `/${facet}` : '';
 			history.push(`/search/${category}/${term}${pathFacet}`);
 		}
