@@ -13,7 +13,7 @@ import { Button } from '@chakra-ui/react';
 
 import CustomSpinner from '../common/custom-spinner';
 import CustomPagination from '../common/custom-pagination';
-import BookListItem from '../book-list-item';
+import DetailedBookListItem from '../detailed-book-list-item';
 import AuthorListItem from '../author/author-list-item';
 
 const SearchResults = ({ searchResults, areSearchResultsLoading, match }) => {
@@ -40,13 +40,6 @@ const SearchResults = ({ searchResults, areSearchResultsLoading, match }) => {
 		if (type === 'next') return Next;
 	};
 
-	const bookKey = (cover_edition_key, edition_key) =>
-		cover_edition_key
-			? cover_edition_key
-			: edition_key
-			? edition_key[0]
-			: edition_key;
-
 	useEffect(() => {
 		if (searchResults) {
 			setData(searchResults.docs);
@@ -65,21 +58,9 @@ const SearchResults = ({ searchResults, areSearchResultsLoading, match }) => {
 						<VStack spacing={['28px', '36px']} width={'full'} align='center'>
 							<Stack align='left' w={'full'}>
 								{urlCategory === 'books'
-									? results.map(
-											({
-												key,
-												cover_edition_key,
-												edition_key,
-												...otherBookProps
-											}) => (
-												<BookListItem
-													key={key}
-													bookKey={bookKey(cover_edition_key, edition_key)}
-													view='table'
-													{...otherBookProps}
-												/>
-											)
-									  )
+									? results.map(({ key, ...otherBookProps }) => (
+											<DetailedBookListItem key={key} {...otherBookProps} />
+									  ))
 									: urlCategory === 'authors'
 									? results.map(({ key, ...otherProps }) => (
 											<AuthorListItem key={key} path={key} {...otherProps} />
