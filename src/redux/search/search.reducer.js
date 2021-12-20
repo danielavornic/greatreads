@@ -30,18 +30,6 @@ const searchReducer = (state = INITIAL_STATE, action) => {
         areSearchResultsFetching: false,
         searchError: action.payload
       };
-    case SearchActionTypes.CLEAR_SEARCH_RESULTS:
-      return {
-        ...state,
-        areSearchResultsFetching: false,
-        searchResults: null
-      };
-    case SearchActionTypes.CLEAR_SEARCH_QUERY:
-      return {
-        ...state,
-        areSearchResultsFetching: false,
-        searchQuery: undefined
-      };
     default:
       return state;
   }

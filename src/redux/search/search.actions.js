@@ -14,11 +14,3 @@ export const searchFailure = error => ({
   type: SearchActionTypes.SEARCH_FAILURE,
   payload: error
 });
-
-export const clearSearchResults = () => ({
-  type: SearchActionTypes.CLEAR_SEARCH_RESULTS
-});
-
-export const clearSearchQuery = () => ({
-  type: SearchActionTypes.CLEAR_SEARCH_QUERY
-});
