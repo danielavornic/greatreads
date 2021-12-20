@@ -57,25 +57,9 @@ const AuthorBooksContainer = ({ works }) => {
 							align='center'
 							gap={[4, 4, 6]}
 						>
-							{results.map(
-								({
-									key,
-									cover_edition_key,
-									edition_key,
-									...otherBookProps
-								}) => {
-									const bookKey = cover_edition_key
-										? cover_edition_key
-										: edition_key;
-									return (
-										<CoverBookListItem
-											key={key}
-											bookKey={bookKey}
-											{...otherBookProps}
-										/>
-									);
-								}
-							)}
+							{results.map(({ key, ...otherBookProps }) => (
+								<CoverBookListItem key={key} {...otherBookProps} />
+							))}
 						</Grid>
 						{data && data.length > pageSize ? (
 							<CustomPagination

@@ -9,10 +9,8 @@ const CoverBookListItem = ({ title, cover_i, cover_edition_key, edition_key }) =
 		: 'https://openlibrary.org/images/icons/avatar_book.png';
 	
 	const bookKey = cover_edition_key
-			? cover_edition_key
-			: edition_key
-			? edition_key[0]
-			: edition_key;
+		? cover_edition_key
+		: edition_key;
 
 	return (
 		<Box border='1px' borderColor='gray.200' padding='10px' borderRadius='10px'>
