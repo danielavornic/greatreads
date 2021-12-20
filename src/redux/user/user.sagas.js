@@ -3,6 +3,7 @@ import {
 	signInWithPopup,
 	signInWithEmailAndPassword,
 	createUserWithEmailAndPassword,
+	updateProfile,
 	signOut,
 } from 'firebase/auth';
 
@@ -42,7 +43,7 @@ export function* signUp({ payload: { name, email, password } }) {
 			email,
 			password
 		);
-		user.displayName = yield name;
+		yield updateProfile(user, { displayName: name }).then();  
 		yield put(signUpSuccess(user));
 	} catch (error) {
 		yield put(signUpFailure(error));
