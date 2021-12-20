@@ -13,7 +13,7 @@ import { Button } from '@chakra-ui/react';
 
 import CustomSpinner from '../common/custom-spinner';
 import CustomPagination from '../common/custom-pagination';
-import DetailedBookListItem from '../detailed-book-list-item';
+import DetailedBookListItem from '../books/detailed-book-list-item';
 import AuthorListItem from '../author/author-list-item';
 
 const SearchResults = ({ searchResults, areSearchResultsLoading, match }) => {

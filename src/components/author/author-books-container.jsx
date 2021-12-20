@@ -8,7 +8,7 @@ import { selectAuthorWorks } from '../../redux/authors/authors.selectors';
 import { VStack, Stack, Grid } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 
-import CoverBookListItem from '../cover-book-list-item';
+import CoverBookListItem from '../books/cover-book-list-item';
 import CustomPagination from '../common/custom-pagination';
 
 const AuthorBooksContainer = ({ works }) => {
