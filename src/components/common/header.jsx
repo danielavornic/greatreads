@@ -41,6 +41,7 @@ const Header = ({ user, signOutStart }) => (
 						<Avatar
 							size='sm'
               bg={'brand.500'}
+							color={'white'}
 							name={user.displayName}
 							src={user.photoURL ? user.photoURL : ''}
 						/>
