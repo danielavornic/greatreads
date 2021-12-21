@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import {
 	FormControl,
@@ -13,9 +12,9 @@ import {
 } from '@chakra-ui/react';
 
 import { signUpStart } from '../../redux/user/user.actions';
-import { selectCurrentUser, selectUserError } from '../../redux/user/user.selectors';
+import { selectUserError } from '../../redux/user/user.selectors';
 
-const SignUpForm = ({ signUpStart, userError, currentUser }) => {
+const SignUpForm = ({ signUpStart, userError }) => {
 	const [userCredentials, setUserCredentials] = useState({
 		name: null,
 		email: null,
@@ -25,8 +24,6 @@ const SignUpForm = ({ signUpStart, userError, currentUser }) => {
 	const { name, email, password, passwordConfirm } = userCredentials;
 
 	const [authError, setAuthError] = useState({ message: '', type: '' });
-
-	const history = useHistory();
 
 	const handleChange = (event) => {
 		const { value, name } = event.target;
@@ -77,7 +74,7 @@ const SignUpForm = ({ signUpStart, userError, currentUser }) => {
 		}
 
 		return () => setAuthError({ message: '', type: '' });
-	}, [userError]);
+	}, [userError, name, email, password, passwordConfirm]);
 
 	return (
 		<form>
@@ -156,7 +153,6 @@ const SignUpForm = ({ signUpStart, userError, currentUser }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-	currentUser: selectCurrentUser,
 	userError: selectUserError
 });
 

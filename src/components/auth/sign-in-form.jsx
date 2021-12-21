@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import {
 	FormControl,
@@ -13,9 +12,9 @@ import {
 } from '@chakra-ui/react';
 
 import { emailSignInStart } from '../../redux/user/user.actions';
-import { selectCurrentUser, selectUserError } from '../../redux/user/user.selectors';
+import { selectUserError } from '../../redux/user/user.selectors';
 
-const SignInForm = ({ emailSignInStart, userError, currentUser }) => {
+const SignInForm = ({ emailSignInStart, userError }) => {
 	const [userCredentials, setUserCredentials] = useState({
 		email: null,
 		password: null,
@@ -23,8 +22,6 @@ const SignInForm = ({ emailSignInStart, userError, currentUser }) => {
 	const { email, password } = userCredentials;
 
 	const [authError, setAuthError] = useState(null);
-
-	const history = useHistory();
 
 	const handleChange = (event) => {
 		const { value, name } = event.target;
@@ -43,7 +40,7 @@ const SignInForm = ({ emailSignInStart, userError, currentUser }) => {
 			setAuthError('Your credentials don\'t match.');
 
 		return () => setAuthError(null);
-	}, [userError]);
+	}, [userError, email, password]);
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -91,7 +88,6 @@ const SignInForm = ({ emailSignInStart, userError, currentUser }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-	currentUser: selectCurrentUser,
 	userError: selectUserError
 });
 
