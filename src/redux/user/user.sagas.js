@@ -59,6 +59,15 @@ export function* signOutUser() {
 	}
 }
 
+export function* isUserAuthenticated() {
+	try {
+		const user = yield auth.currentUser;
+		if (user)	yield put(signInSuccess(user));
+	} catch (error) {
+		yield put(signInFailure(error));
+	}
+}
+
 export function* onGoogleSignInStart() {
 	yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle);
 }
@@ -75,11 +84,16 @@ export function* onSignOutStart() {
 	yield takeLatest(UserActionTypes.SIGN_OUT_START, signOutUser);
 }
 
+export function* onCheckUserSession() {
+  yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
+}
+
 export function* userSagas() {
 	yield all([
 		call(onGoogleSignInStart),
 		call(onEmailSignInStart),
 		call(onSignUpStart),
 		call(onSignOutStart),
+		call(onCheckUserSession),
 	]);
 }
