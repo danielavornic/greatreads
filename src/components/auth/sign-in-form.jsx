@@ -36,8 +36,6 @@ const SignInForm = ({ emailSignInStart, userError, currentUser }) => {
 		emailSignInStart(email, password);
 	};
 
-	useEffect(() => history.push(currentUser ? '/' : '/signin'), [currentUser]);
-
 	useEffect(() => {
 		if (!email || !password) 
 			setAuthError(null);
