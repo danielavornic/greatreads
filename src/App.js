@@ -40,6 +40,12 @@ function App({ currentUser, checkUserSession }) {
         <ScrollToTop />
         <Switch>
           <Route exact path='/' component={HomePage} />
+          <Route path='/signin/'>
+            {currentUser ? <Redirect to='/' /> : <SignInPage />}
+          </Route>
+          <Route path='/signup/'>
+            {currentUser ? <Redirect to='/' /> : <SignUpPage />}
+          </Route>
           <Route exact path='/search/:category?/:term?/:facet?' component={SearchPage} />
           <Route exact path='/books/'>
             <Redirect to='/search/books/' />
@@ -49,8 +55,6 @@ function App({ currentUser, checkUserSession }) {
           </Route>
           <Route exact path='/books/:bookKey' component={BookPage} />
           <Route exact path='/authors/:authorKey' component={AuthorPage} />
-          <Route path='/signin/' component={SignInPage} />
-          <Route path='/signup/' component={SignUpPage} />
         </Switch>
       </div>
       <Footer />
