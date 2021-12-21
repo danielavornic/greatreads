@@ -28,10 +28,10 @@ const ScrollToTop = () => {
   return null;
 }
 
-function App({ user, checkUserSession }) {
+function App({ currentUser, checkUserSession }) {
   useEffect(() => {
     checkUserSession();
-  }, [ user ])
+  }, [ currentUser ])
 
   return (
     <div id='container'>
@@ -59,7 +59,7 @@ function App({ user, checkUserSession }) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  user: selectCurrentUser
+  currentUser: selectCurrentUser
 });
 
 const mapDispatchToProps = dispatch => ({

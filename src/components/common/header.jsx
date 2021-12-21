@@ -14,7 +14,7 @@ import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { signOutStart } from '../../redux/user/user.actions';
 import { ReactComponent as Logo } from '../../assets/greatreads-logo.svg';
 
-const Header = ({ user, signOutStart }) => (
+const Header = ({ currentUser, signOutStart }) => (
 	<chakra.header
 		bg={'white'}
 		w='full'
@@ -31,7 +31,7 @@ const Header = ({ user, signOutStart }) => (
 				</Link>
 			</Flex>
 			<HStack display='flex' alignItems='center' spacing={1}>
-				{user ? (
+				{currentUser ? (
 					<HStack>
 						<Link to='/'>
 							<Button variant='ghost' size='sm' onClick={signOutStart}>
@@ -42,8 +42,8 @@ const Header = ({ user, signOutStart }) => (
 							size='sm'
               bg={'brand.500'}
 							color={'white'}
-							name={user.displayName}
-							src={user.photoURL ? user.photoURL : ''}
+							name={currentUser.displayName}
+							src={currentUser.photoURL ? currentUser.photoURL : ''}
 						/>
 					</HStack>
 				) : (
@@ -66,7 +66,7 @@ const Header = ({ user, signOutStart }) => (
 );
 
 const mapStateToProps = createStructuredSelector({
-	user: selectCurrentUser,
+	currentUser: selectCurrentUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({

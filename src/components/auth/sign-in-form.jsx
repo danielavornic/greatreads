@@ -15,7 +15,7 @@ import {
 import { emailSignInStart } from '../../redux/user/user.actions';
 import { selectCurrentUser, selectUserError } from '../../redux/user/user.selectors';
 
-const SignInForm = ({ emailSignInStart, userError, user }) => {
+const SignInForm = ({ emailSignInStart, userError, currentUser }) => {
 	const [userCredentials, setUserCredentials] = useState({
 		email: null,
 		password: null,
@@ -36,7 +36,7 @@ const SignInForm = ({ emailSignInStart, userError, user }) => {
 		emailSignInStart(email, password);
 	};
 
-	useEffect(() => history.push(user ? '/' : '/signin'), [user]);
+	useEffect(() => history.push(currentUser ? '/' : '/signin'), [currentUser]);
 
 	useEffect(() => {
 		if (!email || !password) 
@@ -93,7 +93,7 @@ const SignInForm = ({ emailSignInStart, userError, user }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-	user: selectCurrentUser,
+	currentUser: selectCurrentUser,
 	userError: selectUserError
 });
 

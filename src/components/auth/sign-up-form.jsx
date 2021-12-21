@@ -15,7 +15,7 @@ import {
 import { signUpStart } from '../../redux/user/user.actions';
 import { selectCurrentUser, selectUserError } from '../../redux/user/user.selectors';
 
-const SignUpForm = ({ signUpStart, userError, user }) => {
+const SignUpForm = ({ signUpStart, userError, currentUser }) => {
 	const [userCredentials, setUserCredentials] = useState({
 		name: null,
 		email: null,
@@ -44,7 +44,7 @@ const SignUpForm = ({ signUpStart, userError, user }) => {
 		else signUpStart(name, email, password);
 	};
 
-	useEffect(() => history.push(user ? '/' : '/signup'), [user]);
+	useEffect(() => history.push(currentUser ? '/' : '/signup'), [currentUser]);
 
 	useEffect(() => {
 		if (userError) {
@@ -158,7 +158,7 @@ const SignUpForm = ({ signUpStart, userError, user }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-	user: selectCurrentUser,
+	currentUser: selectCurrentUser,
 	userError: selectUserError
 });
 
