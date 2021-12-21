@@ -31,7 +31,7 @@ const ScrollToTop = () => {
 function App({ currentUser, checkUserSession }) {
   useEffect(() => {
     checkUserSession();
-  }, [ currentUser ])
+  }, [ currentUser, checkUserSession ])
 
   return (
     <div id='container'>
