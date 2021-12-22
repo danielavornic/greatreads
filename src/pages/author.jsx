@@ -24,7 +24,7 @@ const AuthorPage = ({ match, fetchAuthorStart, author, isAuthorLoading }) => {
 	const [ isLoadingImg, setIsLoadingImg ] = useState(true);
 
 	return (
-		<Container maxW={'5xl'} my='48px'>
+		<Container maxW={'5xl'}>
 			{author ? (
 				author.error === 'notfound' ? (
 					<Text align='center'>Author not found</Text>

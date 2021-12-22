@@ -12,7 +12,6 @@ const SignInPage = () => (
 			width={'full'}
 			maxW={'md'}
 			spacing={8}
-			py={{ base: 14, md: 20 }}
 			px={6}
 			mx={'auto'}
 		>

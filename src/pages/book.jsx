@@ -24,7 +24,7 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
 	const [ isLoadingImg, setIsLoadingImg ] = useState(true);
 
 	return (
-		<Container maxW={'5xl'} my='64px'>
+		<Container maxW={'5xl'}>
 			{book ? (
 				book.error === 'notfound' ? (
 					<Text align='center'>Book not found</Text>

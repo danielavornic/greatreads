@@ -23,7 +23,6 @@ const Hero = () => (
       textAlign={'center'}
       align={'center'}
       spacing={{base: 8, md: 10}}
-      py={{base: 14, md: 20}}
     >
       <Heading as='h1' fontWeight={700} fontSize={{base: '4xl', md: '5xl'}}>
         Track books you've read.

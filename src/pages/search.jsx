@@ -6,7 +6,7 @@ import SearchInput from '../components/search/search-input';
 import SearchResults from '../components/search/search-results';
 
 const SearchPage = ({ match }) => (
-	<Container maxW={'5xl'} my='48px'>
+	<Container maxW={'5xl'}>
 		<Heading
 			as='h1'
 			textAlign='center'
