@@ -6,8 +6,9 @@ import {
 	updateProfile,
 	signOut,
 } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
-import { auth, provider } from '../../firebase/firebase.utils';
+import { auth, provider, db } from '../../firebase/firebase.utils';
 import UserActionTypes from './user.types';
 import {
 	signInSuccess,
@@ -18,9 +19,26 @@ import {
 	signOutFailure,
 } from './user.actions';
 
+function* addUserToFirestore(user) {
+	try {
+		yield setDoc(doc(db, 'users', user.uid), {
+			email: user.email,
+			displayName: user.displayName,
+			books: {
+				'read': [],
+				'to-read': [],
+				'currently-reading': []
+			}
+		});
+	} catch (error) {
+		yield put(signInFailure(error));	
+	}
+}
+
 export function* signInWithGoogle() {
 	try {
 		const { user } = yield signInWithPopup(auth, provider);
+		yield addUserToFirestore(user);
 		yield put(signInSuccess(user));
 	} catch (error) {
 		yield put(signInFailure(error));
@@ -44,6 +62,7 @@ export function* signUp({ payload: { name, email, password } }) {
 			password
 		);
 		yield updateProfile(user, { displayName: name }).then();  
+		yield addUserToFirestore(user);
 		yield put(signUpSuccess(user));
 	} catch (error) {
 		yield put(signUpFailure(error));
