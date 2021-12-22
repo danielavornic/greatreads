@@ -62,11 +62,9 @@ const Header = ({ currentUser, signOutStart }) => (
 								<MenuItem>Profile</MenuItem>
 							</MenuGroup>
 							<MenuDivider />
-							<MenuItem>
-								<Link to='/' onClick={signOutStart}>
-									Sign out
-								</Link>
-							</MenuItem>
+							<Link to='/'>
+								<MenuItem onClick={signOutStart}>Sign out</MenuItem>
+							</Link>
 						</MenuList>
 					</Menu>
 				) : (
