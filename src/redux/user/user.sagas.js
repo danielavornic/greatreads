@@ -6,7 +6,7 @@ import {
 	updateProfile,
 	signOut,
 } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 import { auth, provider, db } from '../../firebase/firebase.utils';
 import UserActionTypes from './user.types';
@@ -38,7 +38,10 @@ function* addUserToFirestore(user) {
 export function* signInWithGoogle() {
 	try {
 		const { user } = yield signInWithPopup(auth, provider);
-		yield addUserToFirestore(user);
+		const userDocRef = yield doc(db, 'users', user.uid);
+		const userDocSnap = yield getDoc(userDocRef);
+		if (!userDocSnap.exists())
+			yield addUserToFirestore(user);
 		yield put(signInSuccess(user));
 	} catch (error) {
 		yield put(signInFailure(error));
