@@ -28,20 +28,6 @@ const SearchInput = ({ inputCategory, searchStart, match, history }) => {
 	});
 	const { category, facet, term } = searchRequest;
 
-	useEffect(() => {
-		if (urlCategory && !categories.includes(urlCategory)) {
-			history.push(`/search/books/${term}`);
-			window.location.reload();
-		}
-		
-		if (urlFacet && !facets.includes(urlFacet)) {
-			history.push(`/search/${category}/${term}/all`);
-			window.location.reload();
-		}
-
-		if (urlTerm) searchStart(category, term, facet);
-	}, [urlCategory, urlTerm, urlFacet, categories, facets, searchStart]);
-
 	const handleChange = (event) => {
 		const { value, name } = event.target;
 		setSearchRequest({ ...searchRequest, [name]: value });
@@ -52,14 +38,37 @@ const SearchInput = ({ inputCategory, searchStart, match, history }) => {
 			handleSubmit();
 			event.currentTarget.blur();
 		}
-	};
+	}
 
 	const handleSubmit = () => {
 		if (term !== '') {
 			const pathFacet = category === 'books' ? `/${facet}` : '';
-			history.push(`/search/${category}/${term}${pathFacet}`);
+			history.push(`/search/${category}/${spaceToPlus(term)}${pathFacet}`);
 		}
-	};
+	}
+
+	const spaceToPlus = (word) => decodeURI(word).replace(/ /g, '+');
+	const plusToSpace = (word) => word.replace('+', ' ');
+
+	useEffect(() => {
+		if (urlCategory && !categories.includes(urlCategory)) {
+			history.push(`/search/books/${spaceToPlus(term)}/all`);
+			window.location.reload();
+		}
+
+		if (urlFacet && !facets.includes(urlFacet)) {
+			history.push(`/search/${category}/${spaceToPlus(term)}/all`);
+			window.location.reload();
+		}
+
+		if (urlTerm) {
+			if (urlTerm.includes(' '))
+				history.push(`/search/${category}/${spaceToPlus(term)}/${facet}`);
+			else 
+				searchStart(category, term, facet);
+		}
+		 
+	}, [urlCategory, urlTerm, urlFacet, searchStart]);
 
 	return (
 		<HStack maxW={'3xl'} w={'full'}>
@@ -92,7 +101,7 @@ const SearchInput = ({ inputCategory, searchStart, match, history }) => {
 					placeholder={`Search ${category}...`}
 					onChange={handleChange}
 					onKeyPress={handleKeyPress}
-					defaultValue={term}
+					defaultValue={plusToSpace(term)}
 				/>
 				<InputRightElement
 					children={<AiOutlineSearch />}
