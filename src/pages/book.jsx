@@ -4,18 +4,22 @@ import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 
+import { Container, Box, Heading, Text } from '@chakra-ui/layout';
+import { Grid, Image } from '@chakra-ui/react';
+
 import { fetchBookStart } from '../redux/books/books.actions';
 import {
 	selectBook,
-	selectIsBookFetching,
+	selectIsBookFetching
 } from '../redux/books/books.selectors';
 
-import { Container, Box, Heading, Text } from '@chakra-ui/layout';
-import { Grid, Image } from '@chakra-ui/react';
+import { selectCurrentUser } from '../redux/user/user.selectors';
+
 import CustomSpinner from '../components/common/custom-spinner';
 import ReadMore from '../components/common/read-more';
+import WantToReadBtn from '../components/books/want-to-read-btn';
 
-const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
+const BookPage = ({ match, fetchBookStart, book, isBookLoading, currentUser }) => {
 	const bookKey = match.params.bookKey;
 	useEffect(() => {
 		fetchBookStart(bookKey);
@@ -56,8 +60,12 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
 								onLoad={() => setIsLoadingImg(false)}
 								display={isLoadingImg ? 'none' : 'block'}
 							/>
+							{ currentUser 
+							? <Box my={8} width={'full'}>
+									<WantToReadBtn/> 
+								</Box>
+							: null }
 						</Box>
-
 						<Box>
 							<Heading
 								as='h1'
@@ -117,6 +125,7 @@ const BookPage = ({ match, fetchBookStart, book, isBookLoading }) => {
 const mapStateToProps = createStructuredSelector({
 	book: selectBook,
 	isBookLoading: selectIsBookFetching,
+	currentUser: selectCurrentUser
 });
 
 const mapDispatchToProps = (dispatch) => ({
