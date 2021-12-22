@@ -25,6 +25,7 @@ function* addUserToFirestore(user) {
 			email: user.email,
 			displayName: user.displayName,
 			books: {
+				'all': [],
 				'read': [],
 				'to-read': [],
 				'currently-reading': []
