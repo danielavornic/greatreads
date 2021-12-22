@@ -38,7 +38,7 @@ function App({ currentUser, checkUserSession }) {
   return (
     <div id='container'>
       <Header />
-      <Container my={{ base: 20, md: 24, lg: 28 }} maxW={'5xl'} id='main-content'>
+      <Container my={{ base: 24, lg: 32 }} maxW={'5xl'} id='main-content'>
         <ScrollToTop />
         <Switch>
           <Route exact path='/' component={HomePage} />
