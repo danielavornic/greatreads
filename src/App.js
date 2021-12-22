@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 
+import { Container } from '@chakra-ui/react';
+
 import HomePage from './pages/homepage';
 import SearchPage from './pages/search';
 import BookPage from './pages/book';
@@ -36,7 +38,7 @@ function App({ currentUser, checkUserSession }) {
   return (
     <div id='container'>
       <Header />
-      <div id='main-content'>
+      <Container my={{ base: 20, md: 24, lg: 28 }} maxW={'5xl'} id='main-content'>
         <ScrollToTop />
         <Switch>
           <Route exact path='/' component={HomePage} />
@@ -56,7 +58,7 @@ function App({ currentUser, checkUserSession }) {
           <Route exact path='/books/:bookKey' component={BookPage} />
           <Route exact path='/authors/:authorKey' component={AuthorPage} />
         </Switch>
-      </div>
+      </Container>
       <Footer />
     </div>
   );

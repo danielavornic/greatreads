@@ -8,6 +8,12 @@ import {
 	HStack,
 	Button,
 	Avatar,
+	Menu,
+	MenuGroup,
+	MenuItem,
+	MenuButton,
+	MenuList,
+	MenuDivider,
 } from '@chakra-ui/react';
 
 import { selectCurrentUser } from '../../redux/user/user.selectors';
@@ -16,12 +22,15 @@ import { ReactComponent as Logo } from '../../assets/greatreads-logo.svg';
 
 const Header = ({ currentUser, signOutStart }) => (
 	<chakra.header
-		bg={'white'}
+		bg='rgba(255, 255, 255, 0.8)'
 		w='full'
 		px={{ base: 4, md: 8, lg: 10 }}
 		py={4}
 		borderBottom='1px'
 		borderColor='gray.200'
+		position='fixed'
+		zIndex='100'
+		backdropFilter='saturate(180%) blur(5px)'
 	>
 		<Flex alignItems='center' justifyContent='space-between' mx='auto'>
 			<Flex>
@@ -32,20 +41,34 @@ const Header = ({ currentUser, signOutStart }) => (
 			</Flex>
 			<HStack display='flex' alignItems='center' spacing={1}>
 				{currentUser ? (
-					<HStack>
-						<Link to='/'>
-							<Button variant='ghost' size='sm' onClick={signOutStart}>
-								Sign out
-							</Button>
-						</Link>
-						<Avatar
-							size='sm'
-              bg={'brand.500'}
-							color={'white'}
-							name={currentUser.displayName}
-							src={currentUser.photoURL ? currentUser.photoURL : ''}
-						/>
-					</HStack>
+					<Menu bg={'white'}>
+						<MenuButton
+							as={Button}
+							rounded={'full'}
+							variant={'link'}
+							cursor={'pointer'}
+							minW={0}
+						>
+							<Avatar
+								size='sm'
+								bg={'brand.500'}
+								color={'white'}
+								name={currentUser.displayName}
+								src={currentUser.photoURL ? currentUser.photoURL : ''}
+							/>
+						</MenuButton>
+						<MenuList>
+							<MenuGroup title={currentUser.displayName}>
+								<MenuItem>Profile</MenuItem>
+							</MenuGroup>
+							<MenuDivider />
+							<MenuItem>
+								<Link to='/' onClick={signOutStart}>
+									Sign out
+								</Link>
+							</MenuItem>
+						</MenuList>
+					</Menu>
 				) : (
 					<HStack>
 						<Link to='/signin'>
