@@ -29,19 +29,18 @@ const SearchInput = ({ inputCategory, searchStart, match, history }) => {
 	const { category, facet, term } = searchRequest;
 
 	useEffect(() => {
-		setSearchRequest({ ...searchRequest });
-
 		if (urlCategory && !categories.includes(urlCategory)) {
 			history.push(`/search/books/${term}`);
 			window.location.reload();
 		}
+		
 		if (urlFacet && !facets.includes(urlFacet)) {
 			history.push(`/search/${category}/${term}/all`);
 			window.location.reload();
 		}
 
 		if (urlTerm) searchStart(category, term, facet);
-	}, [match]);
+	}, [urlCategory, urlTerm, urlFacet, categories, facets, searchStart]);
 
 	const handleChange = (event) => {
 		const { value, name } = event.target;
