@@ -17,8 +17,8 @@ import {
 	signUpFailure,
 	signOutSuccess,
 	signOutFailure,
-	addBookToShelfSuccess,
-	addBookToShelfFailure
+	updateBookStatusSuccess,
+	updateBookStatusFailure
 } from './user.actions';
 import { selectBook } from '../books/books.selectors';
 
@@ -94,7 +94,7 @@ export function* isUserAuthenticated() {
 	}
 }
 
-export function* addBook({ payload: shelf }) {
+export function* updateBookStatus({ payload: shelf }) {
 	try {
 		const userRef = yield doc(db, 'users', auth.currentUser.uid);
 		const userSnap = yield getDoc(userRef)
@@ -115,9 +115,9 @@ export function* addBook({ payload: shelf }) {
 			'books.all': arrayUnion(bookKey),
 			[`books.${shelf}`]: arrayUnion(bookKey)
 		});
-		yield put(addBookToShelfSuccess());
+		yield put(updateBookStatusSuccess());
 	} catch (error) {
-		yield put(addBookToShelfFailure(error));
+		yield put(updateBookStatusFailure(error));
 	}
 }
 
@@ -142,8 +142,8 @@ export function* onCheckUserSession() {
 	yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
 }
 
-export function* onAddBookToShelfStart() {
-	yield takeLatest(UserActionTypes.ADD_BOOK_TO_SHELF_START, addBook);
+export function* onUpdateBookStatusStart() {
+	yield takeLatest(UserActionTypes.UPDATE_BOOK_STATUS_START, updateBookStatus);
 }
 
 
@@ -154,6 +154,6 @@ export function* userSagas() {
 		call(onSignUpStart),
 		call(onSignOutStart),
 		call(onCheckUserSession),
-		call(onAddBookToShelfStart)
+		call(onUpdateBookStatusStart)
 	]);
 }

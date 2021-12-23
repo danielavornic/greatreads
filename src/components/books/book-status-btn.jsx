@@ -10,13 +10,13 @@ import {
 	MenuButton,
 } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
-import { addBookToShelfStart } from '../../redux/user/user.actions';
-const BookStatusBtn = ({ addBookToShelf }) => (
+import { updateBookStatusStart } from '../../redux/user/user.actions';
+const BookStatusBtn = ({ updateBookStatus }) => (
 	<ButtonGroup isAttached colorScheme={'brand'} bg={'brand'} width={'full'}>
 		<Button
 			width={'calc(100% - 34px)'}
 			textAlign={'left'}
-			onClick={() => addBookToShelf('wantToRead')}
+			onClick={() => updateBookStatus('wantToRead')}
 		>
 			Want to read
 		</Button>
@@ -31,11 +31,11 @@ const BookStatusBtn = ({ addBookToShelf }) => (
 			></MenuButton>
 			<MenuList>
 				<MenuGroup>
-					<MenuItem onClick={() => addBookToShelf('wantToRead')}>
+					<MenuItem onClick={() => updateBookStatus('wantToRead')}>
 						Want to read
 					</MenuItem>
-					<MenuItem onClick={() => addBookToShelf('read')}>Read</MenuItem>
-					<MenuItem onClick={() => addBookToShelf('currentlyReading')}>
+					<MenuItem onClick={() => updateBookStatus('read')}>Read</MenuItem>
+					<MenuItem onClick={() => updateBookStatus('currentlyReading')}>
 						Currently reading
 					</MenuItem>
 				</MenuGroup>
@@ -45,7 +45,7 @@ const BookStatusBtn = ({ addBookToShelf }) => (
 );
 
 const mapDispatchToProps = (dispatch) => ({
-	addBookToShelf: (shelf) => dispatch(addBookToShelfStart(shelf)),
+	updateBookStatus: (shelf) => dispatch(updateBookStatusStart(shelf)),
 });
 
 export default connect(null, mapDispatchToProps)(BookStatusBtn);

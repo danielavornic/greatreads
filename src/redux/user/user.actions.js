@@ -51,16 +51,16 @@ export const checkUserSession = () => ({
   type: UserActionTypes.CHECK_USER_SESSION
 });
 
-export const addBookToShelfStart = shelf => ({
-  type: UserActionTypes.ADD_BOOK_TO_SHELF_START,
+export const updateBookStatusStart = shelf => ({
+  type: UserActionTypes.UPDATE_BOOK_STATUS_START,
   payload: shelf
 });
 
-export const addBookToShelfSuccess = () => ({
-  type: UserActionTypes.ADD_BOOK_TO_SHELF_SUCCESS
+export const updateBookStatusSuccess = () => ({
+  type: UserActionTypes.UPDATE_BOOK_STATUS_SUCCESS
 });
 
-export const addBookToShelfFailure = error => ({
-  type: UserActionTypes.ADD_BOOK_TO_SHELF_FAILURE,
+export const updateBookStatusFailure = error => ({
+  type: UserActionTypes.UPDATE_BOOK_STATUS_FAILURE,
   payload: error
 });
