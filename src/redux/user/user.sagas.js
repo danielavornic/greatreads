@@ -27,7 +27,7 @@ function* addUserToFirestore(user) {
 			books: {
 				'all': [],
 				'read': [],
-				'to-read': [],
+				'want-to-read': [],
 				'currently-reading': []
 			}
 		});
