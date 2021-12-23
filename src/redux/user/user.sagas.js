@@ -1,3 +1,4 @@
+import { takeLatest, put, all, call, select } from 'redux-saga/effects';
 import {
 	signInWithPopup,
 	signInWithEmailAndPassword,
@@ -5,6 +6,7 @@ import {
 	updateProfile,
 	signOut,
 } from 'firebase/auth';
+import { doc, setDoc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 
 import { auth, provider, db } from '../../firebase/firebase.utils';
 import UserActionTypes from './user.types';
@@ -15,7 +17,10 @@ import {
 	signUpFailure,
 	signOutSuccess,
 	signOutFailure,
+	addBookToShelfSuccess,
+	addBookToShelfFailure
 } from './user.actions';
+import { selectBook } from '../books/books.selectors';
 
 function* addUserToFirestore(user) {
 	try {
@@ -30,16 +35,13 @@ function* addUserToFirestore(user) {
 			}
 		});
 	} catch (error) {
-		yield put(signInFailure(error));	
+		yield put(signInFailure(error));
 	}
 }
 
 export function* signInWithGoogle() {
 	try {
 		const { user } = yield signInWithPopup(auth, provider);
-		const userDocRef = yield doc(db, 'users', user.uid);
-		const userDocSnap = yield getDoc(userDocRef);
-		if (!userDocSnap.exists())
 		const userRef = yield doc(db, 'users', user.uid);
 		const userSnap = yield getDoc(userRef);
 		if (!userSnap.exists())
@@ -66,7 +68,7 @@ export function* signUp({ payload: { name, email, password } }) {
 			email,
 			password
 		);
-		yield updateProfile(user, { displayName: name }).then();  
+		yield updateProfile(user, { displayName: name }).then();
 		yield addUserToFirestore(user);
 		yield put(signUpSuccess(user));
 	} catch (error) {
@@ -86,11 +88,39 @@ export function* signOutUser() {
 export function* isUserAuthenticated() {
 	try {
 		const user = yield auth.currentUser;
-		if (user)	yield put(signInSuccess(user));
+		if (user) yield put(signInSuccess(user));
 	} catch (error) {
 		yield put(signInFailure(error));
 	}
 }
+
+export function* addBook({ payload: shelf }) {
+	try {
+		const userRef = yield doc(db, 'users', auth.currentUser.uid);
+		const userSnap = yield getDoc(userRef)
+		const userData = yield userSnap.data();
+		const userBooks = yield userData.books;
+
+		const book = yield select(selectBook);
+		const bookKey = book.key.split('/')[2];
+
+		const mainShelves = ['wantToRead', 'read', 'currentlyReading'];
+		for (const s of mainShelves)
+			if (s !== shelf && userBooks[s].includes(bookKey))
+				yield updateDoc(userRef, {
+					[`books.${s}`]: arrayRemove(bookKey)
+				});
+
+		yield updateDoc(userRef, {
+			'books.all': arrayUnion(bookKey),
+			[`books.${shelf}`]: arrayUnion(bookKey)
+		});
+		yield put(addBookToShelfSuccess());
+	} catch (error) {
+		yield put(addBookToShelfFailure(error));
+	}
+}
+
 
 export function* onGoogleSignInStart() {
 	yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle);
@@ -109,8 +139,13 @@ export function* onSignOutStart() {
 }
 
 export function* onCheckUserSession() {
-  yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
+	yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
 }
+
+export function* onAddBookToShelfStart() {
+	yield takeLatest(UserActionTypes.ADD_BOOK_TO_SHELF_START, addBook);
+}
+
 
 export function* userSagas() {
 	yield all([
@@ -119,5 +154,6 @@ export function* userSagas() {
 		call(onSignUpStart),
 		call(onSignOutStart),
 		call(onCheckUserSession),
+		call(onAddBookToShelfStart)
 	]);
 }

@@ -50,3 +50,17 @@ export const signOutFailure = error => ({
 export const checkUserSession = () => ({
   type: UserActionTypes.CHECK_USER_SESSION
 });
+
+export const addBookToShelfStart = shelf => ({
+  type: UserActionTypes.ADD_BOOK_TO_SHELF_START,
+  payload: shelf
+});
+
+export const addBookToShelfSuccess = () => ({
+  type: UserActionTypes.ADD_BOOK_TO_SHELF_SUCCESS
+});
+
+export const addBookToShelfFailure = error => ({
+  type: UserActionTypes.ADD_BOOK_TO_SHELF_FAILURE,
+  payload: error
+});
