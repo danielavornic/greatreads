@@ -48,7 +48,7 @@ const SearchInput = ({ inputCategory, searchStart, match, history }) => {
 	}
 
 	const spaceToPlus = (word) => decodeURI(word).replace(/ /g, '+');
-	const plusToSpace = (word) => word.replace('+', ' ');
+	const plusToSpace = (word) => word.replace(/\+/g, ' ');
 
 	useEffect(() => {
 		if (urlCategory && !categories.includes(urlCategory)) {
