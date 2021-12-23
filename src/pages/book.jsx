@@ -17,7 +17,7 @@ import { selectCurrentUser } from '../redux/user/user.selectors';
 
 import CustomSpinner from '../components/common/custom-spinner';
 import ReadMore from '../components/common/read-more';
-import BookStatusBtn from '../components/books/want-to-read-btn';
+import BookStatusBtn from '../components/books/book-status-btn';
 
 const BookPage = ({ match, fetchBookStart, book, isBookLoading, currentUser }) => {
 	const bookKey = match.params.bookKey;

@@ -10,9 +10,7 @@ import {
 	MenuButton,
 } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
-
 import { addBookToShelfStart } from '../../redux/user/user.actions';
-
 const BookStatusBtn = ({ addBookToShelf }) => (
 	<ButtonGroup isAttached colorScheme={'brand'} bg={'brand'} width={'full'}>
 		<Button
