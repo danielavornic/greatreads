@@ -10,7 +10,7 @@ import {
 	MenuButton,
 } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
-import { updateBookStatusStart } from '../../redux/user/user.actions';
+import { updateBookStatusStart } from '../../redux/books/books.actions';
 const BookStatusBtn = ({ updateBookStatus }) => (
 	<ButtonGroup isAttached colorScheme={'brand'} bg={'brand'} width={'full'}>
 		<Button

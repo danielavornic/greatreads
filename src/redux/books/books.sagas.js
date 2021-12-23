@@ -1,10 +1,16 @@
 import { takeLatest, put, all, call, select } from 'redux-saga/effects';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 
 import BooksActionTypes from './books.types';
-import { fetchBookSuccess, fetchBookFailure } from './books.actions';
-import { db } from '../../firebase/firebase.utils';
+import {
+  fetchBookSuccess, 
+  fetchBookFailure, 
+  updateBookStatusSuccess,
+  updateBookStatusFailure
+} from './books.actions';
+import { db, auth } from '../../firebase/firebase.utils';
 import { selectCurrentUser } from '../user/user.selectors';
+import { selectBook } from '../books/books.selectors';
 
 export function* fetchBookAsync({ payload }) {
   try {
@@ -35,7 +41,7 @@ export function* fetchBookAsync({ payload }) {
     const userSnap = yield getDoc(userRef)
     const userData = yield userSnap.data();
     const userBooks = yield userData.books;
-    const bookKey = book.key.split('/')[2];
+    const bookKey = book.key.split('/')[ 2 ];
     if (userBooks.all.includes(bookKey)) {
       const statuses = ['wantToRead', 'read', 'currentlyReading'];
       for (const status of statuses)
@@ -50,12 +56,44 @@ export function* fetchBookAsync({ payload }) {
   }
 }
 
+export function* updateBookStatus({ payload: status }) {
+  try {
+    const userRef = yield doc(db, 'users', auth.currentUser.uid);
+    const userSnap = yield getDoc(userRef)
+    const userData = yield userSnap.data();
+    const userBooks = yield userData.books;
+
+    const book = yield select(selectBook);
+    const bookKey = book.key.split('/')[ 2 ];
+
+    const statuses = [ 'wantToRead', 'read', 'currentlyReading' ];
+    for (const s of statuses)
+      if (s !== status && userBooks[ s ].includes(bookKey))
+        yield updateDoc(userRef, {
+          [ `books.${s}` ]: arrayRemove(bookKey)
+        });
+
+    yield updateDoc(userRef, {
+      'books.all': arrayUnion(bookKey),
+      [ `books.${status}` ]: arrayUnion(bookKey)
+    });
+    yield put(updateBookStatusSuccess());
+  } catch (error) {
+    yield put(updateBookStatusFailure(error));
+  }
+}
+
 export function* fetchBookStart() {
   yield takeLatest(BooksActionTypes.FETCH_BOOK_START, fetchBookAsync);
 }
 
+export function* onUpdateBookStatusStart() {
+  yield takeLatest(BooksActionTypes.UPDATE_BOOK_STATUS_START, updateBookStatus);
+}
+
 export function* booksSagas() {
   yield all([
-    call(fetchBookStart)
+    call(fetchBookStart),
+    call(onUpdateBookStatusStart)
   ]);
 }

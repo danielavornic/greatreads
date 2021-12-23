@@ -50,17 +50,3 @@ export const signOutFailure = error => ({
 export const checkUserSession = () => ({
   type: UserActionTypes.CHECK_USER_SESSION
 });
-
-export const updateBookStatusStart = shelf => ({
-  type: UserActionTypes.UPDATE_BOOK_STATUS_START,
-  payload: shelf
-});
-
-export const updateBookStatusSuccess = () => ({
-  type: UserActionTypes.UPDATE_BOOK_STATUS_SUCCESS
-});
-
-export const updateBookStatusFailure = error => ({
-  type: UserActionTypes.UPDATE_BOOK_STATUS_FAILURE,
-  payload: error
-});
