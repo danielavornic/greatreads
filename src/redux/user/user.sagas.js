@@ -40,6 +40,9 @@ export function* signInWithGoogle() {
 		const userDocRef = yield doc(db, 'users', user.uid);
 		const userDocSnap = yield getDoc(userDocRef);
 		if (!userDocSnap.exists())
+		const userRef = yield doc(db, 'users', user.uid);
+		const userSnap = yield getDoc(userRef);
+		if (!userSnap.exists())
 			yield addUserToFirestore(user);
 		yield put(signInSuccess(user));
 	} catch (error) {
