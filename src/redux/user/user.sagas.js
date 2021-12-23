@@ -1,4 +1,3 @@
-import { takeLatest, put, all, call } from 'redux-saga/effects';
 import {
 	signInWithPopup,
 	signInWithEmailAndPassword,
@@ -6,7 +5,6 @@ import {
 	updateProfile,
 	signOut,
 } from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 import { auth, provider, db } from '../../firebase/firebase.utils';
 import UserActionTypes from './user.types';
@@ -27,8 +25,8 @@ function* addUserToFirestore(user) {
 			books: {
 				'all': [],
 				'read': [],
-				'want-to-read': [],
-				'currently-reading': []
+				'wantToRead': [],
+				'currentlyReading': []
 			}
 		});
 	} catch (error) {
