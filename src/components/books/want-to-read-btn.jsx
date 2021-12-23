@@ -13,7 +13,7 @@ import { TriangleDownIcon } from '@chakra-ui/icons';
 
 import { addBookToShelfStart } from '../../redux/user/user.actions';
 
-const WantToReadBtn = ({ addBookToShelf }) => (
+const BookStatusBtn = ({ addBookToShelf }) => (
 	<ButtonGroup isAttached colorScheme={'brand'} bg={'brand'} width={'full'}>
 		<Button
 			width={'calc(100% - 34px)'}
@@ -50,4 +50,4 @@ const mapDispatchToProps = (dispatch) => ({
 	addBookToShelf: (shelf) => dispatch(addBookToShelfStart(shelf)),
 });
 
-export default connect(null, mapDispatchToProps)(WantToReadBtn);
+export default connect(null, mapDispatchToProps)(BookStatusBtn);
