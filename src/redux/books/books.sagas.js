@@ -1,7 +1,10 @@
-import { takeLatest, put, all, call } from 'redux-saga/effects';
+import { takeLatest, put, all, call, select } from 'redux-saga/effects';
+import { doc, getDoc } from 'firebase/firestore';
 
 import BooksActionTypes from './books.types';
 import { fetchBookSuccess, fetchBookFailure } from './books.actions';
+import { db } from '../../firebase/firebase.utils';
+import { selectCurrentUser } from '../user/user.selectors';
 
 export function* fetchBookAsync({ payload }) {
   try {
@@ -18,7 +21,6 @@ export function* fetchBookAsync({ payload }) {
           : works.description
         : '';
       book.description = description;
-
       if (!book.authors && !book.by_statement && works.authors) {
         const authorResponse = yield fetch(`https://openlibrary.org${works.authors[ 0 ].author.key}.json`);
         const author = yield authorResponse.json();
@@ -26,6 +28,21 @@ export function* fetchBookAsync({ payload }) {
       }
     } else {
       book.description = '';
+    }
+
+    const user = yield select(selectCurrentUser);
+    const userRef = yield doc(db, 'users', user.uid);
+    const userSnap = yield getDoc(userRef)
+    const userData = yield userSnap.data();
+    const userBooks = yield userData.books;
+    const bookKey = book.key.split('/')[2];
+    if (userBooks.all.includes(bookKey)) {
+      const statuses = ['wantToRead', 'read', 'currentlyReading'];
+      for (const status of statuses)
+        if (userBooks[status].includes(bookKey))
+          book.status = status;
+    } else {
+      book.status = '';
     }
     yield put(fetchBookSuccess(book));
   } catch (error) {
