@@ -12,43 +12,42 @@ import { db, auth } from '../../firebase/firebase.utils';
 import { selectCurrentUser } from '../user/user.selectors';
 import { selectBook } from '../books/books.selectors';
 
+const statuses = ['wantToRead', 'read', 'currentlyReading'];
+
 export function* fetchBookAsync({ payload }) {
   try {
     const response = yield fetch(`https://openlibrary.org/api/books?bibkeys=OLID:${payload}&jscmd=details&format=json`);
     const json = yield response.json();
-    const book = yield json[ Object.keys(json)[ 0 ] ].details;
+    const book = yield json[Object.keys(json)[0]].details;
+    const bookKey = book.key.split('/')[2];
 
+    book.description = '';
     if (book.works) {
-      const worksResponse = yield fetch(`https://openlibrary.org${book.works[ 0 ].key}.json`);
+      const worksResponse = yield fetch(`https://openlibrary.org${book.works[0].key}.json`);
       const works = yield worksResponse.json();
-      const description = yield works.description
+      if (!book.authors && !book.by_statement && works.authors) {
+        const authorResponse = yield fetch(`https://openlibrary.org${works.authors[0].author.key}.json`);
+        const author = yield authorResponse.json();
+        book.authors = [{ name: author.name }];
+      }
+      const description = works.description
         ? works.description.value
           ? works.description.value
           : works.description
         : '';
       book.description = description;
-      if (!book.authors && !book.by_statement && works.authors) {
-        const authorResponse = yield fetch(`https://openlibrary.org${works.authors[ 0 ].author.key}.json`);
-        const author = yield authorResponse.json();
-        book.authors = [ { name: author.name } ];
-      }
-    } else {
-      book.description = '';
     }
 
+    book.status = '';
     const user = yield select(selectCurrentUser);
-    const userRef = yield doc(db, 'users', user.uid);
+    const userRef = doc(db, 'users', user.uid);
     const userSnap = yield getDoc(userRef)
-    const userData = yield userSnap.data();
-    const userBooks = yield userData.books;
-    const bookKey = book.key.split('/')[ 2 ];
+    const userData = userSnap.data();
+    const userBooks = userData.books;
     if (userBooks.all.includes(bookKey)) {
-      const statuses = ['wantToRead', 'read', 'currentlyReading'];
       for (const status of statuses)
         if (userBooks[status].includes(bookKey))
           book.status = status;
-    } else {
-      book.status = '';
     }
     yield put(fetchBookSuccess(book));
   } catch (error) {
@@ -58,25 +57,32 @@ export function* fetchBookAsync({ payload }) {
 
 export function* updateBookStatus({ payload: status }) {
   try {
-    const userRef = yield doc(db, 'users', auth.currentUser.uid);
+    const user = yield select(selectCurrentUser);
+    const userRef = doc(db, 'users', user.uid);
     const userSnap = yield getDoc(userRef)
-    const userData = yield userSnap.data();
-    const userBooks = yield userData.books;
-
+    const userData = userSnap.data();
+    const userBooks = userData.books;
     const book = yield select(selectBook);
-    const bookKey = book.key.split('/')[ 2 ];
+    const bookKey = book.key.split('/')[2];
 
-    const statuses = [ 'wantToRead', 'read', 'currentlyReading' ];
-    for (const s of statuses)
-      if (s !== status && userBooks[ s ].includes(bookKey))
-        yield updateDoc(userRef, {
-          [ `books.${s}` ]: arrayRemove(bookKey)
-        });
-
-    yield updateDoc(userRef, {
-      'books.all': arrayUnion(bookKey),
-      [ `books.${status}` ]: arrayUnion(bookKey)
-    });
+    if (status === '') {
+      statuses.push('all');
+      for (const s of statuses)
+        if (userBooks[s].includes(bookKey))
+          yield updateDoc(userRef, {
+            [`books.${s}`]: arrayRemove(bookKey)
+          });
+    } else {
+      for (const s of statuses)
+        if (s !== status && userBooks[s].includes(bookKey))
+          yield updateDoc(userRef, {
+            [`books.${s}`]: arrayRemove(bookKey)
+          });
+      yield updateDoc(userRef, {
+        'books.all': arrayUnion(bookKey),
+        [`books.${status}`]: arrayUnion(bookKey)
+      });
+    }
     yield put(updateBookStatusSuccess());
   } catch (error) {
     yield put(updateBookStatusFailure(error));
@@ -95,5 +101,5 @@ export function* booksSagas() {
   yield all([
     call(fetchBookStart),
     call(onUpdateBookStatusStart)
-  ]);
+ ]);
 }
