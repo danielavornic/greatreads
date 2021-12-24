@@ -15,6 +15,7 @@ import { selectCurrentUser } from '../user/user.selectors';
 import { selectBookKey } from '../books/books.selectors';
 
 const statuses = ['wantToRead', 'read', 'currentlyReading'];
+const statusesAndAll = ['wantToRead', 'read', 'currentlyReading', 'all'];
 
 export function* fetchBookAsync({ payload }) {
   try {
@@ -52,11 +53,11 @@ export function* fetchBookStatus({ payload: bookKey }) {
     const userSnap = yield getDoc(userRef)
     const userData = userSnap.data();
     const userBooks = userData.books;
-
     if (userBooks.all.includes(bookKey)) {
-      for (const status of statuses)
+      for (const status of statuses) {
         if (userBooks[status].includes(bookKey))
           yield put(fetchBookStatusSuccess(status));
+      }
     } else {
       yield put(fetchBookStatusSuccess(null));
     }
@@ -85,12 +86,12 @@ export function* updateBookStatus({ payload: status }) {
         [`books.${status}`]: arrayUnion(bookKey)
       });
     } else {
-      statuses.push('all');
-      for (const s of statuses)
+      for (const s of statusesAndAll) {
         if (userBooks[s].includes(bookKey))
           yield updateDoc(userRef, {
             [`books.${s}`]: arrayRemove(bookKey)
           });
+      }
     }
     yield put(updateBookStatusSuccess(status));
   } catch (error) {

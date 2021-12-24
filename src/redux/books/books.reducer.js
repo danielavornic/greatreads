@@ -33,28 +33,20 @@ const booksReducer = (state = INITIAL_STATE, action) => {
         isBookFetching: false,
         bookError: action.payload
       };
-      case BooksActionTypes.FETCH_BOOK_STATUS_START:
       case BooksActionTypes.FETCH_BOOK_STATUS_SUCCESS:
+      case BooksActionTypes.UPDATE_BOOK_STATUS_SUCCESS:
         return {
           ...state, 
-          status: action.payload,
+          bookStatus: action.payload,
+          bookError: undefined
         };
       case BooksActionTypes.FETCH_BOOK_STATUS_FAILURE:
+      case BooksActionTypes.UPDATE_BOOK_STATUS_FAILURE:
         return {
           ...state, 
           bookStatus: null,
           bookStatusError: action.payload
         };
-    case BooksActionTypes.UPDATE_BOOK_STATUS_START:
-      return {
-        ...state,
-        bookStatus: action.payload
-      }
-    case BooksActionTypes.UPDATE_BOOK_STATUS_FAILURE:
-      return {
-        ...state,
-        bookError: action.payload
-      }
     default:
       return state;
   }
