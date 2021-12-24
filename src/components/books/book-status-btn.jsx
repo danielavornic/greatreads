@@ -14,10 +14,10 @@ import {
 } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 
-import { selectBookStatus, selectBookKey } from '../../redux/books/books.selectors';
+import { selectBookStatus, selectBookKey, selectIsBookStatusLoading } from '../../redux/books/books.selectors';
 import { fetchBookStatusStart, updateBookStatusStart } from '../../redux/books/books.actions';
 
-const BookStatusBtn = ({ updateBookStatus, bookStatus, fetchBookStatus, bookKey }) => {
+const BookStatusBtn = ({ updateBookStatus, bookStatus, fetchBookStatus, bookKey, isBookStatusLoading}) => {
 	useEffect(() => {
 		fetchBookStatus(bookKey);
 	}, [fetchBookStatus, bookKey])
@@ -35,6 +35,7 @@ const BookStatusBtn = ({ updateBookStatus, bookStatus, fetchBookStatus, bookKey 
 				textAlign={'left'}
 				onClick={() => bookStatus ? updateBookStatus(null) : updateBookStatus('wantToRead')}
 				variant={bookStatus ? 'outline' : 'solid'}
+				isLoading={isBookStatusLoading}
 			>
 				{bookStatus ? sentenceCase(bookStatus): 'Want to read' }
 			</Button>
@@ -65,7 +66,8 @@ const BookStatusBtn = ({ updateBookStatus, bookStatus, fetchBookStatus, bookKey 
 
 const mapStateToProps = createStructuredSelector({
 	bookStatus: selectBookStatus,
-	bookKey: selectBookKey
+	bookKey: selectBookKey,
+	isBookStatusLoading: selectIsBookStatusLoading
 });
 
 const mapDispatchToProps = (dispatch) => ({
