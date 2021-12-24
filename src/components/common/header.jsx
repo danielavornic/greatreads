@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {
 	chakra,
 	Flex,
+	Box,
 	VisuallyHidden,
 	HStack,
 	Button,
@@ -18,6 +19,8 @@ import {
 
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { signOutStart } from '../../redux/user/user.actions';
+
+import SearchInput from '../search/search-input';
 import { ReactComponent as Logo } from '../../assets/greatreads-logo.svg';
 
 const Header = ({ currentUser, signOutStart }) => (
@@ -34,14 +37,15 @@ const Header = ({ currentUser, signOutStart }) => (
 		boxShadow='xs'
 	>
 		<Flex alignItems='center' justifyContent='space-between' mx='auto'>
-			<Flex>
-				<Link to='/'>
-					<Logo />
-					<VisuallyHidden>greatreads</VisuallyHidden>
-				</Link>
-			</Flex>
-			<HStack display='flex' alignItems='center' spacing={1}>
-				{currentUser ? (
+			<Link to='/'>
+				<Logo />
+				<VisuallyHidden>greatreads</VisuallyHidden>
+			</Link>
+			{currentUser ? (
+				<HStack spacing={4}>
+					<Box display={{ base: 'none', md: 'block' }}>
+						<SearchInput inputCategory='books' headerInput />
+					</Box>
 					<Menu bg={'white'}>
 						<MenuButton
 							as={Button}
@@ -68,21 +72,21 @@ const Header = ({ currentUser, signOutStart }) => (
 							</Link>
 						</MenuList>
 					</Menu>
-				) : (
-					<HStack>
-						<Link to='/signin'>
-							<Button variant='ghost' size='sm'>
-								Sign in
-							</Button>
-						</Link>
-						<Link to='/signup'>
-							<Button colorScheme='brand' size='sm'>
-								Sign up
-							</Button>
-						</Link>
-					</HStack>
-				)}
-			</HStack>
+				</HStack>
+			) : (
+				<HStack>
+					<Link to='/signin'>
+						<Button variant='ghost' size='sm'>
+							Sign in
+						</Button>
+					</Link>
+					<Link to='/signup'>
+						<Button colorScheme='brand' size='sm'>
+							Sign up
+						</Button>
+					</Link>
+				</HStack>
+			)}
 		</Flex>
 	</chakra.header>
 );

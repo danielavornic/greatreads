@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { searchStart } from '../../redux/search/search.actions';
-
 import {
 	HStack,
 	Select,
@@ -13,13 +11,21 @@ import {
 } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 
-const SearchInput = ({ inputCategory, searchStart, match, history }) => {
+import { searchStart } from '../../redux/search/search.actions';
+
+const SearchInput = ({
+	inputCategory,
+	headerInput,
+	searchStart,
+	match,
+	history,
+}) => {
+	const categories = ['books', 'authors'];
+	const facets = ['all', 'title', 'author'];
+
 	const urlCategory = match.params.category;
 	const urlTerm = match.params.term;
 	const urlFacet = match.params.facet;
-
-	const categories = ['books', 'authors'];
-	const facets = ['all', 'title', 'author'];
 
 	const [searchRequest, setSearchRequest] = useState({
 		category: inputCategory,
@@ -28,9 +34,15 @@ const SearchInput = ({ inputCategory, searchStart, match, history }) => {
 	});
 	const { category, facet, term } = searchRequest;
 
+	const [headerInputTerm, setHeaderInputTerm] = useState(term);
+
+	const spaceToPlus = (word) => decodeURI(word).replace(/ /g, '+');
+	const plusToSpace = (word) => word.replace(/\+/g, ' ');
+
 	const handleChange = (event) => {
 		const { value, name } = event.target;
 		setSearchRequest({ ...searchRequest, [name]: value });
+		setHeaderInputTerm(event.target.value);
 	};
 
 	const handleKeyPress = (event) => {
@@ -38,41 +50,38 @@ const SearchInput = ({ inputCategory, searchStart, match, history }) => {
 			handleSubmit();
 			event.currentTarget.blur();
 		}
-	}
+	};
 
 	const handleSubmit = () => {
 		if (term !== '') {
 			const pathFacet = category === 'books' ? `/${facet}` : '';
 			history.push(`/search/${category}/${spaceToPlus(term)}${pathFacet}`);
+			if (headerInput) history.go(0);
 		}
-	}
-
-	const spaceToPlus = (word) => decodeURI(word).replace(/ /g, '+');
-	const plusToSpace = (word) => word.replace(/\+/g, ' ');
+	};
 
 	useEffect(() => {
 		if (urlCategory && !categories.includes(urlCategory)) {
 			history.push(`/search/books/${spaceToPlus(term)}/all`);
-			window.location.reload();
+			history.go(0);
 		}
-
 		if (urlFacet && !facets.includes(urlFacet)) {
 			history.push(`/search/${category}/${spaceToPlus(term)}/all`);
-			window.location.reload();
+			history.go(0);
 		}
 
 		if (urlTerm) {
 			if (urlTerm.includes(' '))
 				history.push(`/search/${category}/${spaceToPlus(term)}/${facet}`);
-			else 
-				searchStart(category, term, facet);
+			else searchStart(category, term, facet);
+
+			setHeaderInputTerm('');
 		}
-		 
 	}, [urlCategory, urlTerm, urlFacet, searchStart]);
 
 	return (
 		<HStack maxW={'3xl'} w={'full'}>
-			{inputCategory === 'books' ? (
+			{inputCategory === 'books' && !headerInput ? (
 				<Select
 					name='facet'
 					size='lg'
@@ -93,16 +102,26 @@ const SearchInput = ({ inputCategory, searchStart, match, history }) => {
 					</option>
 				</Select>
 			) : null}
-
-			<InputGroup size='lg'>
-				<Input
-					name='term'
-					type='search'
-					placeholder={`Search ${category}...`}
-					onChange={handleChange}
-					onKeyPress={handleKeyPress}
-					defaultValue={plusToSpace(term)}
-				/>
+			<InputGroup size={headerInput ? 'sm' : 'lg'}>
+				{headerInput ? (
+					<Input
+						name='term'
+						type='search'
+						placeholder={`Search ${category}...`}
+						onChange={handleChange}
+						onKeyPress={handleKeyPress}
+						value={headerInputTerm}
+					/>
+				) : (
+					<Input
+						name='term'
+						type='search'
+						placeholder={`Search ${category}...`}
+						onChange={handleChange}
+						onKeyPress={handleKeyPress}
+						defaultValue={plusToSpace(term)}
+					/>
+				)}
 				<InputRightElement
 					children={<AiOutlineSearch />}
 					cursor='pointer'
