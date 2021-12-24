@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
@@ -14,27 +13,10 @@ import {
 } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 
-import { selectBook } from '../../redux/books/books.selectors';
+import { selectBookStatus } from '../../redux/books/books.selectors';
 import { updateBookStatusStart } from '../../redux/books/books.actions';
 
-const BookStatusBtn = ({ book, updateBookStatus }) => {
-	const [bookStatus, setBookStatus] = useState(book.status);
-
-	const handleClick = (status) => {
-		updateBookStatus(status);
-		setBookStatus(status);
-	};
-
-	const toggleClick = () => {
-		if (bookStatus === '') {
-			updateBookStatus('wantToRead');
-			setBookStatus('wantToRead');
-		} else {
-			updateBookStatus('');
-			setBookStatus('');
-		}
-	};
-
+const BookStatusBtn = ({ updateBookStatus, bookStatus }) => {
 	const sentenceCase = (text) => {
 		return text.replace(/^[a-z]|[A-Z]/g, function (v, i) {
 			return i === 0 ? v.toUpperCase() : ' ' + v.toLowerCase();
@@ -46,10 +28,10 @@ const BookStatusBtn = ({ book, updateBookStatus }) => {
 			<Button
 				width={'calc(100% - 34px)'}
 				textAlign={'left'}
-				onClick={toggleClick}
-				variant={bookStatus === '' ? 'solid' : 'outline'}
+				onClick={() => bookStatus ? updateBookStatus(null) : updateBookStatus('wantToRead')}
+				variant={bookStatus ? 'outline' : 'solid'}
 			>
-				{bookStatus === '' ? 'Want to read' : sentenceCase(bookStatus)}
+				{bookStatus ? sentenceCase(bookStatus): 'Want to read' }
 			</Button>
 			<Menu size='sm'>
 				<MenuButton
@@ -62,11 +44,11 @@ const BookStatusBtn = ({ book, updateBookStatus }) => {
 				></MenuButton>
 				<MenuList>
 					<MenuGroup>
-						<MenuItem onClick={() => handleClick('wantToRead')}>
+						<MenuItem onClick={() => updateBookStatus('wantToRead')}>
 							Want to read
 						</MenuItem>
-						<MenuItem onClick={() => handleClick('read')}>Read</MenuItem>
-						<MenuItem onClick={() => handleClick('currentlyReading')}>
+						<MenuItem onClick={() => updateBookStatus('read')}>Read</MenuItem>
+						<MenuItem onClick={() => updateBookStatus('currentlyReading')}>
 							Currently reading
 						</MenuItem>
 					</MenuGroup>
@@ -77,7 +59,7 @@ const BookStatusBtn = ({ book, updateBookStatus }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-	book: selectBook,
+	bookStatus: selectBookStatus
 });
 
 const mapDispatchToProps = (dispatch) => ({
