@@ -21,3 +21,8 @@ export const selectBookStatus = createSelector(
   [selectBooks],
   books => books.bookStatus
 );
+
+export const selectIsBookStatusLoading = createSelector(
+  [selectBooks],
+  books => books.isBookStatusLoading
+);
