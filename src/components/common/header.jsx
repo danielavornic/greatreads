@@ -22,7 +22,7 @@ import { ReactComponent as Logo } from '../../assets/greatreads-logo.svg';
 
 const Header = ({ currentUser, signOutStart }) => (
 	<chakra.header
-		bg='rgba(255, 255, 255, 0.8)'
+		bg='rgba(255, 255, 255, 0.9)'
 		w='full'
 		px={{ base: 4, md: 8, lg: 10 }}
 		py={4}
@@ -30,7 +30,8 @@ const Header = ({ currentUser, signOutStart }) => (
 		borderColor='gray.200'
 		position='fixed'
 		zIndex='100'
-		backdropFilter='saturate(180%) blur(5px)'
+		backdropFilter='saturate(190%) blur(5px)'
+		boxShadow='xs'
 	>
 		<Flex alignItems='center' justifyContent='space-between' mx='auto'>
 			<Flex>
