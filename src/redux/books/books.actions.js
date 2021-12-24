@@ -15,6 +15,21 @@ export const fetchBookFailure = error => ({
   payload: error
 });
 
+export const fetchBookStatusStart = status => ({
+  type: BooksActionTypes.FETCH_BOOK_STATUS_START,
+  payload: status
+});
+
+export const fetchBookStatusSuccess = status => ({
+  type: BooksActionTypes.FETCH_BOOK_STATUS_SUCCESS,
+  payload: status
+});
+
+export const fetchBookStatusFailure = error => ({
+  type: BooksActionTypes.FETCH_BOOK_STATUS_FAILURE,
+  payload: error
+});
+
 export const updateBookStatusStart = status => ({
   type: BooksActionTypes.UPDATE_BOOK_STATUS_START,
   payload: status

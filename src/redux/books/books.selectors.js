@@ -11,3 +11,13 @@ export const selectIsBookFetching = createSelector(
   [selectBooks],
   books => books.isBookFetching
 );
+
+export const selectBookKey = createSelector(
+  [selectBooks],
+  books => books.bookKey
+);
+
+export const selectBookStatus = createSelector(
+  [selectBooks],
+  books => books.bookStatus
+);

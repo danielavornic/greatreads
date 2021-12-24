@@ -5,12 +5,14 @@ import BooksActionTypes from './books.types';
 import {
   fetchBookSuccess, 
   fetchBookFailure, 
+  fetchBookStatusSuccess,
+  fetchBookStatusFailure,
   updateBookStatusSuccess,
   updateBookStatusFailure
 } from './books.actions';
-import { db, auth } from '../../firebase/firebase.utils';
+import { db } from '../../firebase/firebase.utils';
 import { selectCurrentUser } from '../user/user.selectors';
-import { selectBook } from '../books/books.selectors';
+import { selectBookKey } from '../books/books.selectors';
 
 const statuses = ['wantToRead', 'read', 'currentlyReading'];
 
@@ -19,7 +21,6 @@ export function* fetchBookAsync({ payload }) {
     const response = yield fetch(`https://openlibrary.org/api/books?bibkeys=OLID:${payload}&jscmd=details&format=json`);
     const json = yield response.json();
     const book = yield json[Object.keys(json)[0]].details;
-    const bookKey = book.key.split('/')[2];
 
     book.description = '';
     if (book.works) {
@@ -37,21 +38,30 @@ export function* fetchBookAsync({ payload }) {
         : '';
       book.description = description;
     }
+    yield put(fetchBookSuccess(book));
+  } catch (error) {
+    yield put(fetchBookFailure(error.message));
+  }
+}
 
-    book.status = '';
+
+export function* fetchBookStatus({ payload: bookKey }) {
+  try {
     const user = yield select(selectCurrentUser);
     const userRef = doc(db, 'users', user.uid);
     const userSnap = yield getDoc(userRef)
     const userData = userSnap.data();
     const userBooks = userData.books;
+
     if (userBooks.all.includes(bookKey)) {
       for (const status of statuses)
         if (userBooks[status].includes(bookKey))
-          book.status = status;
+          yield put(fetchBookStatusSuccess(status));
+    } else {
+      yield put(fetchBookStatusSuccess(null));
     }
-    yield put(fetchBookSuccess(book));
-  } catch (error) {
-    yield put(fetchBookFailure(error.message));
+  } catch(error) {
+    yield put(fetchBookStatusFailure(error))
   }
 }
 
@@ -62,17 +72,9 @@ export function* updateBookStatus({ payload: status }) {
     const userSnap = yield getDoc(userRef)
     const userData = userSnap.data();
     const userBooks = userData.books;
-    const book = yield select(selectBook);
-    const bookKey = book.key.split('/')[2];
+    const bookKey = yield select(selectBookKey);
 
-    if (status === '') {
-      statuses.push('all');
-      for (const s of statuses)
-        if (userBooks[s].includes(bookKey))
-          yield updateDoc(userRef, {
-            [`books.${s}`]: arrayRemove(bookKey)
-          });
-    } else {
+    if (status) {
       for (const s of statuses)
         if (s !== status && userBooks[s].includes(bookKey))
           yield updateDoc(userRef, {
@@ -82,15 +84,26 @@ export function* updateBookStatus({ payload: status }) {
         'books.all': arrayUnion(bookKey),
         [`books.${status}`]: arrayUnion(bookKey)
       });
+    } else {
+      statuses.push('all');
+      for (const s of statuses)
+        if (userBooks[s].includes(bookKey))
+          yield updateDoc(userRef, {
+            [`books.${s}`]: arrayRemove(bookKey)
+          });
     }
-    yield put(updateBookStatusSuccess());
+    yield put(updateBookStatusSuccess(status));
   } catch (error) {
     yield put(updateBookStatusFailure(error));
   }
 }
 
-export function* fetchBookStart() {
+export function* onfetchBookStart() {
   yield takeLatest(BooksActionTypes.FETCH_BOOK_START, fetchBookAsync);
+}
+
+export function* onFetchBookStatusStart() {
+  yield takeLatest(BooksActionTypes.FETCH_BOOK_STATUS_START, fetchBookStatus);
 }
 
 export function* onUpdateBookStatusStart() {
@@ -99,7 +112,8 @@ export function* onUpdateBookStatusStart() {
 
 export function* booksSagas() {
   yield all([
-    call(fetchBookStart),
-    call(onUpdateBookStatusStart)
+    call(onfetchBookStart),
+    call(onUpdateBookStatusStart),
+    call(onFetchBookStatusStart)
  ]);
 }
