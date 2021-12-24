@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
@@ -13,10 +14,14 @@ import {
 } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 
-import { selectBookStatus } from '../../redux/books/books.selectors';
-import { updateBookStatusStart } from '../../redux/books/books.actions';
+import { selectBookStatus, selectBookKey } from '../../redux/books/books.selectors';
+import { fetchBookStatusStart, updateBookStatusStart } from '../../redux/books/books.actions';
 
-const BookStatusBtn = ({ updateBookStatus, bookStatus }) => {
+const BookStatusBtn = ({ updateBookStatus, bookStatus, fetchBookStatus, bookKey }) => {
+	useEffect(() => {
+		fetchBookStatus(bookKey);
+	}, [fetchBookStatus, bookKey])
+
 	const sentenceCase = (text) => {
 		return text.replace(/^[a-z]|[A-Z]/g, function (v, i) {
 			return i === 0 ? v.toUpperCase() : ' ' + v.toLowerCase();
@@ -59,11 +64,13 @@ const BookStatusBtn = ({ updateBookStatus, bookStatus }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-	bookStatus: selectBookStatus
+	bookStatus: selectBookStatus,
+	bookKey: selectBookKey
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	updateBookStatus: (shelf) => dispatch(updateBookStatusStart(shelf)),
+	fetchBookStatus: (bookKey) => dispatch(fetchBookStatusStart(bookKey)),
+	updateBookStatus: (status) => dispatch(updateBookStatusStart(status))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookStatusBtn);

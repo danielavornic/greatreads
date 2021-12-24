@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { Container, Box, Heading, Text } from '@chakra-ui/layout';
 import { Grid, Image } from '@chakra-ui/react';
 
-import { fetchBookStart, fetchBookStatusStart } from '../redux/books/books.actions';
+import { fetchBookStart } from '../redux/books/books.actions';
 import {
 	selectBook,
 	selectIsBookFetching
@@ -19,13 +19,11 @@ import CustomSpinner from '../components/common/custom-spinner';
 import ReadMore from '../components/common/read-more';
 import BookStatusBtn from '../components/books/book-status-btn';
 
-const BookPage = ({ match, fetchBookStart, book, isBookLoading, currentUser, fetchBookStatusStart }) => {
+const BookPage = ({ match, fetchBookStart, book, isBookLoading, currentUser }) => {
 	const bookKey = match.params.bookKey;
 	useEffect(() => {
 		fetchBookStart(bookKey);
-		if (currentUser)
-			fetchBookStatusStart(bookKey)
-	}, [bookKey, fetchBookStart, fetchBookStatusStart]);
+	}, [bookKey, fetchBookStart]);
 
 	const [ isLoadingImg, setIsLoadingImg ] = useState(true);
 
@@ -131,8 +129,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	fetchBookStart: (bookKey) => dispatch(fetchBookStart(bookKey)),
-	fetchBookStatusStart: (bookKey) => dispatch(fetchBookStatusStart(bookKey))
+	fetchBookStart: (bookKey) => dispatch(fetchBookStart(bookKey))
 });
 
 export default withRouter(
