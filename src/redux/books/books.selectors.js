@@ -4,7 +4,7 @@ const selectBooks = state => state.books;
 
 export const selectBook = createSelector(
   [selectBooks],
-  books => books.book
+  books => books.bookData
 );
 
 export const selectIsBookFetching = createSelector(

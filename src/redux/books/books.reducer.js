@@ -2,7 +2,7 @@ import BooksActionTypes from './books.types';
 
 const INITIAL_STATE = {
   bookKey: undefined,
-  book: undefined,
+  bookData: undefined,
   bookStatus: null,
   bookStatusError: undefined,
   isBookFetching: false,
@@ -15,21 +15,21 @@ const booksReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state, 
         bookKey: action.payload,
-        book: undefined,
+        bookData: undefined,
         isBookFetching: true,
         bookError: undefined,
       };
     case BooksActionTypes.FETCH_BOOK_SUCCESS:
       return {
         ...state, 
-        book: action.payload,
+        bookData: action.payload,
         isBookFetching: false,
         bookError: undefined,
       };
     case BooksActionTypes.FETCH_BOOK_FAILURE:
       return {
         ...state, 
-        book: undefined,
+        bookData: undefined,
         isBookFetching: false,
         bookError: action.payload
       };
