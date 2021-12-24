@@ -14,13 +14,26 @@ import {
 } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 
-import { selectBookStatus, selectBookKey, selectIsBookStatusLoading } from '../../redux/books/books.selectors';
-import { fetchBookStatusStart, updateBookStatusStart } from '../../redux/books/books.actions';
+import {
+	selectBookStatus,
+	selectBookKey,
+	selectIsBookStatusLoading,
+} from '../../redux/books/books.selectors';
+import {
+	fetchBookStatusStart,
+	updateBookStatusStart,
+} from '../../redux/books/books.actions';
 
-const BookStatusBtn = ({ updateBookStatus, bookStatus, fetchBookStatus, bookKey, isBookStatusLoading}) => {
+const BookStatusBtn = ({
+	updateBookStatus,
+	bookStatus,
+	fetchBookStatus,
+	bookKey,
+	isBookStatusLoading,
+}) => {
 	useEffect(() => {
 		fetchBookStatus(bookKey);
-	}, [fetchBookStatus, bookKey])
+	}, [fetchBookStatus, bookKey]);
 
 	const sentenceCase = (text) => {
 		return text.replace(/^[a-z]|[A-Z]/g, function (v, i) {
@@ -33,11 +46,13 @@ const BookStatusBtn = ({ updateBookStatus, bookStatus, fetchBookStatus, bookKey,
 			<Button
 				width={'calc(100% - 34px)'}
 				textAlign={'left'}
-				onClick={() => bookStatus ? updateBookStatus(null) : updateBookStatus('wantToRead')}
+				onClick={() =>
+					bookStatus ? updateBookStatus(null) : updateBookStatus('wantToRead')
+				}
 				variant={bookStatus ? 'outline' : 'solid'}
 				isLoading={isBookStatusLoading}
 			>
-				{bookStatus ? sentenceCase(bookStatus): 'Want to read' }
+				{bookStatus ? sentenceCase(bookStatus) : 'Want to read'}
 			</Button>
 			<Menu size='sm'>
 				<MenuButton
@@ -67,12 +82,12 @@ const BookStatusBtn = ({ updateBookStatus, bookStatus, fetchBookStatus, bookKey,
 const mapStateToProps = createStructuredSelector({
 	bookStatus: selectBookStatus,
 	bookKey: selectBookKey,
-	isBookStatusLoading: selectIsBookStatusLoading
+	isBookStatusLoading: selectIsBookStatusLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	fetchBookStatus: (bookKey) => dispatch(fetchBookStatusStart(bookKey)),
-	updateBookStatus: (status) => dispatch(updateBookStatusStart(status))
+	updateBookStatus: (status) => dispatch(updateBookStatusStart(status)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookStatusBtn);
