@@ -12,17 +12,17 @@ const colors = {
     600: '#3c4178',
     700: '#2a2f57',
     800: '#181c37',
-    900: '#080819'
+    900: '#080819',
   },
   google: {
     500: '#4285F4',
-    600: '#357ae8'
-  }
+    600: '#357ae8',
+  },
 };
 
 const config = {
   initialColorMode: 'light',
-  useSystemColorMode: false
+  useSystemColorMode: false,
 };
 
 const theme = extendTheme({ colors, config });
