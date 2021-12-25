@@ -21,11 +21,12 @@ import { signUpStart } from '../../redux/user/user.actions';
 const SignUpForm = ({ signUpStart, userError, isLogging }) => {
   const [userCredentials, setUserCredentials] = useState({
     name: null,
+    username: null,
     email: null,
     password: null,
     passwordConfirm: null,
   });
-  const { name, email, password, passwordConfirm } = userCredentials;
+  const { name, username, email, password, passwordConfirm } = userCredentials;
 
   const [authError, setAuthError] = useState({ message: '', type: '' });
 
@@ -42,7 +43,7 @@ const SignUpForm = ({ signUpStart, userError, isLogging }) => {
         message: 'Your passwords do not match.',
         type: 'password',
       });
-    else signUpStart(name, email, password);
+    else signUpStart(name, username, email, password);
   };
 
   useEffect(() => {
@@ -66,6 +67,18 @@ const SignUpForm = ({ signUpStart, userError, isLogging }) => {
             type: 'password',
           });
           break;
+        case 'auth/username-already-in-use':
+          setAuthError({
+            message: 'This username is already connected to an account.',
+            type: 'username',
+          });
+          break;
+        case 'auth/invalid-username':
+          setAuthError({
+            message: 'Please use a valid username.',
+            type: 'username',
+          });
+          break;
         default:
           setAuthError({
             message: 'An internal error has occured.',
@@ -73,12 +86,13 @@ const SignUpForm = ({ signUpStart, userError, isLogging }) => {
           });
       }
 
-      if (!password || !email || !name || !passwordConfirm)
+      if (!password || !email || !name || !username || !passwordConfirm)
         setAuthError({ message: '', type: '' });
     }
 
     return () => setAuthError({ message: '', type: '' });
-  }, [userError, name, email, password, passwordConfirm]);
+    // eslint-disable-next-line
+  }, [userError]);
 
   return (
     <form>
@@ -98,6 +112,16 @@ const SignUpForm = ({ signUpStart, userError, isLogging }) => {
             name='name'
             type='text'
             placeholder='Name'
+            onChange={handleChange}
+          />
+        </FormControl>
+        <FormControl id='username' isRequired>
+          <FormLabel>Username</FormLabel>
+          <Input
+            name='username'
+            type='text'
+            isInvalid={authError.type === 'username'}
+            placeholder='Username'
             onChange={handleChange}
           />
         </FormControl>
@@ -161,8 +185,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  signUpStart: (name, email, password) =>
-    dispatch(signUpStart({ name, email, password })),
+  signUpStart: (name, username, email, password) =>
+    dispatch(signUpStart({ name, username, email, password })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
