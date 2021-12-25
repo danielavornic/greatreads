@@ -6,7 +6,15 @@ import {
   updateProfile,
   signOut,
 } from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import {
+  doc,
+  collection,
+  query,
+  where,
+  setDoc,
+  getDoc,
+  getDocs,
+} from 'firebase/firestore';
 
 import UserActionTypes from './user.types';
 import {
@@ -24,6 +32,7 @@ function* addUserToFirestore(user) {
     yield setDoc(doc(db, 'users', user.uid), {
       email: user.email,
       displayName: user.displayName,
+      username: user.username,
       books: {
         all: [],
         read: [],
@@ -36,12 +45,40 @@ function* addUserToFirestore(user) {
   }
 }
 
+function* checkIfUsernameExists(username) {
+  const usersRef = collection(db, 'users');
+  const existingUsernames = query(usersRef, where('username', '==', username));
+  const existingUsernamesSnap = yield getDocs(existingUsernames);
+  let i = 0;
+  existingUsernamesSnap.forEach(() => i++);
+  return i > 0;
+}
+
+function isUsernameValid(username) {
+  const usernameRegex =
+    /^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._-]+(?<![_.])$/;
+  return usernameRegex.test(username);
+}
+
+function* createUsernameGoogle(user) {
+  let username = user.email.split('@')[0];
+  let usernameExists = yield checkIfUsernameExists(username);
+  while (usernameExists) {
+    username += username[username.length - 1];
+    usernameExists = yield checkIfUsernameExists(username);
+  }
+  return username;
+}
+
 export function* signInWithGoogle() {
   try {
     const { user } = yield signInWithPopup(auth, provider);
     const userRef = yield doc(db, 'users', user.uid);
     const userSnap = yield getDoc(userRef);
-    if (!userSnap.exists()) yield addUserToFirestore(user);
+    if (!userSnap.exists()) {
+      user.username = createUsernameGoogle(user);
+      yield addUserToFirestore(user);
+    }
     yield put(signInSuccess(user));
   } catch (error) {
     yield put(signInFailure(error));
@@ -57,16 +94,26 @@ export function* signInWithEmail({ payload: { email, password } }) {
   }
 }
 
-export function* signUp({ payload: { name, email, password } }) {
+export function* signUp({ payload: { name, username, email, password } }) {
   try {
-    const { user } = yield createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    yield updateProfile(user, { displayName: name }).then();
-    yield addUserToFirestore(user);
-    yield put(signUpSuccess(user));
+    if (isUsernameValid(username)) {
+      const usernameExists = yield checkIfUsernameExists(username);
+      if (!usernameExists) {
+        const { user } = yield createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        user.username = username;
+        yield updateProfile(user, { displayName: name }).then();
+        yield addUserToFirestore(user);
+        yield put(signUpSuccess(user));
+      } else {
+        yield put(signUpFailure({ code: 'auth/username-already-in-use' }));
+      }
+    } else {
+      yield put(signUpFailure({ code: 'auth/invalid-username' }));
+    }
   } catch (error) {
     yield put(signUpFailure(error));
   }
