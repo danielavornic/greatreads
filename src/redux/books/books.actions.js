@@ -1,46 +1,46 @@
 import BooksActionTypes from './books.types';
 
-export const fetchBookStart = bookKey => ({
+export const fetchBookStart = (bookKey) => ({
   type: BooksActionTypes.FETCH_BOOK_START,
-  payload: bookKey
+  payload: bookKey,
 });
 
-export const fetchBookSuccess = book => ({
+export const fetchBookSuccess = (book) => ({
   type: BooksActionTypes.FETCH_BOOK_SUCCESS,
-  payload: book
+  payload: book,
 });
 
-export const fetchBookFailure = error => ({
+export const fetchBookFailure = (error) => ({
   type: BooksActionTypes.FETCH_BOOK_FAILURE,
-  payload: error
+  payload: error,
 });
 
-export const fetchBookStatusStart = bookKey => ({
+export const fetchBookStatusStart = (bookKey) => ({
   type: BooksActionTypes.FETCH_BOOK_STATUS_START,
-  payload: bookKey
+  payload: bookKey,
 });
 
-export const fetchBookStatusSuccess = status => ({
+export const fetchBookStatusSuccess = (status) => ({
   type: BooksActionTypes.FETCH_BOOK_STATUS_SUCCESS,
-  payload: status
+  payload: status,
 });
 
-export const fetchBookStatusFailure = error => ({
+export const fetchBookStatusFailure = (error) => ({
   type: BooksActionTypes.FETCH_BOOK_STATUS_FAILURE,
-  payload: error
+  payload: error,
 });
 
-export const updateBookStatusStart = status => ({
+export const updateBookStatusStart = (status) => ({
   type: BooksActionTypes.UPDATE_BOOK_STATUS_START,
-  payload: status
+  payload: status,
 });
 
 export const updateBookStatusSuccess = (status) => ({
   type: BooksActionTypes.UPDATE_BOOK_STATUS_SUCCESS,
-  payload: status
+  payload: status,
 });
 
-export const updateBookStatusFailure = error => ({
+export const updateBookStatusFailure = (error) => ({
   type: BooksActionTypes.UPDATE_BOOK_STATUS_FAILURE,
-  payload: error
+  payload: error,
 });

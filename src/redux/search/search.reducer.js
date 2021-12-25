@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   searchQuery: undefined,
   searchResults: null,
   areSearchResultsFetching: false,
-  searchError: null
+  searchError: null,
 };
 
 const searchReducer = (state = INITIAL_STATE, action) => {
@@ -14,21 +14,22 @@ const searchReducer = (state = INITIAL_STATE, action) => {
         ...state,
         searchQuery: action.payload,
         searchResults: null,
-        areSearchResultsFetching: true
+        areSearchResultsFetching: true,
       };
     case SearchActionTypes.SEARCH_SUCCESS:
       return {
         ...state,
+        searchResults: action.payload,
         searchQuery: undefined,
         areSearchResultsFetching: false,
-        searchResults: action.payload
+        searchError: null,
       };
     case SearchActionTypes.SEARCH_FAILURE:
       return {
         ...state,
+        searchError: action.payload,
         searchResults: null,
         areSearchResultsFetching: false,
-        searchError: action.payload
       };
     default:
       return state;

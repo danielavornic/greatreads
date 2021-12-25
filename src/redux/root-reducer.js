@@ -9,14 +9,14 @@ import userReducer from './user/user.reducer';
 
 const persistConfig = {
   key: 'root',
-  storage
+  storage,
 };
 
 const rootReducer = combineReducers({
   search: searchReducer,
   books: booksReducer,
   authors: authorsReducer,
-  user: userReducer
+  user: userReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

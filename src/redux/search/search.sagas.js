@@ -6,9 +6,11 @@ import { searchSuccess, searchFailure } from './search.actions';
 export function* searchAsync({ payload: { category, term, facet } }) {
   try {
     const formattedTerm = term.replace(/ /g, '+').toLowerCase();
-    const urlFacet = (facet === 'all') ? 'q' : facet;
-    const fetchUrl = (category === 'books') ? `https://openlibrary.org/search.json?${urlFacet}=${formattedTerm}`
-                                            : `https://openlibrary.org/search/${category}.json?q=${formattedTerm}`;
+    const urlFacet = facet === 'all' ? 'q' : facet;
+    const fetchUrl =
+      category === 'books'
+        ? `https://openlibrary.org/search.json?${urlFacet}=${formattedTerm}`
+        : `https://openlibrary.org/search/${category}.json?q=${formattedTerm}`;
     const response = yield fetch(fetchUrl);
     const searchResults = yield response.json();
     yield put(searchSuccess(searchResults));
@@ -17,12 +19,10 @@ export function* searchAsync({ payload: { category, term, facet } }) {
   }
 }
 
-export function* searchStart() {
+export function* onSearchStart() {
   yield takeLatest(SearchActionTypes.SEARCH_START, searchAsync);
 }
 
 export function* searchSagas() {
-  yield all([
-    call(searchStart)
-  ]);
+  yield all([call(onSearchStart)]);
 }

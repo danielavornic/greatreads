@@ -1,16 +1,16 @@
 import SearchActionTypes from './search.types';
 
-export const searchStart = searchQuery => ({
+export const searchStart = (searchQuery) => ({
   type: SearchActionTypes.SEARCH_START,
-  payload: searchQuery
+  payload: searchQuery,
 });
 
-export const searchSuccess = searchResults => ({
+export const searchSuccess = (searchResults) => ({
   type: SearchActionTypes.SEARCH_SUCCESS,
-  payload: searchResults
+  payload: searchResults,
 });
 
-export const searchFailure = error => ({
+export const searchFailure = (error) => ({
   type: SearchActionTypes.SEARCH_FAILURE,
-  payload: error
+  payload: error,
 });
