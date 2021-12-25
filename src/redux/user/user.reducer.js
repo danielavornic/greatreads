@@ -9,7 +9,6 @@ const INITIAL_STATE = {
 const userReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case UserActionTypes.EMAIL_SIGN_IN_START:
-		case UserActionTypes.GOOGLE_SIGN_IN_START:
 		case UserActionTypes.SIGN_UP_START:
 			return {
 				...state,
@@ -35,6 +34,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				currentUser: null,
+				isUserLogging: false,
 				error: null,
 			};
 		default:
