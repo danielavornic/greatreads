@@ -42,7 +42,8 @@ const SignInForm = ({ emailSignInStart, userError, isLogging }) => {
     else if (userError) setAuthError("Your credentials don't match.");
 
     return () => setAuthError(null);
-  }, [userError, email, password]);
+    // eslint-disable-next-line
+  }, [userError]);
 
   return (
     <form onSubmit={handleSubmit}>
