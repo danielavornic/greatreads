@@ -23,6 +23,7 @@ const AuthorContainer = ({ author }) => {
 					boxShadow='lg'
 					alt='fallback-author-image'
 					display={isLoadingImg ? 'block' : 'none'}
+					mx={{ base: 'auto', md: '0' }}
 				/>
 				<Image
 					src={
@@ -36,6 +37,7 @@ const AuthorContainer = ({ author }) => {
 					alt='author-image'
 					onLoad={() => setIsLoadingImg(false)}
 					display={isLoadingImg ? 'none' : 'block'}
+					mx={{ base: 'auto', md: '0' }}
 				/>
 			</Box>
 			<Box w={'full'}>
@@ -44,11 +46,16 @@ const AuthorContainer = ({ author }) => {
 					fontWeight={700}
 					fontSize={{ base: '3xl', md: '4xl' }}
 					pb='12px'
+					textAlign={{ base: 'center', md: 'left' }}
 				>
 					{author.name}
 				</Heading>
 				{author.birth_date || author.death_date ? (
-					<Text fontSize={{ base: 'lg', md: 'xl' }} pb='20px'>
+					<Text
+						fontSize={{ base: 'lg', md: 'xl' }}
+						pb='20px'
+						textAlign={{ base: 'center', md: 'left' }}
+					>
 						{author.birth_date ? `${author.birth_date} - ` : '? - '}
 						{author.death_date ? `${author.death_date}` : ''}
 					</Text>
