@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { Link } from 'react-router-dom';
 
+import { Link } from 'react-router-dom';
 import { Box, Heading, Text } from '@chakra-ui/layout';
 import { Grid, Image } from '@chakra-ui/react';
 
 import { selectBook } from '../../redux/books/books.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 
-import ReadMore from '../common/read-more';
 import BookStatusBtn from '../books/book-status-btn';
+import ReadMore from '../common/read-more';
 
 const BookContainer = ({ book, currentUser }) => {
 	const [isLoadingImg, setIsLoadingImg] = useState(true);
@@ -21,10 +21,10 @@ const BookContainer = ({ book, currentUser }) => {
 			gap={[4, 6, 10]}
 			w={'full'}
 		>
-			<Box>
+			<Box mx={{ base: 'auto', md: 'left' }} mb={{ base: 4, md: 0 }}>
 				<Image
 					src='https://openlibrary.org/images/icons/avatar_book.png'
-					width='240px'
+					width={{ base: '180px', md: '240px' }}
 					height='auto'
 					boxShadow='sm'
 					alt='fallback-book-cover'
@@ -36,7 +36,7 @@ const BookContainer = ({ book, currentUser }) => {
 							? `https://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg`
 							: 'https://openlibrary.org/images/icons/avatar_book.png'
 					}
-					width='240px'
+					width={{ base: '180px', md: '240px' }}
 					height='auto'
 					boxShadow='sm'
 					alt='book-cover'
@@ -44,37 +44,46 @@ const BookContainer = ({ book, currentUser }) => {
 					display={isLoadingImg ? 'none' : 'block'}
 				/>
 				{currentUser ? (
-					<Box my={8} width={'full'}>
+					<Box my={8} width={'full'} display={{ base: 'none', md: 'block' }}>
 						<BookStatusBtn />
 					</Box>
 				) : null}
 			</Box>
 			<Box>
-				<Heading
-					as='h1'
-					fontWeight={700}
-					fontSize={{ base: '3xl', md: '4xl' }}
-					pb='8px'
-				>
-					{book.title}
-				</Heading>
-				<Heading as='h2' fontSize={{ base: 'lg', md: 'xl' }} pb='20px'>
-					by
-					{book.authors
-						? book.authors.map((author, idx) => (
-								<Link key={idx} to={author.key ? author.key : '#'}>
-									<Text
-										display='inline'
-										pl='6px'
-										_hover={{ textDecoration: 'underline' }}
-									>
-										{author.name}
-										{idx !== 0 || idx !== book.authors.length - 1 ? ',' : null}
-									</Text>
-								</Link>
-						  ))
-						: ' Unknown author'}
-				</Heading>
+				<Box textAlign={{ base: 'center', md: 'left' }}>
+					<Heading
+						as='h1'
+						fontWeight={700}
+						fontSize={{ base: '3xl', md: '4xl' }}
+						pb='8px'
+					>
+						{book.title}
+					</Heading>
+					<Heading as='h2' fontSize={{ base: 'lg', md: 'xl' }} pb='20px'>
+						by
+						{book.authors
+							? book.authors.map((author, idx) => (
+									<Link key={idx} to={author.key ? author.key : '#'}>
+										<Text
+											display='inline'
+											pl='6px'
+											_hover={{ textDecoration: 'underline' }}
+										>
+											{author.name}
+											{idx !== 0 || idx !== book.authors.length - 1
+												? ','
+												: null}
+										</Text>
+									</Link>
+							  ))
+							: ' Unknown author'}
+					</Heading>
+				</Box>
+				{currentUser ? (
+					<Box mb={8} width={'full'} display={{ base: 'block', md: 'none' }}>
+						<BookStatusBtn />
+					</Box>
+				) : null}
 				<Text pb='4px' color={'gray.600'}>
 					This edition was published in <b>{book.publish_date}</b>
 				</Text>
