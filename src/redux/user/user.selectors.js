@@ -14,5 +14,5 @@ export const selectIsUserLogging = createSelector(
 
 export const selectUserError = createSelector(
   [selectUser],
-  (user) => user.userEror
+  (user) => user.userError
 );
