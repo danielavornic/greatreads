@@ -4,11 +4,11 @@ import Hero from '../components/homepage/hero';
 import FeaturesSection from '../components/homepage/features-section';
 
 const HomePage = () => (
-	<div>
-		<Hero />
-		<Divider />
-		<FeaturesSection />
-	</div>
+  <div>
+    <Hero />
+    <Divider />
+    <FeaturesSection />
+  </div>
 );
 
 export default HomePage;
