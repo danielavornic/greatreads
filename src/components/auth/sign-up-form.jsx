@@ -8,13 +8,16 @@ import {
 	Stack,
 	Button,
 	Alert,
-	AlertIcon
+	AlertIcon,
 } from '@chakra-ui/react';
 
+import {
+	selectUserError,
+	selectIsUserLogging,
+} from '../../redux/user/user.selectors';
 import { signUpStart } from '../../redux/user/user.actions';
-import { selectUserError } from '../../redux/user/user.selectors';
 
-const SignUpForm = ({ signUpStart, userError }) => {
+const SignUpForm = ({ signUpStart, userError, isLogging }) => {
 	const [userCredentials, setUserCredentials] = useState({
 		name: null,
 		email: null,
@@ -144,6 +147,7 @@ const SignUpForm = ({ signUpStart, userError }) => {
 					title='Fill out all fields!'
 					onClick={handleSubmit}
 					colorScheme='brand'
+					isLoading={isLogging}
 				>
 					Sign up
 				</Button>
@@ -153,7 +157,8 @@ const SignUpForm = ({ signUpStart, userError }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-	userError: selectUserError
+	userError: selectUserError,
+	isLogging: selectIsUserLogging,
 });
 
 const mapDispatchToProps = (dispatch) => ({

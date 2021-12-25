@@ -8,13 +8,16 @@ import {
 	Stack,
 	Button,
 	Alert,
-	AlertIcon
+	AlertIcon,
 } from '@chakra-ui/react';
 
 import { emailSignInStart } from '../../redux/user/user.actions';
-import { selectUserError } from '../../redux/user/user.selectors';
+import {
+	selectUserError,
+	selectIsUserLogging,
+} from '../../redux/user/user.selectors';
 
-const SignInForm = ({ emailSignInStart, userError }) => {
+const SignInForm = ({ emailSignInStart, userError, isLogging }) => {
 	const [userCredentials, setUserCredentials] = useState({
 		email: null,
 		password: null,
@@ -34,10 +37,8 @@ const SignInForm = ({ emailSignInStart, userError }) => {
 	};
 
 	useEffect(() => {
-		if (!email || !password) 
-			setAuthError(null);
-		else if (userError)
-			setAuthError('Your credentials don\'t match.');
+		if (!email || !password) setAuthError(null);
+		else if (userError) setAuthError("Your credentials don't match.");
 
 		return () => setAuthError(null);
 	}, [userError, email, password]);
@@ -75,6 +76,7 @@ const SignInForm = ({ emailSignInStart, userError }) => {
 				</FormControl>
 				<Button
 					type='submit'
+					isLoading={isLogging}
 					onClick={handleSubmit}
 					colorScheme='brand'
 					title='Fill out all fields!'
@@ -88,7 +90,8 @@ const SignInForm = ({ emailSignInStart, userError }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-	userError: selectUserError
+	userError: selectUserError,
+	isLogging: selectIsUserLogging,
 });
 
 const mapDispatchToProps = (dispatch) => ({
