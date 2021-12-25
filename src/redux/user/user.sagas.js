@@ -76,7 +76,7 @@ export function* signInWithGoogle() {
     const userRef = yield doc(db, 'users', user.uid);
     const userSnap = yield getDoc(userRef);
     if (!userSnap.exists()) {
-      user.username = createUsernameGoogle(user);
+      user.username = yield createUsernameGoogle(user);
       yield addUserToFirestore(user);
     }
     yield put(signInSuccess(user));
