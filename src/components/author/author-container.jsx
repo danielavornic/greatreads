@@ -7,8 +7,8 @@ import { Flex, Image } from '@chakra-ui/react';
 
 import { selectAuthor } from '../../redux/authors/authors.selectors';
 
-import ReadMore from '../common/read-more';
 import AuthorBooksContainer from './author-books-container';
+import ReadMore from '../common/read-more';
 
 const AuthorContainer = ({ author }) => {
 	const [isLoadingImg, setIsLoadingImg] = useState(true);

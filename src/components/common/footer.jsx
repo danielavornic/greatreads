@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-
 import {
   Box,
   chakra,
@@ -8,7 +7,6 @@ import {
   Text,
   VisuallyHidden,
 } from '@chakra-ui/react';
-
 import { FaGithub, FaDribbble } from 'react-icons/fa';
 
 import { ReactComponent as Logo } from '../../assets/greatreads-logo.svg';
@@ -60,12 +58,7 @@ const Footer = () => (
         </Link>
       </Stack>
     </Container>
-
-    <Box
-      borderTopWidth={1}
-      borderStyle={'solid'}
-      borderColor={'gray.200'}
-    >
+    <Box borderTopWidth={1} borderStyle={'solid'} borderColor={'gray.200'}>
       <Container
         as={Stack}
         maxW={'6xl'}
@@ -77,10 +70,16 @@ const Footer = () => (
       >
         <Text>© Made by Daniela Vornic</Text>
         <Stack direction={'row'} spacing={6}>
-          <SocialButton label={'Github'} href={'https://github.com/danielavornic'}>
+          <SocialButton
+            label={'Github'}
+            href={'https://github.com/danielavornic'}
+          >
             <FaGithub />
           </SocialButton>
-          <SocialButton label={'Dribbble'} href={'https://dribbble.com/danielavornic'}>
+          <SocialButton
+            label={'Dribbble'}
+            href={'https://dribbble.com/danielavornic'}
+          >
             <FaDribbble />
           </SocialButton>
         </Stack>
