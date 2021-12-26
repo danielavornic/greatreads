@@ -5,12 +5,7 @@ import SearchInput from '../search/search-input';
 import FeatureItem from './feature-item';
 
 const FeaturesSection = () => (
-  <Stack
-    w='full'
-    align={'center'}
-    spacing={{ base: 8, md: 12 }}
-    py={{ base: 16, md: 24 }}
-  >
+  <Stack w='full' align={'center'} spacing={{ base: 8, md: 12 }}>
     <Heading
       as='h2'
       textAlign={'center'}
