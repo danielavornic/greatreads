@@ -25,7 +25,7 @@ import {
   signOutSuccess,
   signOutFailure,
 } from './user.actions';
-import { auth, provider, db } from '../../firebase/firebase.utils';
+import { auth, provider, db } from '../../utils/firebase';
 
 function* addUserToFirestore(user) {
   try {

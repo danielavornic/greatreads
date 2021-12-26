@@ -18,7 +18,7 @@ import {
   updateBookStatusSuccess,
   updateBookStatusFailure,
 } from './books.actions';
-import { db } from '../../firebase/firebase.utils';
+import { db } from '../../utils/firebase';
 
 const statuses = ['wantToRead', 'read', 'currentlyReading'];
 const statusesAndAll = ['wantToRead', 'read', 'currentlyReading', 'all'];
