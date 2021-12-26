@@ -6,7 +6,7 @@ import FeaturesSection from '../components/homepage/features-section';
 const HomePage = () => (
   <div>
     <Hero />
-    <Divider />
+    <Divider mb={{ base: 20, md: 24 }} pt={{ base: 20, md: 24 }} />
     <FeaturesSection />
   </div>
 );
