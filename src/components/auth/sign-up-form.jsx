@@ -17,6 +17,7 @@ import {
   selectIsUserLogging,
 } from '../../redux/user/user.selectors';
 import { signUpStart } from '../../redux/user/user.actions';
+import { handleSignUpErrors } from '../../utils/auth';
 
 const SignUpForm = ({ signUpStart, userError, isLogging }) => {
   const [userCredentials, setUserCredentials] = useState({
@@ -37,7 +38,6 @@ const SignUpForm = ({ signUpStart, userError, isLogging }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     if (password !== passwordConfirm)
       setAuthError({
         message: 'Your passwords do not match.',
@@ -48,44 +48,7 @@ const SignUpForm = ({ signUpStart, userError, isLogging }) => {
 
   useEffect(() => {
     if (userError) {
-      switch (userError.code) {
-        case 'auth/invalid-email':
-          setAuthError({
-            message: 'Please use a valid email adress.',
-            type: 'email',
-          });
-          break;
-        case 'auth/email-already-in-use':
-          setAuthError({
-            message: 'This email is already connected to an account.',
-            type: 'email',
-          });
-          break;
-        case 'auth/weak-password':
-          setAuthError({
-            message: 'Password should be at least 6 characters.',
-            type: 'password',
-          });
-          break;
-        case 'auth/username-already-in-use':
-          setAuthError({
-            message: 'This username is already connected to an account.',
-            type: 'username',
-          });
-          break;
-        case 'auth/invalid-username':
-          setAuthError({
-            message: 'Please use a valid username.',
-            type: 'username',
-          });
-          break;
-        default:
-          setAuthError({
-            message: 'An internal error has occured.',
-            type: '',
-          });
-      }
-
+      setAuthError(handleSignUpErrors(userError.code));
       if (!password || !email || !name || !username || !passwordConfirm)
         setAuthError({ message: '', type: '' });
     }
