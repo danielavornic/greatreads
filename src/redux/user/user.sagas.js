@@ -33,6 +33,7 @@ function* addUserToFirestore(user) {
       email: user.email,
       displayName: user.displayName,
       username: user.username,
+      photoURL: user.photoURL,
       books: {
         all: [],
         read: [],
