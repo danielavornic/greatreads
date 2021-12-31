@@ -3,7 +3,7 @@ import { takeLatest, put, all, call } from 'redux-saga/effects';
 import SearchActionTypes from './search.types';
 import { searchSuccess, searchFailure } from './search.actions';
 
-export function* searchAsync({ payload: { category, term, facet } }) {
+function* searchAsync({ payload: { category, term, facet } }) {
   try {
     const formattedTerm = term.replace(/ /g, '+').toLowerCase();
     const urlFacet = facet === 'all' ? 'q' : facet;
@@ -19,7 +19,7 @@ export function* searchAsync({ payload: { category, term, facet } }) {
   }
 }
 
-export function* onSearchStart() {
+function* onSearchStart() {
   yield takeLatest(SearchActionTypes.SEARCH_START, searchAsync);
 }
 

@@ -3,7 +3,7 @@ import { takeLatest, put, all, call } from 'redux-saga/effects';
 import AuthorsActionTypes from './authors.types';
 import { fetchAuthorSuccess, fetchAuthorFailure } from './authors.actions';
 
-export function* fetchAuthorAsync({ payload }) {
+function* fetchAuthorAsync({ payload }) {
   try {
     const authorResponse = yield fetch(
       `https://openlibrary.org/authors/${payload}.json`
@@ -21,7 +21,7 @@ export function* fetchAuthorAsync({ payload }) {
   }
 }
 
-export function* fetchAuthorStart() {
+function* fetchAuthorStart() {
   yield takeLatest(AuthorsActionTypes.FETCH_AUTHOR_START, fetchAuthorAsync);
 }
 

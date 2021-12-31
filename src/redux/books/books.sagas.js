@@ -130,14 +130,17 @@ function* updateBookStatus({ payload: status }) {
 }
 
 export function* onFetchBookStart() {
+function* onFetchBookStart() {
   yield takeLatest(BooksActionTypes.FETCH_BOOK_START, fetchBookAsync);
 }
 
 export function* onFetchBookStatusStart() {
+function* onFetchBookStatusStart() {
   yield takeLatest(BooksActionTypes.FETCH_BOOK_STATUS_START, fetchBookStatus);
 }
 
 export function* onUpdateBookStatusStart() {
+function* onUpdateBookStatusStart() {
   yield takeLatest(BooksActionTypes.UPDATE_BOOK_STATUS_START, updateBookStatus);
 }
 

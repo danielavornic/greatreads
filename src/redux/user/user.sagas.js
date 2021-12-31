@@ -71,7 +71,7 @@ function* createUsernameGoogle(user) {
   return username;
 }
 
-export function* signInWithGoogle() {
+function* signInWithGoogle() {
   try {
     const { user } = yield signInWithPopup(auth, provider);
     const userRef = yield doc(db, 'users', user.uid);
@@ -86,7 +86,7 @@ export function* signInWithGoogle() {
   }
 }
 
-export function* signInWithEmail({ payload: { email, password } }) {
+function* signInWithEmail({ payload: { email, password } }) {
   try {
     const { user } = yield signInWithEmailAndPassword(auth, email, password);
     yield put(signInSuccess(user));
@@ -95,7 +95,7 @@ export function* signInWithEmail({ payload: { email, password } }) {
   }
 }
 
-export function* signUp({ payload: { name, username, email, password } }) {
+function* signUp({ payload: { name, username, email, password } }) {
   try {
     if (isUsernameValid(username)) {
       const usernameExists = yield checkIfUsernameExists(username);
@@ -120,7 +120,7 @@ export function* signUp({ payload: { name, username, email, password } }) {
   }
 }
 
-export function* signOutUser() {
+function* signOutUser() {
   try {
     yield signOut(auth);
     yield put(signOutSuccess());
@@ -129,7 +129,7 @@ export function* signOutUser() {
   }
 }
 
-export function* isUserAuthenticated() {
+function* isUserAuthenticated() {
   try {
     const user = yield auth.currentUser;
     if (user) yield put(signInSuccess(user));
@@ -138,23 +138,23 @@ export function* isUserAuthenticated() {
   }
 }
 
-export function* onGoogleSignInStart() {
+function* onGoogleSignInStart() {
   yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle);
 }
 
-export function* onEmailSignInStart() {
+function* onEmailSignInStart() {
   yield takeLatest(UserActionTypes.EMAIL_SIGN_IN_START, signInWithEmail);
 }
 
-export function* onSignUpStart() {
+function* onSignUpStart() {
   yield takeLatest(UserActionTypes.SIGN_UP_START, signUp);
 }
 
-export function* onSignOutStart() {
+function* onSignOutStart() {
   yield takeLatest(UserActionTypes.SIGN_OUT_START, signOutUser);
 }
 
-export function* onCheckUserSession() {
+function* onCheckUserSession() {
   yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
 }
 
