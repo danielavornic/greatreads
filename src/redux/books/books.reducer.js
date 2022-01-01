@@ -8,6 +8,9 @@ const INITIAL_STATE = {
   bookStatus: null,
   isBookStatusLoading: false,
   bookStatusError: null,
+  userBooks: undefined,
+  areUserBooksFetching: false,
+  userBooksError: null,
 };
 
 const booksReducer = (state = INITIAL_STATE, action) => {
@@ -56,6 +59,27 @@ const booksReducer = (state = INITIAL_STATE, action) => {
         bookStatusError: action.payload,
         bookStatus: null,
         isBookStatusLoading: false,
+      };
+    case BooksActionTypes.FETCH_USER_BOOKS_START:
+      return {
+        ...state,
+        userBooks: undefined,
+        areUserBooksFetching: true,
+        userBooksError: null,
+      };
+    case BooksActionTypes.FETCH_USER_BOOKS_SUCCESS:
+      return {
+        ...state,
+        userBooks: action.payload,
+        areUserBooksFetching: false,
+        userBooksError: null,
+      };
+    case BooksActionTypes.FETCH_USER_BOOKS_FAILURE:
+      return {
+        ...state,
+        userBooksError: action.payload,
+        areUserBooksFetching: false,
+        userBooks: undefined,
       };
     default:
       return state;

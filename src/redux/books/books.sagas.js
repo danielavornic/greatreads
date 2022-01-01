@@ -5,10 +5,14 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  collection,
+  query,
+  getDocs,
+  where,
 } from 'firebase/firestore';
 
 import BooksActionTypes from './books.types';
-import { selectBookKey } from '../books/books.selectors';
+import { selectBookKey, selectBook } from '../books/books.selectors';
 import { selectCurrentUser } from '../user/user.selectors';
 import {
   fetchBookSuccess,
@@ -17,6 +21,8 @@ import {
   fetchBookStatusFailure,
   updateBookStatusSuccess,
   updateBookStatusFailure,
+  fetchUserBooksSuccess,
+  fetchUserBooksFailure,
 } from './books.actions';
 import { db } from '../../utils/firebase';
 
@@ -87,12 +93,16 @@ function* fetchBookAsync({ payload }) {
   }
 }
 
+function isBookStored(bookArr, bookKey) {
+  return bookArr ? bookArr.some((book) => book.bookKey === bookKey) : false;
+}
+
 function* fetchBookStatus({ payload: bookKey }) {
   try {
-    const userBooks = yield getUserBooks();
-    if (userBooks.all.includes(bookKey)) {
+    let userBooks = yield getUserBooks();
+    if (isBookStored(userBooks.all, bookKey)) {
       for (const status of statuses)
-        if (userBooks[status].includes(bookKey))
+        if (isBookStored(userBooks[status], bookKey))
           yield put(fetchBookStatusSuccess(status));
     } else yield put(fetchBookStatusSuccess(null));
   } catch (error) {
@@ -105,27 +115,61 @@ function* updateBookStatus({ payload: status }) {
     const userRef = yield getUserRef();
     const userBooks = yield getUserBooks();
     const bookKey = yield select(selectBookKey);
+    const book = yield select(selectBook);
+    const cover = book.covers ? book.covers[0] : null;
+    const storedBookObj = userBooks.all.filter(
+      (book) => book.bookKey === bookKey
+    )[0];
+    const newBookObj = {
+      bookKey: bookKey,
+      title: book.title,
+      cover: cover,
+    };
     if (status) {
-      for (const s of statuses)
-        if (s !== status && userBooks[s].includes(bookKey))
+      for (const s of statuses) {
+        if (s !== status && isBookStored(userBooks[s], bookKey))
           yield updateDoc(userRef, {
-            [`books.${s}`]: arrayRemove(bookKey),
+            [`books.${s}`]: arrayRemove(storedBookObj),
           });
+      }
       yield updateDoc(userRef, {
-        'books.all': arrayUnion(bookKey),
-        [`books.${status}`]: arrayUnion(bookKey),
+        'books.all': arrayUnion(newBookObj),
+        [`books.${status}`]: arrayUnion(newBookObj),
       });
     } else {
       for (const s of statusesAndAll) {
-        if (userBooks[s].includes(bookKey))
+        if (isBookStored(userBooks[s], bookKey))
           yield updateDoc(userRef, {
-            [`books.${s}`]: arrayRemove(bookKey),
+            [`books.${s}`]: arrayRemove(storedBookObj),
           });
       }
     }
     yield put(updateBookStatusSuccess(status));
   } catch (error) {
     yield put(updateBookStatusFailure(error));
+  }
+}
+
+function* fetchUserBooks({ payload: { username, shelf } }) {
+  try {
+    const usersRef = collection(db, 'users');
+    const user = query(usersRef, where('username', '==', username));
+    const userSnap = yield getDocs(user);
+    let result = {
+      books: [],
+      shelf: shelf,
+      displayName: '',
+      username: username,
+      photoURL: '',
+    };
+    userSnap.forEach((user) => {
+      result.books = user.data().books[shelf];
+      result.displayName = user.data().displayName;
+      result.photoURL = user.data().photoURL;
+    });
+    yield put(fetchUserBooksSuccess(result));
+  } catch (error) {
+    yield put(fetchUserBooksFailure(error));
   }
 }
 
@@ -141,10 +185,15 @@ function* onUpdateBookStatusStart() {
   yield takeLatest(BooksActionTypes.UPDATE_BOOK_STATUS_START, updateBookStatus);
 }
 
+function* onFetchUserBooksStart() {
+  yield takeLatest(BooksActionTypes.FETCH_USER_BOOKS_START, fetchUserBooks);
+}
+
 export function* booksSagas() {
   yield all([
     call(onFetchBookStart),
     call(onUpdateBookStatusStart),
     call(onFetchBookStatusStart),
+    call(onFetchUserBooksStart),
   ]);
 }

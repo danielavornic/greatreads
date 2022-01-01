@@ -26,3 +26,13 @@ export const selectIsBookStatusLoading = createSelector(
   [selectBooks],
   (books) => books.isBookStatusLoading
 );
+
+export const selectUserBooks = createSelector(
+  [selectBooks],
+  (books) => books.userBooks
+);
+
+export const selectAreUserBooksFetching = createSelector(
+  [selectBooks],
+  (books) => books.areUserBooksFetching
+);

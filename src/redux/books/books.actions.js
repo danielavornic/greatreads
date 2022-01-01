@@ -44,3 +44,18 @@ export const updateBookStatusFailure = (error) => ({
   type: BooksActionTypes.UPDATE_BOOK_STATUS_FAILURE,
   payload: error,
 });
+
+export const fetchUserBooksStart = (usernameAndShelf) => ({
+  type: BooksActionTypes.FETCH_USER_BOOKS_START,
+  payload: usernameAndShelf,
+});
+
+export const fetchUserBooksSuccess = (userBooks) => ({
+  type: BooksActionTypes.FETCH_USER_BOOKS_SUCCESS,
+  payload: userBooks,
+});
+
+export const fetchUserBooksFailure = (error) => ({
+  type: BooksActionTypes.FETCH_USER_BOOKS_FAILURE,
+  payload: error,
+});
