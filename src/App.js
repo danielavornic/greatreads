@@ -36,7 +36,6 @@ const App = ({ currentUser, checkUserSession }) => {
   return (
     <div id='container'>
       <Header />
-      <Container my={{ base: 24, lg: 32 }} maxW={'5xl'} id='main-content'>
       <Container px='0' mt={28} mb={24} maxW={'full'} id='main-content'>
         <ScrollToTop />
         <Switch>
