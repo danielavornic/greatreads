@@ -14,6 +14,7 @@ import BookPage from './pages/book';
 import AuthorPage from './pages/author';
 import SignInPage from './pages/signin';
 import SignUpPage from './pages/signup';
+import UserBooksPage from './pages/user-books';
 
 import Header from './components/common/header';
 import Footer from './components/common/footer';
@@ -59,6 +60,14 @@ const App = ({ currentUser, checkUserSession }) => {
           </Route>
           <Route exact path='/books/:bookKey' component={BookPage} />
           <Route exact path='/authors/:authorKey' component={AuthorPage} />
+          <Route exact path='/users/:username/books'>
+            <Redirect to='all' />
+          </Route>
+          <Route
+            exact
+            path='/users/:username/books/:shelf/'
+            component={UserBooksPage}
+          />
         </Switch>
       </Container>
       <Footer />
