@@ -27,3 +27,9 @@ export const handleSignUpErrors = (code) => {
   }
   return error;
 };
+
+export const isUsernameValid = (username) => {
+  const usernameRegex =
+    /^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._-]+(?<![_.])$/;
+  return usernameRegex.test(username);
+};

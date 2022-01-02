@@ -26,6 +26,7 @@ import {
   signOutFailure,
 } from './user.actions';
 import { auth, provider, db } from '../../utils/firebase';
+import { isUsernameValid } from '../../utils/auth';
 
 function* addUserToFirestore(user) {
   try {
@@ -53,12 +54,6 @@ function* checkIfUsernameExists(username) {
   let i = 0;
   existingUsernamesSnap.forEach(() => i++);
   return i > 0;
-}
-
-function isUsernameValid(username) {
-  const usernameRegex =
-    /^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._-]+(?<![_.])$/;
-  return usernameRegex.test(username);
 }
 
 function* createUsernameGoogle(user) {
