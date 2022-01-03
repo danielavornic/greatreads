@@ -15,7 +15,7 @@ const UserBooksList = ({ userBooks }) => {
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);
 
-  const pageSize = 15;
+  const pageSize = 24;
   const offset = (current - 1) * pageSize;
   const results = data ? data.slice(offset, offset + pageSize) : [];
 
@@ -51,12 +51,12 @@ const UserBooksList = ({ userBooks }) => {
               w={'full'}
               templateColumns={[
                 'repeat(3, 1fr)',
-                'repeat(4, 1fr)',
+                'repeat(5, 1fr)',
                 'repeat(4, 1fr)',
                 'repeat(5, 1fr)',
+                'repeat(6, 1fr)',
               ]}
-              align='center'
-              gap={[4, 4, 6]}
+              gap={4}
             >
               {results.map(({ bookKey, cover, ...otherBookProps }, idx) => (
                 <CoverBookListItem
