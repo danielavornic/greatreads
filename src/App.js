@@ -37,7 +37,13 @@ const App = ({ currentUser, checkUserSession }) => {
   return (
     <div id='container'>
       <Header />
-      <Container px='0' mt={28} mb={24} maxW={'full'} id='main-content'>
+      <Container
+        px='0'
+        mt={{ base: 24, md: 28 }}
+        mb={{ base: 22, md: 24 }}
+        maxW={'full'}
+        id='main-content'
+      >
         <ScrollToTop />
         <Switch>
           <Route exact path='/' component={HomePage} />
