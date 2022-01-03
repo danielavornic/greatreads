@@ -15,7 +15,7 @@ const CoverBookListItem = ({
     : 'https://openlibrary.org/images/icons/avatar_book.png';
 
   return (
-    <Box border='1px' borderColor='gray.200' padding='10px' borderRadius='10px'>
+    <Box>
       <Link to={`/books/${bookKey}`}>
         <Tooltip label={title}>
           <Image
@@ -23,7 +23,8 @@ const CoverBookListItem = ({
             alt={`Cover of "${title}"`}
             width={['100px', '120px']}
             height='auto'
-            boxShadow='lg'
+            boxShadow='sm'
+            borderRadius={'sm'}
           />
         </Tooltip>
       </Link>
