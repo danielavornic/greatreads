@@ -20,10 +20,6 @@ const SearchInput = ({
   match,
   history,
 }) => {
-  const categories = ['books', 'authors'];
-  const facets = ['all', 'title', 'author'];
-
-  const urlCategory = match.params.category;
   const urlTerm = match.params.term;
   const urlFacet = match.params.facet;
 
@@ -61,24 +57,12 @@ const SearchInput = ({
   };
 
   useEffect(() => {
-    if (urlCategory && !categories.includes(urlCategory)) {
-      history.push(`/search/books/${spaceToPlus(term)}/all`);
-      history.go(0);
-    }
-    if (urlFacet && !facets.includes(urlFacet)) {
-      history.push(`/search/${category}/${spaceToPlus(term)}/all`);
-      history.go(0);
-    }
+    // TODO: redirect to 404 page when category or facet is not available
 
-    if (urlTerm) {
-      if (urlTerm.includes(' '))
-        history.push(`/search/${category}/${spaceToPlus(term)}/${facet}`);
-      else searchStart(category, term, facet);
+    if (urlTerm) searchStart(category, term, facet);
 
-      setHeaderInputTerm('');
-    }
     // eslint-disable-next-line
-  }, [urlCategory, urlTerm, urlFacet, searchStart]);
+  }, [urlTerm, searchStart]);
 
   return (
     <HStack maxW={'3xl'} w={'full'}>
@@ -112,6 +96,7 @@ const SearchInput = ({
             onChange={handleChange}
             onKeyPress={handleKeyPress}
             value={headerInputTerm}
+            onBlur={() => setHeaderInputTerm('')}
           />
         ) : (
           <Input
