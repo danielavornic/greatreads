@@ -10,7 +10,7 @@ import { selectAuthorWorks } from '../../redux/authors/authors.selectors';
 import CoverBookListItem from '../books/cover-book-list-item';
 import CustomPagination from '../common/custom-pagination';
 
-const AuthorBooksContainer = ({ works }) => {
+const AuthorBooksList = ({ works }) => {
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);
 
@@ -55,7 +55,7 @@ const AuthorBooksContainer = ({ works }) => {
                 'repeat(5, 1fr)',
               ]}
               align='center'
-              gap={[4, 4, 6]}
+              gap={[4, 4, 4]}
             >
               {results.map(({ key, ...otherBookProps }) => {
                 return (
@@ -87,4 +87,4 @@ const mapStateToProps = createStructuredSelector({
   works: selectAuthorWorks,
 });
 
-export default connect(mapStateToProps)(AuthorBooksContainer);
+export default connect(mapStateToProps)(AuthorBooksList);
