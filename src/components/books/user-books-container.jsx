@@ -10,7 +10,13 @@ import UserBooksList from './user-books-list';
 
 const UserBooksContainer = ({ userBooks }) => (
   <VStack maxW={'5xl'} align={'left'}>
-    <HStack fontSize={16} bg={'brand.50'} padding={3} borderRadius={4} mb={6}>
+    <HStack
+      fontSize={16}
+      bg={'brand.50'}
+      padding={3}
+      borderRadius={4}
+      mb={{ base: 3, md: 4 }}
+    >
       <Link to={`/users/${userBooks.username}`}>
         <Avatar
           size='xs'
@@ -32,7 +38,7 @@ const UserBooksContainer = ({ userBooks }) => (
       <Text>{' > '}</Text>
       <Text fontWeight={'bold'}>Books</Text>
     </HStack>
-    <Flex>
+    <Flex flexDirection={{ base: 'column', md: 'row' }}>
       <UserShelvesContainer shelf={userBooks.shelf} />
       <UserBooksList />
     </Flex>
