@@ -1,10 +1,9 @@
-import { useState, useEffect, forwardRef } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router';
 
 import { VStack, Stack, Flex, Text } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/react';
 
 import {
   selectAreSearchResultsFetching,
@@ -17,28 +16,13 @@ import DetailedBookListItem from '../books/detailed-book-list-item';
 import AuthorListItem from '../author/author-list-item';
 
 const SearchResults = ({ searchResults, areSearchResultsLoading, match }) => {
-  const urlCategory = match.params.category;
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);
+
+  const urlCategory = match.params.category;
   const pageSize = urlCategory === 'books' ? 10 : 20;
   const offset = (current - 1) * pageSize;
   const results = data ? data.slice(offset, offset + pageSize) : [];
-
-  const Prev = forwardRef((props, ref) => (
-    <Button ref={ref} {...props}>
-      Prev
-    </Button>
-  ));
-  const Next = forwardRef((props, ref) => (
-    <Button ref={ref} {...props}>
-      Next
-    </Button>
-  ));
-
-  const itemRender = (_, type) => {
-    if (type === 'prev') return Prev;
-    if (type === 'next') return Next;
-  };
 
   useEffect(() => {
     if (searchResults) {
@@ -69,10 +53,9 @@ const SearchResults = ({ searchResults, areSearchResultsLoading, match }) => {
               </Stack>
               {data && data.length > pageSize ? (
                 <CustomPagination
-                  current={current}
-                  pageSize={pageSize}
                   data={data}
-                  itemRender={itemRender}
+                  pageSize={pageSize}
+                  current={current}
                   setCurrent={setCurrent}
                 />
               ) : null}

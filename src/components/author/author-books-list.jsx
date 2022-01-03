@@ -1,9 +1,8 @@
-import { useState, useEffect, forwardRef } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import { VStack, Stack, Grid } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/react';
 
 import { selectAuthorWorks } from '../../redux/authors/authors.selectors';
 
@@ -17,22 +16,6 @@ const AuthorBooksList = ({ works }) => {
   const pageSize = 24;
   const offset = (current - 1) * pageSize;
   const results = data ? data.slice(offset, offset + pageSize) : [];
-
-  const itemRender = (_, type) => {
-    if (type === 'prev') return Prev;
-    if (type === 'next') return Next;
-  };
-
-  const Prev = forwardRef((props, ref) => (
-    <Button ref={ref} {...props}>
-      Prev
-    </Button>
-  ));
-  const Next = forwardRef((props, ref) => (
-    <Button ref={ref} {...props}>
-      Next
-    </Button>
-  ));
 
   useEffect(() => {
     if (works) {
@@ -69,10 +52,9 @@ const AuthorBooksList = ({ works }) => {
             </Grid>
             {data && data.length > pageSize ? (
               <CustomPagination
-                current={current}
-                pageSize={pageSize}
                 data={data}
-                itemRender={itemRender}
+                pageSize={pageSize}
+                current={current}
                 setCurrent={setCurrent}
               />
             ) : null}
