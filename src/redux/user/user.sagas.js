@@ -1,4 +1,4 @@
-import { takeLatest, put, all, call } from 'redux-saga/effects';
+import { takeLatest, put, all, call, select } from 'redux-saga/effects';
 import {
   signInWithPopup,
   signInWithEmailAndPassword,
@@ -27,6 +27,7 @@ import {
 } from './user.actions';
 import { auth, provider, db } from '../../utils/firebase';
 import { isUsernameValid } from '../../utils/auth';
+import { selectCurrentUser } from './user.selectors';
 
 function* addUserToFirestore(user) {
   try {
@@ -45,6 +46,12 @@ function* addUserToFirestore(user) {
   } catch (error) {
     yield put(signInFailure(error));
   }
+}
+
+function* getUserSnap(user) {
+  const userRef = yield doc(db, 'users', user.uid);
+  const userSnap = yield getDoc(userRef);
+  return userSnap;
 }
 
 function* checkIfUsernameExists(username) {
@@ -69,9 +76,10 @@ function* createUsernameGoogle(user) {
 function* signInWithGoogle() {
   try {
     const { user } = yield signInWithPopup(auth, provider);
-    const userRef = yield doc(db, 'users', user.uid);
-    const userSnap = yield getDoc(userRef);
-    if (!userSnap.exists()) {
+    const userSnap = yield getUserSnap(user);
+    if (userSnap.exists()) {
+      user.username = userSnap.data().username;
+    } else {
       user.username = yield createUsernameGoogle(user);
       yield addUserToFirestore(user);
     }
@@ -84,6 +92,8 @@ function* signInWithGoogle() {
 function* signInWithEmail({ payload: { email, password } }) {
   try {
     const { user } = yield signInWithEmailAndPassword(auth, email, password);
+    const userSnap = yield getUserSnap(user);
+    user.username = userSnap.data().username;
     yield put(signInSuccess(user));
   } catch (error) {
     yield put(signInFailure(error));
@@ -126,8 +136,15 @@ function* signOutUser() {
 
 function* isUserAuthenticated() {
   try {
-    const user = yield auth.currentUser;
-    if (user) yield put(signInSuccess(user));
+    let user = yield auth.currentUser;
+    if (!user) {
+      user = yield select(selectCurrentUser);
+      if (user) {
+        const userSnap = yield getUserSnap(user);
+        user.username = userSnap.data().username;
+        yield put(signInSuccess(user));
+      }
+    }
   } catch (error) {
     yield put(signInFailure(error));
   }
