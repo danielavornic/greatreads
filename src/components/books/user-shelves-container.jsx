@@ -1,26 +1,42 @@
-import { Box, Text, UnorderedList, ListItem } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { Box, Text, UnorderedList, ListItem } from '@chakra-ui/react';
 
-const UserShelvesContainer = ({ shelf }) => (
-  <Box width={'240px'}>
-    <Text fontWeight={'bold'}>Bookshelves</Text>
-    <UnorderedList listStyleType={'none'} ms='0'>
-      <ListItem textDecoration={shelf === 'all' ? 'underline' : 'none'}>
-        <Link to='all'>All</Link>
-      </ListItem>
-      <ListItem textDecoration={shelf === 'wantToRead' ? 'underline' : 'none'}>
-        <Link to='wantToRead'>Want to read</Link>
-      </ListItem>
-      <ListItem
-        textDecoration={shelf === 'currentlyReading' ? 'underline' : 'none'}
-      >
-        <Link to='currentlyReading'>Currently Reading</Link>
-      </ListItem>
-      <ListItem textDecoration={shelf === 'read' ? 'underline' : 'none'}>
-        <Link to='read'>Read</Link>
-      </ListItem>
-    </UnorderedList>
-  </Box>
-);
+const UserShelvesContainer = ({ shelf }) => {
+  const shelves = ['all', 'currentlyReading', 'wantToRead', 'read'];
+
+  const camelCaseToSentenceCase = (text) => {
+    const result = text.replace(/([A-Z])/g, ' $1');
+    return result.charAt(0).toUpperCase() + result.slice(1);
+  };
+
+  return (
+    <Box
+      width={{ base: 'full', md: '200px' }}
+      height={'fit-content'}
+      me={6}
+      mb={{ base: 4, md: 0 }}
+      padding={4}
+      border='1px'
+      borderColor='gray.200'
+      borderRadius='10px'
+    >
+      <Text fontWeight={'bold'}>Bookshelves</Text>
+      <UnorderedList listStyleType={'none'} ms='0'>
+        {shelves.map((s) => (
+          <ListItem>
+            <Link to={s}>
+              <Text
+                textDecoration={shelf === s ? 'underline' : 'none'}
+                _hover={{ textDecoration: 'underline' }}
+              >
+                {camelCaseToSentenceCase(s)}
+              </Text>
+            </Link>
+          </ListItem>
+        ))}
+      </UnorderedList>
+    </Box>
+  );
+};
 
 export default UserShelvesContainer;
