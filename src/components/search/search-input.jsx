@@ -53,6 +53,7 @@ const SearchInput = ({
       const pathFacet = category === 'books' ? `/${facet}` : '';
       history.push(`/search/${category}/${spaceToPlus(term)}${pathFacet}`);
       if (headerInput) history.go(0);
+      searchStart(category, term, facet);
     }
   };
 
