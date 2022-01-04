@@ -12,6 +12,7 @@ import {
 import { AiOutlineSearch } from 'react-icons/ai';
 
 import { searchStart } from '../../redux/search/search.actions';
+import { spaceToPlus, plusToSpace } from '../../utils/text-manipulation';
 
 const SearchInput = ({
   inputCategory,
@@ -36,9 +37,6 @@ const SearchInput = ({
   const { category, facet, term } = searchRequest;
 
   const [headerInputTerm, setHeaderInputTerm] = useState(term);
-
-  const spaceToPlus = (word) => decodeURI(word).replace(/ /g, '+');
-  const plusToSpace = (word) => word.replace(/\+/g, ' ');
 
   const handleChange = (event) => {
     const { value, name } = event.target;

@@ -23,6 +23,7 @@ import {
   fetchBookStatusStart,
   updateBookStatusStart,
 } from '../../redux/books/books.actions';
+import { camelToSentenceCase } from '../../utils/text-manipulation';
 
 const BookStatusBtn = ({
   updateBookStatus,
@@ -31,12 +32,6 @@ const BookStatusBtn = ({
   bookKey,
   isBookStatusLoading,
 }) => {
-  const sentenceCase = (text) => {
-    return text.replace(/^[a-z]|[A-Z]/g, function (v, i) {
-      return i === 0 ? v.toUpperCase() : ' ' + v.toLowerCase();
-    });
-  };
-
   useEffect(() => {
     fetchBookStatus(bookKey);
   }, [fetchBookStatus, bookKey]);
@@ -52,7 +47,7 @@ const BookStatusBtn = ({
         variant={bookStatus ? 'outline' : 'solid'}
         isLoading={isBookStatusLoading}
       >
-        {bookStatus ? sentenceCase(bookStatus) : 'Want to read'}
+        {bookStatus ? camelToSentenceCase(bookStatus) : 'Want to read'}
       </Button>
       <Menu size='sm'>
         <MenuButton

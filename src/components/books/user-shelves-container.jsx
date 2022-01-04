@@ -1,13 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Box, Text, UnorderedList, ListItem } from '@chakra-ui/react';
 
+import { camelToSentenceCase } from '../../utils/text-manipulation';
+
 const UserShelvesContainer = ({ shelf }) => {
   const shelves = ['all', 'currentlyReading', 'wantToRead', 'read'];
-
-  const camelCaseToSentenceCase = (text) => {
-    const result = text.replace(/([A-Z])/g, ' $1');
-    return result.charAt(0).toUpperCase() + result.slice(1);
-  };
 
   return (
     <Box
@@ -29,7 +26,7 @@ const UserShelvesContainer = ({ shelf }) => {
                 textDecoration={shelf === s ? 'underline' : 'none'}
                 _hover={{ textDecoration: 'underline' }}
               >
-                {camelCaseToSentenceCase(s)}
+                {camelToSentenceCase(s)}
               </Text>
             </Link>
           </ListItem>
