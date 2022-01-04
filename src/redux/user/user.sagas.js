@@ -1,4 +1,4 @@
-import { takeLatest, put, all, call, select } from 'redux-saga/effects';
+import { takeLatest, put, all, call } from 'redux-saga/effects';
 import {
   signInWithPopup,
   signInWithEmailAndPassword,
@@ -27,7 +27,6 @@ import {
 } from './user.actions';
 import { auth, provider, db } from '../../utils/firebase';
 import { isUsernameValid } from '../../utils/auth';
-import { selectCurrentUser } from './user.selectors';
 
 function* addUserToFirestore(user) {
   try {
@@ -77,13 +76,15 @@ function* signInWithGoogle() {
   try {
     const { user } = yield signInWithPopup(auth, provider);
     const userSnap = yield getUserSnap(user);
+    let username;
     if (userSnap.exists()) {
-      user.username = userSnap.data().username;
+      username = userSnap.data().username;
     } else {
-      user.username = yield createUsernameGoogle(user);
-      yield addUserToFirestore(user);
+      username = yield createUsernameGoogle(user);
+      yield addUserToFirestore({ ...user, username: username });
     }
-    yield put(signInSuccess(user));
+    const userObj = { currentUser: user, username: username };
+    yield put(signInSuccess(userObj));
   } catch (error) {
     yield put(signInFailure(error));
   }
@@ -93,8 +94,9 @@ function* signInWithEmail({ payload: { email, password } }) {
   try {
     const { user } = yield signInWithEmailAndPassword(auth, email, password);
     const userSnap = yield getUserSnap(user);
-    user.username = userSnap.data().username;
-    yield put(signInSuccess(user));
+    const username = userSnap.data().username;
+    const userObj = { currentUser: user, username: username };
+    yield put(signInSuccess(userObj));
   } catch (error) {
     yield put(signInFailure(error));
   }
@@ -110,10 +112,10 @@ function* signUp({ payload: { name, username, email, password } }) {
           email,
           password
         );
-        user.username = username;
+        const userObj = { currentUser: user, username: username };
         yield updateProfile(user, { displayName: name }).then();
-        yield addUserToFirestore(user);
-        yield put(signUpSuccess(user));
+        yield addUserToFirestore({ ...user, username: username });
+        yield put(signUpSuccess(userObj));
       } else {
         yield put(signUpFailure({ code: 'auth/username-already-in-use' }));
       }

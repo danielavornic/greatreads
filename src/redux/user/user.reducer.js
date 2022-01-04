@@ -2,6 +2,7 @@ import UserActionTypes from './user.types';
 
 const INITIAL_STATE = {
   currentUser: null,
+  username: null,
   isUserLogging: false,
   userError: null,
 };
@@ -18,7 +19,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
     case UserActionTypes.SIGN_UP_SUCCESS:
       return {
         ...state,
-        currentUser: action.payload,
+        currentUser: action.payload.currentUser,
+        username: action.payload.username,
         isUserLogging: false,
         userError: null,
       };
@@ -34,6 +36,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentUser: null,
+        username: null,
         isUserLogging: false,
         userError: null,
       };
