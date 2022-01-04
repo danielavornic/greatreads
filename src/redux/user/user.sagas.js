@@ -6,15 +6,7 @@ import {
   updateProfile,
   signOut,
 } from 'firebase/auth';
-import {
-  doc,
-  collection,
-  query,
-  where,
-  setDoc,
-  getDoc,
-  getDocs,
-} from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 
 import UserActionTypes from './user.types';
 import {
@@ -26,7 +18,12 @@ import {
   signOutFailure,
 } from './user.actions';
 import { auth, provider, db } from '../../utils/firebase';
-import { isUsernameValid } from '../../utils/auth';
+import {
+  isUsernameValid,
+  checkIfUsernameExists,
+  createUsernameGoogle,
+  getUserSnap,
+} from '../../utils/auth';
 
 function* addUserToFirestore(user) {
   try {
@@ -45,31 +42,6 @@ function* addUserToFirestore(user) {
   } catch (error) {
     yield put(signInFailure(error));
   }
-}
-
-function* getUserSnap(user) {
-  const userRef = yield doc(db, 'users', user.uid);
-  const userSnap = yield getDoc(userRef);
-  return userSnap;
-}
-
-function* checkIfUsernameExists(username) {
-  const usersRef = collection(db, 'users');
-  const existingUsernames = query(usersRef, where('username', '==', username));
-  const existingUsernamesSnap = yield getDocs(existingUsernames);
-  let i = 0;
-  existingUsernamesSnap.forEach(() => i++);
-  return i > 0;
-}
-
-function* createUsernameGoogle(user) {
-  let username = user.email.split('@')[0];
-  let usernameExists = yield checkIfUsernameExists(username);
-  while (usernameExists) {
-    username += username[username.length - 1];
-    usernameExists = yield checkIfUsernameExists(username);
-  }
-  return username;
 }
 
 function* signInWithGoogle() {
