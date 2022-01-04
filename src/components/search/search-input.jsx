@@ -20,8 +20,13 @@ const SearchInput = ({
   match,
   history,
 }) => {
-  const urlTerm = match.params.term;
-  const urlFacet = match.params.facet;
+  const {
+    term: urlTerm,
+    facet: urlFacet,
+    category: urlCategory,
+  } = match.params;
+  const categories = ['books', 'authors'];
+  const facets = ['all', 'title', 'author'];
 
   const [searchRequest, setSearchRequest] = useState({
     category: inputCategory,
@@ -58,7 +63,11 @@ const SearchInput = ({
   };
 
   useEffect(() => {
-    // TODO: redirect to 404 page when category or facet is not available
+    if (
+      (urlCategory && !categories.includes(urlCategory)) ||
+      (urlFacet && !facets.includes(urlFacet))
+    )
+      history.push('/404');
 
     if (urlTerm) searchStart(category, term, facet);
 
