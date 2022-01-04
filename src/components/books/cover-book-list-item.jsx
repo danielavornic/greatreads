@@ -25,6 +25,7 @@ const CoverBookListItem = ({
             height='auto'
             boxShadow='sm'
             borderRadius={'sm'}
+            _hover={{ boxShadow: 'md' }}
           />
         </Tooltip>
       </Link>

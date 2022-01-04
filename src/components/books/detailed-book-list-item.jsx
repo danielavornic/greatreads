@@ -27,6 +27,7 @@ const DetailedBookListItem = ({
       borderRadius='10px'
       padding={['24px', '28px']}
       width={'full'}
+      _hover={{ borderColor: 'brand.100' }}
     >
       <Grid
         templateColumns={['80px 1fr', '100px 1fr']}
@@ -39,11 +40,19 @@ const DetailedBookListItem = ({
             alt={`Cover of "${title}"`}
             width={['80px', '100px']}
             height='auto'
+            borderRadius={'sm'}
+            _hover={{ boxShadow: 'sm' }}
           />
         </Link>
         <Box>
           <Link to={`/books/${bookKey}`}>
-            <Heading as={'h5'} fontSize={{ base: 'xl', md: '2xl' }} mb='4px'>
+            <Heading
+              as={'h5'}
+              fontSize={{ base: 'xl', md: '2xl' }}
+              _hover={{ color: 'brand.500' }}
+              mb='4px'
+              width={'fit-content'}
+            >
               {title}
             </Heading>
           </Link>
