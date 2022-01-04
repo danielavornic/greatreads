@@ -20,8 +20,7 @@ const UserBooksPage = ({
   userBooks,
   areUserBooksLoading,
 }) => {
-  const username = match.params.username;
-  const shelf = match.params.shelf;
+  const { username, shelf } = match.params;
   useEffect(() => {
     fetchUserBooks(username, shelf);
   }, [fetchUserBooks, username, shelf]);
