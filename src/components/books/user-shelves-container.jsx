@@ -23,7 +23,7 @@ const UserShelvesContainer = ({ shelf }) => {
       <Text fontWeight={'bold'}>Bookshelves</Text>
       <UnorderedList listStyleType={'none'} ms='0'>
         {shelves.map((s) => (
-          <ListItem>
+          <ListItem key={s}>
             <Link to={s}>
               <Text
                 textDecoration={shelf === s ? 'underline' : 'none'}
