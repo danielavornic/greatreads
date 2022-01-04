@@ -10,6 +10,7 @@ import { selectBook } from '../../redux/books/books.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 import BookStatusBtn from '../books/book-status-btn';
+import SignInBookBtn from './sign-in-book-btn';
 import ReadMore from '../common/read-more';
 
 const BookContainer = ({ book, currentUser }) => {
@@ -43,11 +44,9 @@ const BookContainer = ({ book, currentUser }) => {
           onLoad={() => setIsLoadingImg(false)}
           display={isLoadingImg ? 'none' : 'block'}
         />
-        {currentUser ? (
-          <Box my={8} width={'full'} display={{ base: 'none', md: 'block' }}>
-            <BookStatusBtn />
-          </Box>
-        ) : null}
+        <Box my={8} width={'full'} display={{ base: 'none', md: 'block' }}>
+          {currentUser ? <BookStatusBtn /> : <SignInBookBtn />}
+        </Box>
       </Box>
       <Box>
         <Box textAlign={{ base: 'center', md: 'left' }}>
@@ -79,11 +78,9 @@ const BookContainer = ({ book, currentUser }) => {
               : ' Unknown author'}
           </Heading>
         </Box>
-        {currentUser ? (
-          <Box mb={8} width={'full'} display={{ base: 'block', md: 'none' }}>
-            <BookStatusBtn />
-          </Box>
-        ) : null}
+        <Box mb={8} width={'full'} display={{ base: 'block', md: 'none' }}>
+          {currentUser ? <BookStatusBtn /> : <SignInBookBtn />}
+        </Box>
         <Text pb='4px' color={'gray.600'}>
           This edition was published in <b>{book.publish_date}</b>
         </Text>
