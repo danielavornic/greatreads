@@ -6,7 +6,6 @@ import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { Container } from '@chakra-ui/react';
 
 import { selectCurrentUser } from './redux/user/user.selectors';
-import { checkUserSession } from './redux/user/user.actions';
 
 import HomePage from './pages/homepage';
 import SearchPage from './pages/search';
@@ -28,11 +27,6 @@ const ScrollToTop = () => {
   }, [pathname]);
   return null;
 };
-
-const App = ({ currentUser, checkUserSession }) => {
-  useEffect(() => {
-    checkUserSession();
-  }, [checkUserSession]);
 
   return (
     <div id='container'>
@@ -80,13 +74,9 @@ const App = ({ currentUser, checkUserSession }) => {
     </div>
   );
 };
+const App = ({ currentUser }) => (
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  checkUserSession: () => dispatch(checkUserSession()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);

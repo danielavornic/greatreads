@@ -136,22 +136,6 @@ function* signOutUser() {
   }
 }
 
-function* isUserAuthenticated() {
-  try {
-    let user = yield auth.currentUser;
-    if (!user) {
-      user = yield select(selectCurrentUser);
-      if (user) {
-        const userSnap = yield getUserSnap(user);
-        user.username = userSnap.data().username;
-        yield put(signInSuccess(user));
-      }
-    }
-  } catch (error) {
-    yield put(signInFailure(error));
-  }
-}
-
 function* onGoogleSignInStart() {
   yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle);
 }
@@ -168,16 +152,11 @@ function* onSignOutStart() {
   yield takeLatest(UserActionTypes.SIGN_OUT_START, signOutUser);
 }
 
-function* onCheckUserSession() {
-  yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
-}
-
 export function* userSagas() {
   yield all([
     call(onGoogleSignInStart),
     call(onEmailSignInStart),
     call(onSignUpStart),
     call(onSignOutStart),
-    call(onCheckUserSession),
   ]);
 }
