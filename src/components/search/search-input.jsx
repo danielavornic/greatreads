@@ -62,7 +62,7 @@ const SearchInput = ({
     if (urlTerm) searchStart(category, term, facet);
 
     // eslint-disable-next-line
-  }, [urlTerm, searchStart]);
+  }, []);
 
   return (
     <HStack maxW={'3xl'} w={'full'}>
