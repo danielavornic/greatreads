@@ -14,6 +14,7 @@ import AuthorPage from './pages/author';
 import SignInPage from './pages/signin';
 import SignUpPage from './pages/signup';
 import UserBooksPage from './pages/user-books';
+import Page404 from './pages/404';
 
 import Header from './components/common/header';
 import HeaderUsers from './components/common/header-users';
@@ -69,6 +70,7 @@ const App = ({ currentUser }) => (
           path='/users/:username/books/:shelf/'
           component={UserBooksPage}
         />
+        <Route component={Page404} />
       </Switch>
     </Container>
     <Footer />
