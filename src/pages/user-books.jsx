@@ -27,7 +27,7 @@ const UserBooksPage = ({
 
   return (
     <Container maxW={'5xl'}>
-      {userBooks && userBooks.displayName ? (
+      {userBooks ? (
         <UserBooksContainer />
       ) : areUserBooksLoading ? (
         <CustomSpinner />
