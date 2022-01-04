@@ -7,7 +7,6 @@ import {
   Button,
   IconButton,
   Menu,
-  MenuGroup,
   MenuList,
   MenuItem,
   MenuButton,
@@ -36,16 +35,22 @@ const BookStatusBtn = ({
     fetchBookStatus(bookKey);
   }, [fetchBookStatus, bookKey]);
 
+  const statuses = ['wantToRead', 'read', 'currentlyReading'];
+
+  const handleClick = (event) => {
+    const status = event.target.getAttribute('data-status');
+    updateBookStatus(status);
+  };
+
   return (
     <ButtonGroup isAttached colorScheme={'brand'} width={'full'}>
       <Button
         width={'calc(100% - 34px)'}
         textAlign={'left'}
-        onClick={() =>
-          bookStatus ? updateBookStatus(null) : updateBookStatus('wantToRead')
-        }
         variant={bookStatus ? 'outline' : 'solid'}
         isLoading={isBookStatusLoading}
+        data-status={bookStatus ? null : 'wantToRead'}
+        onClick={handleClick}
       >
         {bookStatus ? camelToSentenceCase(bookStatus) : 'Want to read'}
       </Button>
@@ -59,15 +64,11 @@ const BookStatusBtn = ({
           borderLeft={'1px solid white'}
         ></MenuButton>
         <MenuList>
-          <MenuGroup>
-            <MenuItem onClick={() => updateBookStatus('wantToRead')}>
-              Want to read
+          {statuses.map((status) => (
+            <MenuItem data-status={status} onClick={handleClick}>
+              {camelToSentenceCase(status)}
             </MenuItem>
-            <MenuItem onClick={() => updateBookStatus('read')}>Read</MenuItem>
-            <MenuItem onClick={() => updateBookStatus('currentlyReading')}>
-              Currently reading
-            </MenuItem>
-          </MenuGroup>
+          ))}
         </MenuList>
       </Menu>
     </ButtonGroup>
