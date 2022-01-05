@@ -113,9 +113,7 @@ const HeaderUsers = ({ currentUser, signOutStart, username }) => {
           <VStack as={'nav'} spacing={4}>
             <SearchInput inputCategory='books' headerInput />
             <Link to='/'>Home</Link>
-            <Link to={`/users/${currentUser.username}/books/all`}>
-              My books
-            </Link>
+            <Link to={`/users/${username}/books/all`}>My books</Link>
           </VStack>
         </Box>
       ) : null}
