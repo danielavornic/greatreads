@@ -29,8 +29,12 @@ import {
   updateBookRatingSuccess,
 } from './books.actions';
 import { db } from '../../utils/firebase';
-
-const statuses = ['wantToRead', 'read', 'currentlyReading'];
+import {
+  isBookStored,
+  getStoredBookObj,
+  createNewBookObj,
+  statuses,
+} from '../../utils/books';
 
 function* getBookAuthors(book) {
   if (book.authors) return book.authors;
@@ -79,26 +83,6 @@ function* getUserBooks() {
   const userSnap = yield getDoc(userRef);
   const userData = userSnap.data();
   return userData.books;
-}
-
-function isBookStored(bookArr, bookKey) {
-  if (bookArr && bookArr.length > 0)
-    return bookArr.some((book) => book.bookKey === bookKey);
-  return false;
-}
-
-function createNewBookObj(book, bookKey) {
-  const cover = book.covers ? book.covers[0] : null;
-  const newBookObj = {
-    bookKey: bookKey,
-    title: book.title,
-    cover: cover,
-  };
-  return newBookObj;
-}
-
-function getStoredBookObj(userBooks, bookKey) {
-  return userBooks.all.filter((book) => book.bookKey === bookKey)[0];
 }
 
 function* fetchBookAsync({ payload }) {
