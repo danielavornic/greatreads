@@ -27,7 +27,7 @@ const BookRating = ({
     fetchBookRating(bookKey);
   }, [fetchBookRating, bookKey]);
 
-  const ratingChanged = (newRating) => {
+  const handleChange = (newRating) => {
     newRating *= newRating * 2 === bookRating ? 0 : 2;
     updateBookRating(bookKey, newRating);
     if (bookStatus !== 'read' && newRating !== 0)
@@ -37,7 +37,7 @@ const BookRating = ({
   return (
     <ReactStars
       count={5}
-      onChange={ratingChanged}
+      onChange={handleChange}
       size={48}
       color1={'#A0AEC0'}
       color2={'#F6E05E'}
