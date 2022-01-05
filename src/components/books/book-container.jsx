@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 
 import { Link } from 'react-router-dom';
 import { Box, Heading, Text } from '@chakra-ui/layout';
-import { Grid, Image } from '@chakra-ui/react';
+import { Grid, Image, Flex } from '@chakra-ui/react';
 
 import { selectBook } from '../../redux/books/books.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
@@ -87,7 +87,14 @@ const BookContainer = ({ book, currentUser }) => {
           </Heading>
         </Box>
         <Box mb={8} width={'full'} display={{ base: 'block', md: 'none' }}>
-          {currentUser ? <BookStatusBtn /> : <SignInBookBtn />}
+          {currentUser ? (
+            <Flex flexDirection={'column'} alignItems={'center'}>
+              <BookStatusBtn />
+              <BookRating />
+            </Flex>
+          ) : (
+            <SignInBookBtn />
+          )}
         </Box>
         <Text pb='4px' color={'gray.600'}>
           This edition was published in <b>{book.publish_date}</b>
