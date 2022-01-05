@@ -31,7 +31,7 @@ const SearchInput = ({
 
   const [searchRequest, setSearchRequest] = useState({
     category: inputCategory,
-    term: urlTerm ? urlTerm : '',
+    term: urlTerm ? plusToSpace(urlTerm) : '',
     facet: urlFacet ? urlFacet : 'all',
   });
   const { category, facet, term } = searchRequest;
