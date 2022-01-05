@@ -34,9 +34,22 @@ function* addUserToFirestore(user) {
       photoURL: user.photoURL,
       books: {
         all: [],
-        read: [],
-        wantToRead: [],
-        currentlyReading: [],
+        statuses: {
+          read: [],
+          wantToRead: [],
+          currentlyReading: [],
+        },
+        ratings: {
+          5: [],
+          4.5: [],
+          4: [],
+          3.5: [],
+          3: [],
+          2.5: [],
+          2: [],
+          1.5: [],
+          1: [],
+        },
       },
     });
   } catch (error) {

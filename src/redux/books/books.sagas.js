@@ -27,7 +27,6 @@ import {
 import { db } from '../../utils/firebase';
 
 const statuses = ['wantToRead', 'read', 'currentlyReading'];
-const statusesAndAll = ['wantToRead', 'read', 'currentlyReading', 'all'];
 
 function* getBookAuthors(book) {
   if (book.authors) return book.authors;
@@ -102,7 +101,7 @@ function* fetchBookStatus({ payload: bookKey }) {
     let userBooks = yield getUserBooks();
     if (isBookStored(userBooks.all, bookKey)) {
       for (const status of statuses)
-        if (isBookStored(userBooks[status], bookKey))
+        if (isBookStored(userBooks['statuses'][status], bookKey))
           yield put(fetchBookStatusSuccess(status));
     } else yield put(fetchBookStatusSuccess(null));
   } catch (error) {
@@ -127,20 +126,23 @@ function* updateBookStatus({ payload: status }) {
     };
     if (status) {
       for (const s of statuses) {
-        if (s !== status && isBookStored(userBooks[s], bookKey))
+        if (s !== status && isBookStored(userBooks['statuses'][s], bookKey))
           yield updateDoc(userRef, {
-            [`books.${s}`]: arrayRemove(storedBookObj),
+            [`books.statuses.${s}`]: arrayRemove(storedBookObj),
           });
       }
       yield updateDoc(userRef, {
         'books.all': arrayUnion(newBookObj),
-        [`books.${status}`]: arrayUnion(newBookObj),
+        [`books.statuses.${status}`]: arrayUnion(newBookObj),
       });
     } else {
-      for (const s of statusesAndAll) {
-        if (isBookStored(userBooks[s], bookKey))
+      yield updateDoc(userRef, {
+        'books.all': arrayRemove(storedBookObj),
+      });
+      for (const s of statuses) {
+        if (isBookStored(userBooks['statuses'][s], bookKey))
           yield updateDoc(userRef, {
-            [`books.${s}`]: arrayRemove(storedBookObj),
+            [`books.statuses.${s}`]: arrayRemove(storedBookObj),
           });
       }
     }
@@ -163,7 +165,9 @@ function* fetchUserBooks({ payload: { username, shelf } }) {
       photoURL: '',
     };
     userSnap.forEach((user) => {
-      result.books = user.data().books[shelf];
+      result.books = statuses.includes(shelf)
+        ? user.data().books['statuses'][shelf]
+        : user.data().books[shelf];
       result.displayName = user.data().displayName;
       result.photoURL = user.data().photoURL;
     });
