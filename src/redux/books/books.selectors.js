@@ -27,6 +27,11 @@ export const selectIsBookStatusLoading = createSelector(
   (books) => books.isBookStatusLoading
 );
 
+export const selectBookRating = createSelector(
+  [selectBooks],
+  (books) => books.bookRating
+);
+
 export const selectUserBooks = createSelector(
   [selectBooks],
   (books) => books.userBooks

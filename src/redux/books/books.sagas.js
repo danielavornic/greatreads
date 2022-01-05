@@ -12,7 +12,7 @@ import {
 } from 'firebase/firestore';
 
 import BooksActionTypes from './books.types';
-import { selectBookKey, selectBook } from '../books/books.selectors';
+import { selectBook } from '../books/books.selectors';
 import { selectCurrentUser } from '../user/user.selectors';
 import {
   fetchBookSuccess,
@@ -21,8 +21,12 @@ import {
   fetchBookStatusFailure,
   updateBookStatusSuccess,
   updateBookStatusFailure,
+  fetchBookRatingSuccess,
+  fetchBookRatingFailure,
   fetchUserBooksSuccess,
   fetchUserBooksFailure,
+  updateBookRatingFailure,
+  updateBookRatingSuccess,
 } from './books.actions';
 import { db } from '../../utils/firebase';
 
@@ -77,6 +81,26 @@ function* getUserBooks() {
   return userData.books;
 }
 
+function isBookStored(bookArr, bookKey) {
+  if (bookArr && bookArr.length > 0)
+    return bookArr.some((book) => book.bookKey === bookKey);
+  return false;
+}
+
+function createNewBookObj(book, bookKey) {
+  const cover = book.covers ? book.covers[0] : null;
+  const newBookObj = {
+    bookKey: bookKey,
+    title: book.title,
+    cover: cover,
+  };
+  return newBookObj;
+}
+
+function getStoredBookObj(userBooks, bookKey) {
+  return userBooks.all.filter((book) => book.bookKey === bookKey)[0];
+}
+
 function* fetchBookAsync({ payload }) {
   try {
     const response = yield fetch(
@@ -92,10 +116,6 @@ function* fetchBookAsync({ payload }) {
   }
 }
 
-function isBookStored(bookArr, bookKey) {
-  return bookArr ? bookArr.some((book) => book.bookKey === bookKey) : false;
-}
-
 function* fetchBookStatus({ payload: bookKey }) {
   try {
     let userBooks = yield getUserBooks();
@@ -109,28 +129,19 @@ function* fetchBookStatus({ payload: bookKey }) {
   }
 }
 
-function* updateBookStatus({ payload: status }) {
+function* updateBookStatus({ payload: { bookKey, status } }) {
   try {
     const userRef = yield getUserRef();
     const userBooks = yield getUserBooks();
-    const bookKey = yield select(selectBookKey);
     const book = yield select(selectBook);
-    const cover = book.covers ? book.covers[0] : null;
-    const storedBookObj = userBooks.all.filter(
-      (book) => book.bookKey === bookKey
-    )[0];
-    const newBookObj = {
-      bookKey: bookKey,
-      title: book.title,
-      cover: cover,
-    };
+    const storedBookObj = getStoredBookObj(userBooks, bookKey);
+    const newBookObj = createNewBookObj(book, bookKey);
     if (status) {
-      for (const s of statuses) {
+      for (const s of statuses)
         if (s !== status && isBookStored(userBooks['statuses'][s], bookKey))
           yield updateDoc(userRef, {
             [`books.statuses.${s}`]: arrayRemove(storedBookObj),
           });
-      }
       yield updateDoc(userRef, {
         'books.all': arrayUnion(newBookObj),
         [`books.statuses.${status}`]: arrayUnion(newBookObj),
@@ -152,6 +163,52 @@ function* updateBookStatus({ payload: status }) {
   }
 }
 
+function* fetchBookRating({ payload: bookKey }) {
+  try {
+    let userBooks = yield getUserBooks();
+    let b = false;
+    if (isBookStored(userBooks.all, bookKey)) {
+      for (let rating = 1; rating <= 10; rating++)
+        if (isBookStored(userBooks['ratings'][rating], bookKey)) {
+          yield put(fetchBookRatingSuccess(rating));
+          b = !b;
+        }
+    }
+    if (b === false) yield put(fetchBookRatingSuccess(0));
+  } catch (error) {
+    yield put(fetchBookRatingFailure(error));
+  }
+}
+
+function* updateBookRating({ payload: { bookKey, rating } }) {
+  try {
+    const userRef = yield getUserRef();
+    const userBooks = yield getUserBooks();
+    const book = yield select(selectBook);
+    const storedBookObj = getStoredBookObj(userBooks, bookKey);
+    const newBookObj = createNewBookObj(book, bookKey);
+    if (rating > 0) {
+      for (let r = 1; r <= 10; r++)
+        if (r !== rating && isBookStored(userBooks['ratings'][r], bookKey))
+          yield updateDoc(userRef, {
+            [`books.ratings.${r}`]: arrayRemove(storedBookObj),
+          });
+      yield updateDoc(userRef, {
+        [`books.ratings.${rating.toString()}`]: arrayUnion(newBookObj),
+      });
+    } else {
+      for (let r = 1; r <= 10; r++)
+        if (isBookStored(userBooks['ratings'][r], bookKey))
+          yield updateDoc(userRef, {
+            [`books.ratings.${r}`]: arrayRemove(storedBookObj),
+          });
+    }
+    yield put(updateBookRatingSuccess(rating));
+  } catch (error) {
+    yield put(updateBookRatingFailure(error));
+  }
+}
+
 function* fetchUserBooks({ payload: { username, shelf } }) {
   try {
     const usersRef = collection(db, 'users');
@@ -164,6 +221,7 @@ function* fetchUserBooks({ payload: { username, shelf } }) {
       username: username,
       photoURL: '',
     };
+
     userSnap.forEach((user) => {
       result.books = statuses.includes(shelf)
         ? user.data().books['statuses'][shelf]
@@ -189,6 +247,14 @@ function* onUpdateBookStatusStart() {
   yield takeLatest(BooksActionTypes.UPDATE_BOOK_STATUS_START, updateBookStatus);
 }
 
+function* onFetchBookRatingStart() {
+  yield takeLatest(BooksActionTypes.FETCH_BOOK_RATING_START, fetchBookRating);
+}
+
+function* onUpdateBookRatingStart() {
+  yield takeLatest(BooksActionTypes.UPDATE_BOOK_RATING_START, updateBookRating);
+}
+
 function* onFetchUserBooksStart() {
   yield takeLatest(BooksActionTypes.FETCH_USER_BOOKS_START, fetchUserBooks);
 }
@@ -198,6 +264,8 @@ export function* booksSagas() {
     call(onFetchBookStart),
     call(onUpdateBookStatusStart),
     call(onFetchBookStatusStart),
+    call(onFetchBookRatingStart),
+    call(onUpdateBookRatingStart),
     call(onFetchUserBooksStart),
   ]);
 }

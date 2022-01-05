@@ -10,6 +10,7 @@ import { selectBook } from '../../redux/books/books.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 import BookStatusBtn from '../books/book-status-btn';
+import BookRating from './book-rating';
 import SignInBookBtn from './sign-in-book-btn';
 import ReadMore from '../common/read-more';
 
@@ -45,7 +46,14 @@ const BookContainer = ({ book, currentUser }) => {
           display={isLoadingImg ? 'none' : 'block'}
         />
         <Box my={8} width={'full'} display={{ base: 'none', md: 'block' }}>
-          {currentUser ? <BookStatusBtn /> : <SignInBookBtn />}
+          {currentUser ? (
+            <>
+              <BookStatusBtn />
+              <BookRating />
+            </>
+          ) : (
+            <SignInBookBtn />
+          )}
         </Box>
       </Box>
       <Box>

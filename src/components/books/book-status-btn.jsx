@@ -21,6 +21,7 @@ import {
 import {
   fetchBookStatusStart,
   updateBookStatusStart,
+  updateBookRatingStart,
 } from '../../redux/books/books.actions';
 import { camelToSentenceCase } from '../../utils/text-manipulation';
 
@@ -28,6 +29,7 @@ const BookStatusBtn = ({
   updateBookStatus,
   bookStatus,
   fetchBookStatus,
+  updateBookRating,
   bookKey,
   isBookStatusLoading,
 }) => {
@@ -39,7 +41,8 @@ const BookStatusBtn = ({
 
   const handleClick = (event) => {
     const status = event.target.getAttribute('data-status');
-    updateBookStatus(status);
+    if (status !== 'read') updateBookRating(bookKey, 0);
+    updateBookStatus(bookKey, status);
   };
 
   return (
@@ -65,7 +68,7 @@ const BookStatusBtn = ({
         ></MenuButton>
         <MenuList>
           {statuses.map((status) => (
-            <MenuItem data-status={status} onClick={handleClick}>
+            <MenuItem key={status} data-status={status} onClick={handleClick}>
               {camelToSentenceCase(status)}
             </MenuItem>
           ))}
@@ -83,7 +86,10 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchBookStatus: (bookKey) => dispatch(fetchBookStatusStart(bookKey)),
-  updateBookStatus: (status) => dispatch(updateBookStatusStart(status)),
+  updateBookStatus: (bookKey, status) =>
+    dispatch(updateBookStatusStart({ bookKey, status })),
+  updateBookRating: (bookKey, rating) =>
+    dispatch(updateBookRatingStart({ bookKey, rating })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookStatusBtn);
