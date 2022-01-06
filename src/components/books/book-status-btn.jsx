@@ -22,6 +22,7 @@ import {
   fetchBookStatusStart,
   updateBookStatusStart,
   updateBookRatingStart,
+  updateIsBookLikedStart,
 } from '../../redux/books/books.actions';
 import { camelToSentenceCase } from '../../utils/text-manipulation';
 
@@ -32,6 +33,7 @@ const BookStatusBtn = ({
   updateBookRating,
   bookKey,
   isBookStatusLoading,
+  updateIsBookLiked,
 }) => {
   useEffect(() => {
     fetchBookStatus(bookKey);
@@ -41,7 +43,10 @@ const BookStatusBtn = ({
 
   const handleClick = (event) => {
     const status = event.target.getAttribute('data-status');
-    if (status !== 'read') updateBookRating(bookKey, 0);
+    if (status !== 'read') {
+      updateBookRating(bookKey, 0);
+      updateIsBookLiked(bookKey, true);
+    }
     updateBookStatus(bookKey, status);
   };
 
@@ -90,6 +95,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(updateBookStatusStart({ bookKey, status })),
   updateBookRating: (bookKey, rating) =>
     dispatch(updateBookRatingStart({ bookKey, rating })),
+  updateIsBookLiked: (bookKey, isLiked) =>
+    dispatch(updateIsBookLikedStart({ bookKey, isLiked })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookStatusBtn);

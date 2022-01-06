@@ -75,6 +75,36 @@ export const updateBookRatingFailure = (error) => ({
   payload: error,
 });
 
+export const fetchIsBookLikedStart = (bookKey) => ({
+  type: BooksActionTypes.FETCH_BOOK_LIKE_START,
+  payload: bookKey,
+});
+
+export const fetchIsBookLikedSuccess = (isLiked) => ({
+  type: BooksActionTypes.FETCH_BOOK_LIKE_SUCCESS,
+  payload: isLiked,
+});
+
+export const fetchIsBookLikedFailure = (error) => ({
+  type: BooksActionTypes.FETCH_BOOK_LIKE_FAILURE,
+  payload: error,
+});
+
+export const updateIsBookLikedStart = (isLiked) => ({
+  type: BooksActionTypes.UPDATE_BOOK_LIKE_START,
+  payload: isLiked,
+});
+
+export const updateIsBookLikedSuccess = (isLiked) => ({
+  type: BooksActionTypes.UPDATE_BOOK_LIKE_SUCCESS,
+  payload: isLiked,
+});
+
+export const updateIsBookLikedFailure = (error) => ({
+  type: BooksActionTypes.UPDATE_BOOK_LIKE_FAILURE,
+  payload: error,
+});
+
 export const fetchUserBooksStart = (usernameAndShelf) => ({
   type: BooksActionTypes.FETCH_USER_BOOKS_START,
   payload: usernameAndShelf,

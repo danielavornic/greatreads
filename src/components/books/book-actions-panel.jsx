@@ -2,12 +2,20 @@ import { Flex } from '@chakra-ui/react';
 
 import BookStatusBtn from './book-status-btn';
 import BookRating from './book-rating';
+import BookHeart from './book-heart';
 
 const BookActionsPanel = () => {
   return (
     <Flex flexDirection={'column'} alignItems={'center'}>
       <BookStatusBtn />
-      <BookRating />
+      <Flex
+        width={{ base: '240px', md: 'full' }}
+        justifyContent={'space-between'}
+        alignItems={'center'}
+      >
+        <BookRating />
+        <BookHeart />
+      </Flex>
     </Flex>
   );
 };

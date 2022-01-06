@@ -10,6 +10,8 @@ const INITIAL_STATE = {
   bookStatusError: null,
   bookRating: 0,
   bookRatingError: null,
+  isBookLiked: false,
+  bookLikeError: null,
   userBooks: undefined,
   areUserBooksFetching: false,
   userBooksError: null,
@@ -75,6 +77,20 @@ const booksReducer = (state = INITIAL_STATE, action) => {
         ...state,
         bookRating: null,
         bookRatingError: action.payload,
+      };
+    case BooksActionTypes.FETCH_BOOK_LIKE_SUCCESS:
+    case BooksActionTypes.UPDATE_BOOK_LIKE_SUCCESS:
+      return {
+        ...state,
+        isBookLiked: action.payload,
+        bookLikeError: false,
+      };
+    case BooksActionTypes.FETCH_BOOK_LIKE_FAILURE:
+    case BooksActionTypes.UPDATE_BOOK_LIKE_FAILURE:
+      return {
+        ...state,
+        bookLikeError: action.payload,
+        isBookLiked: false,
       };
     case BooksActionTypes.FETCH_USER_BOOKS_START:
       return {

@@ -27,6 +27,10 @@ import {
   fetchUserBooksFailure,
   updateBookRatingFailure,
   updateBookRatingSuccess,
+  fetchIsBookLikedFailure,
+  fetchIsBookLikedSuccess,
+  updateIsBookLikedFailure,
+  updateIsBookLikedSuccess,
 } from './books.actions';
 import { db } from '../../utils/firebase';
 import {
@@ -193,6 +197,37 @@ function* updateBookRating({ payload: { bookKey, rating } }) {
   }
 }
 
+function* fetchIsBookLiked({ payload: bookKey }) {
+  try {
+    const userBooks = yield getUserBooks();
+    const isLiked = userBooks.liked.some((book) => book.bookKey === bookKey);
+    yield put(fetchIsBookLikedSuccess(isLiked));
+  } catch (error) {
+    yield put(fetchIsBookLikedFailure(error));
+  }
+}
+
+function* updateIsBookLiked({ payload: { bookKey, isLiked } }) {
+  try {
+    const userRef = yield getUserRef();
+    const userBooks = yield getUserBooks();
+    const storedBookObj = yield getStoredBookObj(userBooks, bookKey);
+    const book = yield select(selectBook);
+    const newBookObj = createNewBookObj(book, bookKey);
+    if (isLiked)
+      yield updateDoc(userRef, {
+        'books.liked': arrayRemove(storedBookObj),
+      });
+    else
+      yield updateDoc(userRef, {
+        'books.liked': arrayUnion(newBookObj),
+      });
+    yield put(updateIsBookLikedSuccess(!isLiked));
+  } catch (error) {
+    yield put(updateIsBookLikedFailure(error));
+  }
+}
+
 function* fetchUserBooks({ payload: { username, shelf, rating } }) {
   try {
     const usersRef = collection(db, 'users');
@@ -242,6 +277,14 @@ function* onUpdateBookRatingStart() {
   yield takeLatest(BooksActionTypes.UPDATE_BOOK_RATING_START, updateBookRating);
 }
 
+function* onFetchIsBookLikedStart() {
+  yield takeLatest(BooksActionTypes.FETCH_BOOK_LIKE_START, fetchIsBookLiked);
+}
+
+function* onUpdateIsBookLikedStart() {
+  yield takeLatest(BooksActionTypes.UPDATE_BOOK_LIKE_START, updateIsBookLiked);
+}
+
 function* onFetchUserBooksStart() {
   yield takeLatest(BooksActionTypes.FETCH_USER_BOOKS_START, fetchUserBooks);
 }
@@ -254,5 +297,7 @@ export function* booksSagas() {
     call(onFetchBookRatingStart),
     call(onUpdateBookRatingStart),
     call(onFetchUserBooksStart),
+    call(onFetchIsBookLikedStart),
+    call(onUpdateIsBookLikedStart),
   ]);
 }
