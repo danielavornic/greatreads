@@ -38,7 +38,7 @@ const BookRating = ({
     <ReactStars
       count={5}
       onChange={handleChange}
-      size={48}
+      size={46}
       color1={'#A0AEC0'}
       color2={'#F6E05E'}
       value={bookRating / 2}
