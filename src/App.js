@@ -67,7 +67,7 @@ const App = ({ currentUser }) => (
         </Route>
         <Route
           exact
-          path='/users/:username/books/:shelf/'
+          path='/users/:username/books/:shelf/:rating?'
           component={UserBooksPage}
         />
         <Route component={Page404} />
