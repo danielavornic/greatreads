@@ -23,36 +23,12 @@ import {
   checkIfUsernameExists,
   createUsernameGoogle,
   getUserSnap,
+  firestoreUserObj,
 } from '../../utils/auth';
 
 function* addUserToFirestore(user) {
   try {
-    yield setDoc(doc(db, 'users', user.uid), {
-      email: user.email,
-      displayName: user.displayName,
-      username: user.username,
-      photoURL: user.photoURL,
-      books: {
-        all: [],
-        statuses: {
-          read: [],
-          wantToRead: [],
-          currentlyReading: [],
-        },
-        ratings: {
-          1: [],
-          2: [],
-          3: [],
-          4: [],
-          5: [],
-          6: [],
-          7: [],
-          8: [],
-          9: [],
-          10: [],
-        },
-      },
-    });
+    yield setDoc(doc(db, 'users', user.uid), firestoreUserObj(user));
   } catch (error) {
     yield put(signInFailure(error));
   }

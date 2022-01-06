@@ -69,3 +69,31 @@ export async function getUserSnap(user) {
   const userSnap = await getDoc(userRef);
   return userSnap;
 }
+
+export const firestoreUserObj = (user) => ({
+  email: user.email,
+  displayName: user.displayName,
+  username: user.username,
+  photoURL: user.photoURL,
+  books: {
+    all: [],
+    statuses: {
+      read: [],
+      wantToRead: [],
+      currentlyReading: [],
+    },
+    ratings: {
+      1: [],
+      2: [],
+      3: [],
+      4: [],
+      5: [],
+      6: [],
+      7: [],
+      8: [],
+      9: [],
+      10: [],
+    },
+    liked: [],
+  },
+});
