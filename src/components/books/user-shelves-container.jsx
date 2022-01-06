@@ -3,15 +3,14 @@ import { Box, Text, UnorderedList, ListItem } from '@chakra-ui/react';
 
 import { camelToSentenceCase } from '../../utils/text-manipulation';
 
-const UserShelvesContainer = ({ shelf }) => {
+const UserShelvesContainer = ({ username, shelf }) => {
   const shelves = ['all', 'currentlyReading', 'wantToRead', 'read'];
 
   return (
     <Box
       width={{ base: 'full', md: '200px' }}
       height={'fit-content'}
-      me={6}
-      mb={{ base: 4, md: 0 }}
+      mb={{ base: 2, md: 0 }}
       padding={4}
       border='1px'
       borderColor='gray.200'
@@ -21,7 +20,7 @@ const UserShelvesContainer = ({ shelf }) => {
       <UnorderedList listStyleType={'none'} ms='0'>
         {shelves.map((s) => (
           <ListItem key={s}>
-            <Link to={s}>
+            <Link to={`/users/${username}/books/${s}`}>
               <Text
                 textDecoration={shelf === s ? 'underline' : 'none'}
                 _hover={{ textDecoration: 'underline' }}
