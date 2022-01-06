@@ -14,7 +14,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { camelToSentenceCase } from '../../utils/text-manipulation';
 
 const UserShelvesContainer = ({ username, shelf }) => {
-  const shelves = ['all', 'currentlyReading', 'wantToRead', 'read'];
+  const shelves = ['all', 'currentlyReading', 'wantToRead', 'read', 'liked'];
 
   const [display, setDisplay] = useState('block');
 
