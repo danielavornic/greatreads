@@ -4,13 +4,12 @@ import { createStructuredSelector } from 'reselect';
 
 import { Link } from 'react-router-dom';
 import { Box, Heading, Text } from '@chakra-ui/layout';
-import { Grid, Image, Flex } from '@chakra-ui/react';
+import { Grid, Image } from '@chakra-ui/react';
 
 import { selectBook } from '../../redux/books/books.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 
-import BookStatusBtn from '../books/book-status-btn';
-import BookRating from './book-rating';
+import BookActionsPanel from './book-actions-panel';
 import SignInBookBtn from './sign-in-book-btn';
 import ReadMore from '../common/read-more';
 
@@ -46,14 +45,7 @@ const BookContainer = ({ book, currentUser }) => {
           display={isLoadingImg ? 'none' : 'block'}
         />
         <Box my={8} width={'full'} display={{ base: 'none', md: 'block' }}>
-          {currentUser ? (
-            <>
-              <BookStatusBtn />
-              <BookRating />
-            </>
-          ) : (
-            <SignInBookBtn />
-          )}
+          {currentUser ? <BookActionsPanel /> : <SignInBookBtn />}
         </Box>
       </Box>
       <Box>
@@ -87,14 +79,7 @@ const BookContainer = ({ book, currentUser }) => {
           </Heading>
         </Box>
         <Box mb={8} width={'full'} display={{ base: 'block', md: 'none' }}>
-          {currentUser ? (
-            <Flex flexDirection={'column'} alignItems={'center'}>
-              <BookStatusBtn />
-              <BookRating />
-            </Flex>
-          ) : (
-            <SignInBookBtn />
-          )}
+          {currentUser ? <BookActionsPanel /> : <SignInBookBtn />}
         </Box>
         <Text pb='4px' color={'gray.600'}>
           This edition was published in <b>{book.publish_date}</b>
