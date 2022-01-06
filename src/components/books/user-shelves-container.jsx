@@ -1,10 +1,22 @@
+import { useState } from 'react';
+
 import { Link } from 'react-router-dom';
-import { Box, Text, UnorderedList, ListItem } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  UnorderedList,
+  ListItem,
+  Flex,
+  IconButton,
+} from '@chakra-ui/react';
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 
 import { camelToSentenceCase } from '../../utils/text-manipulation';
 
 const UserShelvesContainer = ({ username, shelf }) => {
   const shelves = ['all', 'currentlyReading', 'wantToRead', 'read'];
+
+  const [display, setDisplay] = useState('block');
 
   return (
     <Box
@@ -16,8 +28,18 @@ const UserShelvesContainer = ({ username, shelf }) => {
       borderColor='gray.200'
       borderRadius='10px'
     >
-      <Text fontWeight={'bold'}>Bookshelves</Text>
-      <UnorderedList listStyleType={'none'} ms='0'>
+      <Flex justifyContent={'space-between'} alignItems={'center'}>
+        <Text fontWeight={'bold'}>Bookshelves</Text>
+        <IconButton
+          icon={display === 'block' ? <ChevronUpIcon /> : <ChevronDownIcon />}
+          size={'sm'}
+          display={{ base: 'block', md: 'none' }}
+          aria-label={'Show/Hide bookshelves'}
+          bg={'brand.50'}
+          onClick={() => setDisplay(display === 'block' ? 'none' : 'block')}
+        ></IconButton>
+      </Flex>
+      <UnorderedList listStyleType={'none'} ms='0' mt={3} display={display}>
         {shelves.map((s) => (
           <ListItem key={s}>
             <Link to={`/users/${username}/books/${s}`}>
