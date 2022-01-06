@@ -20,10 +20,13 @@ const UserBooksPage = ({
   userBooks,
   areUserBooksLoading,
 }) => {
-  const { username, shelf } = match.params;
+  const { username, shelf, rating } = match.params;
+
   useEffect(() => {
-    fetchUserBooks(username, shelf);
-  }, [fetchUserBooks, username, shelf]);
+    const ratings = ['½', '1', '1½', '2', '2½', '3', '3½', '4', '4½', '5'];
+    const ratingArg = rating ? ratings.indexOf(rating) + 1 : null;
+    fetchUserBooks(username, shelf, ratingArg);
+  }, [fetchUserBooks, username, shelf, rating]);
 
   return (
     <Container maxW={'5xl'}>
@@ -44,8 +47,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchUserBooks: (username, shelf) =>
-    dispatch(fetchUserBooksStart({ username, shelf })),
+  fetchUserBooks: (username, shelf, rating = null) =>
+    dispatch(fetchUserBooksStart({ username, shelf, rating })),
 });
 
 export default withRouter(

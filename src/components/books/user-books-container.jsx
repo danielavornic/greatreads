@@ -6,9 +6,12 @@ import { createStructuredSelector } from 'reselect';
 import { selectUserBooks } from '../../redux/books/books.selectors';
 
 import UserShelvesContainer from './user-shelves-container';
+import UserRatingsContainer from './user-ratings-container';
 import UserBooksList from './user-books-list';
 
-const UserBooksContainer = ({ userBooks }) => (
+const UserBooksContainer = ({
+  userBooks: { username, displayName, photoURL, shelf, rating },
+}) => (
   <VStack maxW={'5xl'} align={'left'}>
     <HStack
       fontSize={16}
@@ -17,13 +20,13 @@ const UserBooksContainer = ({ userBooks }) => (
       borderRadius={4}
       mb={{ base: 3, md: 4 }}
     >
-      <Link to={`/users/${userBooks.username}`}>
+      <Link to={`/users/${username}`}>
         <Avatar
           size='xs'
           bg={'brand.500'}
           color={'white'}
-          name={userBooks.displayName}
-          src={userBooks.photoURL ? userBooks.photoURL : ''}
+          name={displayName}
+          src={photoURL ? photoURL : ''}
           mr={4}
         />
         <Text
@@ -32,14 +35,17 @@ const UserBooksContainer = ({ userBooks }) => (
           color={'brand.500'}
           _hover={{ color: 'black' }}
         >
-          {userBooks.displayName}
+          {displayName}
         </Text>
       </Link>
       <Text>{' > '}</Text>
       <Text fontWeight={'bold'}>Books</Text>
     </HStack>
     <Flex flexDirection={{ base: 'column', md: 'row' }}>
-      <UserShelvesContainer shelf={userBooks.shelf} />
+      <VStack me={{ base: 0, md: 6 }} mb={{ base: 6, md: 0 }}>
+        <UserShelvesContainer username={username} shelf={shelf} />
+        <UserRatingsContainer username={username} rating={rating} />
+      </VStack>
       <UserBooksList />
     </Flex>
   </VStack>

@@ -193,7 +193,7 @@ function* updateBookRating({ payload: { bookKey, rating } }) {
   }
 }
 
-function* fetchUserBooks({ payload: { username, shelf } }) {
+function* fetchUserBooks({ payload: { username, shelf, rating } }) {
   try {
     const usersRef = collection(db, 'users');
     const user = query(usersRef, where('username', '==', username));
@@ -201,15 +201,18 @@ function* fetchUserBooks({ payload: { username, shelf } }) {
     let result = {
       books: [],
       shelf: shelf,
-      displayName: '',
+      rating: rating,
       username: username,
+      displayName: '',
       photoURL: '',
     };
-
     userSnap.forEach((user) => {
-      result.books = statuses.includes(shelf)
-        ? user.data().books['statuses'][shelf]
-        : user.data().books[shelf];
+      const books = user.data().books;
+      result.books = rating
+        ? books['ratings'][rating]
+        : statuses.includes(shelf)
+        ? books['statuses'][shelf]
+        : books[shelf];
       result.displayName = user.data().displayName;
       result.photoURL = user.data().photoURL;
     });
