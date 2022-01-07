@@ -68,10 +68,14 @@ const HeaderUsers = ({ currentUser, signOutStart, username }) => {
             display={{ base: 'none', md: 'flex' }}
           >
             <Link to='/'>
-              <Text fontSize={14}>Home</Text>
+              <Text fontSize={14} _hover={{ color: '#4d5499' }}>
+                Home
+              </Text>
             </Link>
             <Link to={`/users/${username}/books/all`}>
-              <Text fontSize={14}>My books</Text>
+              <Text fontSize={14} _hover={{ color: '#4d5499' }}>
+                My books
+              </Text>
             </Link>
           </HStack>
         </HStack>
