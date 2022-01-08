@@ -1,7 +1,6 @@
 import { Container, Grid, Heading, Stack } from '@chakra-ui/react';
 import { RiBook2Fill, RiStarFill, RiFileTextFill } from 'react-icons/ri';
 
-import SearchInput from '../search/search-input';
 import FeatureItem from './feature-item';
 
 const FeaturesSection = () => (
@@ -12,16 +11,15 @@ const FeaturesSection = () => (
       fontWeight={700}
       fontSize={{ base: '3xl', md: '4xl' }}
       lineHeight={'110%'}
+      mb={2}
     >
       Features
     </Heading>
-    <Container maxW='5xl' mt={2} align={'center'}>
-      <SearchInput inputCategory='books' />
+    <Container maxW='5xl' align={'center'}>
       <Grid
         templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(3, 1fr)']}
         gap={[4, 4, 6]}
         w={'full'}
-        mt={[6, 8, 10]}
       >
         <FeatureItem text='Keep track of every book you’ve ever read (or just start from the day you join)'>
           <RiBook2Fill color='white' size='24px' />
