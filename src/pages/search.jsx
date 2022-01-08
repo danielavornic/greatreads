@@ -13,7 +13,7 @@ const SearchPage = ({ match }) => (
       fontSize={{ base: '3xl', md: '4xl' }}
       pb={{ base: 3, md: 6 }}
     >
-      {`Matches found for "${match.params.term}`}
+      Matches found for "{match.params.term}"
     </Heading>
     <SearchResults />
   </Container>
