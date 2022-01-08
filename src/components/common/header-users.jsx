@@ -56,11 +56,13 @@ const HeaderUsers = ({ currentUser, signOutStart, username }) => {
           display={{ base: currentUser ? 'block' : 'none', md: 'none' }}
           onClick={isOpen ? onClose : onOpen}
         />
-        <HStack spacing={8} alignItems={'center'}>
-          <Link to='/'>
-            <Logo />
-            <VisuallyHidden>greatreads</VisuallyHidden>
-          </Link>
+        <HStack spacing={{ base: 'none', md: 8 }} alignItems={'center'}>
+          <Box display={{ base: 'none', md: 'block' }}>
+            <Link to='/'>
+              <Logo />
+              <VisuallyHidden>greatreads</VisuallyHidden>
+            </Link>
+          </Box>
           <HStack
             as={'nav'}
             spacing={6}
@@ -80,7 +82,7 @@ const HeaderUsers = ({ currentUser, signOutStart, username }) => {
           </HStack>
         </HStack>
         <HStack spacing={4}>
-          <Box display={{ base: 'none', md: 'block' }}>
+          <Box>
             <SearchInput />
           </Box>
           <Menu bg={'white'}>
@@ -115,7 +117,6 @@ const HeaderUsers = ({ currentUser, signOutStart, username }) => {
       {isOpen ? (
         <Box pt={6} pb={4} display={{ md: 'none' }}>
           <VStack as={'nav'} spacing={4}>
-            <SearchInput inputCategory='books' headerInput />
             <Link to='/'>Home</Link>
             <Link to={`/users/${username}/books/all`}>My books</Link>
           </VStack>
