@@ -12,12 +12,12 @@ const SearchInput = ({ searchStart, history, match }) => {
   const { term: urlTerm, category: urlCategory } = match.params;
   const categories = ['books', 'authors'];
 
-  const [inputTerm, setInputTerm] = useState(urlTerm);
   const [searchRequest, setSearchRequest] = useState({
     category: urlCategory ? urlCategory : 'books',
     term: urlTerm ? plusToSpace(urlTerm) : '',
   });
   const { category, term } = searchRequest;
+  const [inputTerm, setInputTerm] = useState(term);
 
   const handleChange = (event) => {
     const { value, name } = event.target;
@@ -33,17 +33,15 @@ const SearchInput = ({ searchStart, history, match }) => {
   };
 
   const handleSubmit = () => {
-    if (term !== '') {
-      history.push(`/search/${category}/${spaceToPlus(term)}`);
-      searchStart(category, term);
-    }
+    if (term !== '') history.push(`/search/${category}/${spaceToPlus(term)}`);
   };
 
   useEffect(() => {
     if (urlCategory && !categories.includes(urlCategory)) history.push('/404');
 
     if (urlTerm) {
-      searchStart(category, term);
+      searchStart(urlCategory, term);
+      setSearchRequest({ ...searchRequest, category: urlCategory });
     } else {
       setSearchRequest({ ...searchRequest, category: 'books' });
       setInputTerm('');
