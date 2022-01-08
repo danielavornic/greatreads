@@ -8,28 +8,21 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { searchStart } from '../../redux/search/search.actions';
 import { spaceToPlus, plusToSpace } from '../../utils/text-manipulation';
 
-const SearchInput = ({
-  inputCategory,
-  headerInput,
-  searchStart,
-  match,
-  history,
-}) => {
+const SearchInput = ({ searchStart, history, match }) => {
   const { term: urlTerm, category: urlCategory } = match.params;
   const categories = ['books', 'authors'];
 
+  const [inputTerm, setInputTerm] = useState(urlTerm);
   const [searchRequest, setSearchRequest] = useState({
-    category: inputCategory,
+    category: urlCategory ? urlCategory : 'books',
     term: urlTerm ? plusToSpace(urlTerm) : '',
   });
   const { category, term } = searchRequest;
 
-  const [headerInputTerm, setHeaderInputTerm] = useState(term);
-
   const handleChange = (event) => {
     const { value, name } = event.target;
     setSearchRequest({ ...searchRequest, [name]: value });
-    setHeaderInputTerm(event.target.value);
+    setInputTerm(event.target.value);
   };
 
   const handleKeyPress = (event) => {
@@ -42,7 +35,6 @@ const SearchInput = ({
   const handleSubmit = () => {
     if (term !== '') {
       history.push(`/search/${category}/${spaceToPlus(term)}`);
-      if (headerInput) history.go(0);
       searchStart(category, term);
     }
   };
@@ -50,34 +42,26 @@ const SearchInput = ({
   useEffect(() => {
     if (urlCategory && !categories.includes(urlCategory)) history.push('/404');
 
-    if (urlTerm) searchStart(category, term);
-
+    if (urlTerm) {
+      searchStart(category, term);
+    } else {
+      setSearchRequest({ ...searchRequest, category: 'books' });
+      setInputTerm('');
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [urlTerm, urlCategory]);
 
   return (
     <HStack maxW={'3xl'} w={'full'}>
-      <InputGroup size={headerInput ? 'sm' : 'lg'}>
-        {headerInput ? (
-          <Input
-            name='term'
-            type='search'
-            placeholder={`Search ${category}...`}
-            onChange={handleChange}
-            onKeyPress={handleKeyPress}
-            value={headerInputTerm}
-            onBlur={() => setHeaderInputTerm('')}
-          />
-        ) : (
-          <Input
-            name='term'
-            type='search'
-            placeholder={`Search ${category}...`}
-            onChange={handleChange}
-            onKeyPress={handleKeyPress}
-            defaultValue={plusToSpace(term)}
-          />
-        )}
+      <InputGroup size={'sm'} borderRadius={'md'}>
+        <Input
+          name='term'
+          type='search'
+          placeholder={`Search...`}
+          onChange={handleChange}
+          onKeyPress={handleKeyPress}
+          value={inputTerm}
+        />
         <InputRightElement
           children={<AiOutlineSearch />}
           cursor='pointer'

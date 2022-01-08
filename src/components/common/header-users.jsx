@@ -81,7 +81,7 @@ const HeaderUsers = ({ currentUser, signOutStart, username }) => {
         </HStack>
         <HStack spacing={4}>
           <Box display={{ base: 'none', md: 'block' }}>
-            <SearchInput inputCategory='books' headerInput />
+            <SearchInput />
           </Box>
           <Menu bg={'white'}>
             <MenuButton

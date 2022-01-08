@@ -32,7 +32,7 @@ const Header = () => (
           <VisuallyHidden>greatreads</VisuallyHidden>
         </Link>
         <Box display={{ base: 'none', md: 'block' }}>
-          <SearchInput inputCategory='books' headerInput />
+          <SearchInput />
         </Box>
       </HStack>
       <HStack>
