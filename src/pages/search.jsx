@@ -1,8 +1,7 @@
 import { withRouter } from 'react-router';
 
-import { Container, Heading, Box } from '@chakra-ui/layout';
+import { Container, Heading } from '@chakra-ui/layout';
 
-import SearchInput from '../components/search/search-input';
 import SearchResults from '../components/search/search-results';
 
 const SearchPage = ({ match }) => (
@@ -12,15 +11,11 @@ const SearchPage = ({ match }) => (
       textAlign='center'
       fontWeight={700}
       fontSize={{ base: '3xl', md: '4xl' }}
-      textTransform='capitalize'
-      pb={['28px', '36px']}
+      pb={{ base: 3, md: 6 }}
     >
-      Search {match.params.category}
+      {`Matches found for "${match.params.term}`}
     </Heading>
-    <Box align='center'>
-      <SearchInput inputCategory={match.params.category} />
-    </Box>
-    {match.params.term ? <SearchResults /> : null}
+    <SearchResults />
   </Container>
 );
 
