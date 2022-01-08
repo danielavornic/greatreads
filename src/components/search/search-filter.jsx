@@ -11,7 +11,6 @@ const SearchFilter = () => {
     <Flex justifyContent={'center'} width={'full'}>
       <HStack
         bg={'brand.50'}
-        padding={3}
         borderRadius={4}
         width={'fit-content'}
         px={8}
