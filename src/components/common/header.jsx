@@ -1,5 +1,14 @@
 import { Link } from 'react-router-dom';
-import { chakra, Flex, VisuallyHidden, HStack, Button } from '@chakra-ui/react';
+import {
+  chakra,
+  Flex,
+  VisuallyHidden,
+  HStack,
+  Button,
+  Box,
+} from '@chakra-ui/react';
+
+import SearchInput from '../search/search-input';
 
 import { ReactComponent as Logo } from '../../assets/greatreads-logo.svg';
 
@@ -17,10 +26,15 @@ const Header = () => (
     boxShadow='xs'
   >
     <Flex alignItems='center' justifyContent='space-between' mx='auto'>
-      <Link to='/'>
-        <Logo />
-        <VisuallyHidden>greatreads</VisuallyHidden>
-      </Link>
+      <HStack spacing={8}>
+        <Link to='/'>
+          <Logo />
+          <VisuallyHidden>greatreads</VisuallyHidden>
+        </Link>
+        <Box display={{ base: 'none', md: 'block' }}>
+          <SearchInput inputCategory='books' headerInput />
+        </Box>
+      </HStack>
       <HStack>
         <Link to='/signin'>
           <Button variant='ghost' size='sm'>
