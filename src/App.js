@@ -30,9 +30,26 @@ const ScrollToTop = () => {
   return null;
 };
 
+const allRoutes = [
+  '/',
+  '/signin/',
+  '/signup/',
+  '/search/:category/:term/',
+  '/books/:bookKey',
+  '/authors/:authorKey',
+  '/users/:username/books',
+  '/users/:username/books/all',
+  '/users/:username/books/:shelf/:rating?',
+  '*',
+];
+
 const App = ({ currentUser }) => (
   <div id='container'>
-    {currentUser ? <HeaderUsers /> : <Header />}
+    <Route
+      exact
+      path={allRoutes}
+      component={currentUser ? HeaderUsers : Header}
+    />
     <Container
       px='0'
       mt={{ base: 24, md: 28 }}
@@ -49,13 +66,7 @@ const App = ({ currentUser }) => (
         <Route path='/signup/'>
           {currentUser ? <Redirect to='/' /> : <SignUpPage />}
         </Route>
-        <Route exact path='/search/:category?/:term?/' component={SearchPage} />
-        <Route exact path='/books/'>
-          <Redirect to='/search/books/' />
-        </Route>
-        <Route exact path='/authors/'>
-          <Redirect to='/search/authors/' />
-        </Route>
+        <Route exact path='/search/:category/:term/' component={SearchPage} />
         <Route exact path='/books/:bookKey' component={BookPage} />
         <Route exact path='/authors/:authorKey' component={AuthorPage} />
         <Route exact path='/users/:username/books'>
@@ -66,7 +77,7 @@ const App = ({ currentUser }) => (
           path='/users/:username/books/:shelf/:rating?'
           component={UserBooksPage}
         />
-        <Route component={Page404} />
+        <Route route='*' component={Page404} />
       </Switch>
     </Container>
     <Footer />
