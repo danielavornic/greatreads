@@ -3,13 +3,12 @@ import { takeLatest, put, all, call } from 'redux-saga/effects';
 import SearchActionTypes from './search.types';
 import { searchSuccess, searchFailure } from './search.actions';
 
-function* searchAsync({ payload: { category, term, facet } }) {
+function* searchAsync({ payload: { category, term } }) {
   try {
     const formattedTerm = term.replace(/ /g, '+').toLowerCase();
-    const urlFacet = facet === 'all' ? 'q' : facet;
     const fetchUrl =
       category === 'books'
-        ? `https://openlibrary.org/search.json?${urlFacet}=${formattedTerm}`
+        ? `https://openlibrary.org/search.json?q=${formattedTerm}`
         : `https://openlibrary.org/search/${category}.json?q=${formattedTerm}`;
     const response = yield fetch(fetchUrl);
     const searchResults = yield response.json();

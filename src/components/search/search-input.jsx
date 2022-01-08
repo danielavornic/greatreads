@@ -2,13 +2,7 @@ import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import {
-  HStack,
-  Select,
-  InputGroup,
-  InputRightElement,
-  Input,
-} from '@chakra-ui/react';
+import { HStack, InputGroup, InputRightElement, Input } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 import { searchStart } from '../../redux/search/search.actions';
@@ -21,20 +15,14 @@ const SearchInput = ({
   match,
   history,
 }) => {
-  const {
-    term: urlTerm,
-    facet: urlFacet,
-    category: urlCategory,
-  } = match.params;
+  const { term: urlTerm, category: urlCategory } = match.params;
   const categories = ['books', 'authors'];
-  const facets = ['all', 'title', 'author'];
 
   const [searchRequest, setSearchRequest] = useState({
     category: inputCategory,
     term: urlTerm ? plusToSpace(urlTerm) : '',
-    facet: urlFacet ? urlFacet : 'all',
   });
-  const { category, facet, term } = searchRequest;
+  const { category, term } = searchRequest;
 
   const [headerInputTerm, setHeaderInputTerm] = useState(term);
 
@@ -53,48 +41,22 @@ const SearchInput = ({
 
   const handleSubmit = () => {
     if (term !== '') {
-      const pathFacet = category === 'books' ? `/${facet}` : '';
-      history.push(`/search/${category}/${spaceToPlus(term)}${pathFacet}`);
+      history.push(`/search/${category}/${spaceToPlus(term)}`);
       if (headerInput) history.go(0);
-      searchStart(category, term, facet);
+      searchStart(category, term);
     }
   };
 
   useEffect(() => {
-    if (
-      (urlCategory && !categories.includes(urlCategory)) ||
-      (urlFacet && !facets.includes(urlFacet))
-    )
-      history.push('/404');
+    if (urlCategory && !categories.includes(urlCategory)) history.push('/404');
 
-    if (urlTerm) searchStart(category, term, facet);
+    if (urlTerm) searchStart(category, term);
 
     // eslint-disable-next-line
   }, []);
 
   return (
     <HStack maxW={'3xl'} w={'full'}>
-      {inputCategory === 'books' && !headerInput ? (
-        <Select
-          name='facet'
-          size='lg'
-          w={{ base: '42%', md: '30%', lg: '20%' }}
-          colorScheme={'brand'}
-          bg={'brand.50'}
-          defaultValue={facet}
-          onChange={handleChange}
-        >
-          <option fontSize={{ base: 'md', md: 'lg' }} value='all'>
-            All
-          </option>
-          <option fontSize={{ base: 'md', md: 'lg' }} value='title'>
-            Title
-          </option>
-          <option fontSize={{ base: 'md', md: 'lg' }} value='author'>
-            Author
-          </option>
-        </Select>
-      ) : null}
       <InputGroup size={headerInput ? 'sm' : 'lg'}>
         {headerInput ? (
           <Input
@@ -127,8 +89,7 @@ const SearchInput = ({
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  searchStart: (category, term, facet) =>
-    dispatch(searchStart({ category, term, facet })),
+  searchStart: (category, term) => dispatch(searchStart({ category, term })),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(SearchInput));

@@ -49,11 +49,7 @@ const App = ({ currentUser }) => (
         <Route path='/signup/'>
           {currentUser ? <Redirect to='/' /> : <SignUpPage />}
         </Route>
-        <Route
-          exact
-          path='/search/:category?/:term?/:facet?'
-          component={SearchPage}
-        />
+        <Route exact path='/search/:category?/:term?/' component={SearchPage} />
         <Route exact path='/books/'>
           <Redirect to='/search/books/' />
         </Route>

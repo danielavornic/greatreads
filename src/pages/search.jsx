@@ -20,7 +20,7 @@ const SearchPage = ({ match }) => (
     <Box align='center'>
       <SearchInput inputCategory={match.params.category} />
     </Box>
-    {match.params.facet || match.params.term ? <SearchResults /> : null}
+    {match.params.term ? <SearchResults /> : null}
   </Container>
 );
 
