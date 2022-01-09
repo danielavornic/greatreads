@@ -37,9 +37,19 @@ export const selectBookRating = createSelector(
   (books) => books.bookRating
 );
 
+export const selectBookRatingError = createSelector(
+  [selectBooks],
+  (books) => books.bookRatingError
+);
+
 export const selectIsBookLiked = createSelector(
   [selectBooks],
   (books) => books.isBookLiked
+);
+
+export const selectBookLikeError = createSelector(
+  [selectBooks],
+  (books) => books.bookLikeError
 );
 
 export const selectUserBooks = createSelector(
