@@ -242,12 +242,13 @@ function* fetchUserBooks({ payload: { username, shelf, rating } }) {
       photoURL: '',
     };
     userSnap.forEach((user) => {
-      const books = user.data().books;
-      result.books = rating
-        ? books['ratings'][rating]
+      const allBooks = user.data().books;
+      const books = rating
+        ? allBooks['ratings'][rating]
         : statuses.includes(shelf)
-        ? books['statuses'][shelf]
-        : books[shelf];
+        ? allBooks['statuses'][shelf]
+        : allBooks[shelf];
+      result.books = books.reverse();
       result.displayName = user.data().displayName;
       result.photoURL = user.data().photoURL;
     });
