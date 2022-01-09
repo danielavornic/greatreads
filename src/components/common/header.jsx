@@ -26,21 +26,26 @@ const Header = () => (
     boxShadow='xs'
   >
     <Flex alignItems='center' justifyContent='space-between' mx='auto'>
-      <HStack spacing={8}>
-        <Link to='/'>
-          <Logo />
-          <VisuallyHidden>greatreads</VisuallyHidden>
-        </Link>
+      <HStack spacing={{ base: 'none', md: 8 }}>
         <Box display={{ base: 'none', md: 'block' }}>
+          <Link to='/'>
+            <Logo />
+            <VisuallyHidden>greatreads</VisuallyHidden>
+          </Link>
+        </Box>
+        <Box>
           <SearchInput />
         </Box>
       </HStack>
       <HStack>
-        <Link to='/signin'>
-          <Button variant='ghost' size='sm'>
-            Sign in
-          </Button>
-        </Link>
+        <Box display={{ base: 'none', md: 'block' }}>
+          <Link to='/signin'>
+            <Button variant='ghost' size='sm'>
+              Sign in
+            </Button>
+          </Link>
+        </Box>
+
         <Link to='/signup'>
           <Button colorScheme='brand' size='sm'>
             Sign up
