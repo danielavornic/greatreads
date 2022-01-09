@@ -51,7 +51,11 @@ const BookStatusBtn = ({
   };
 
   return (
-    <ButtonGroup isAttached colorScheme={'brand'} width={'full'}>
+    <ButtonGroup
+      isAttached
+      colorScheme={'brand'}
+      width={{ base: '260px', md: 'full' }}
+    >
       <Button
         width={'calc(100% - 34px)'}
         textAlign={'left'}

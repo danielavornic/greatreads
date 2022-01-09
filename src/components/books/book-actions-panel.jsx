@@ -9,7 +9,7 @@ const BookActionsPanel = () => {
     <Flex flexDirection={'column'} alignItems={'center'}>
       <BookStatusBtn />
       <Flex
-        width={{ base: '240px', md: 'full' }}
+        width={{ base: '260px', md: 'full' }}
         justifyContent={'space-between'}
         alignItems={'center'}
       >
