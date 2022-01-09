@@ -8,6 +8,8 @@ import {
 } from '@chakra-ui/react';
 import { FaGithub, FaDribbble } from 'react-icons/fa';
 
+import { ReactComponent as Logo } from '../../assets/greatreads-logo.svg';
+
 const SocialButton = ({ children, label, href, title }) => (
   <chakra.button
     bg={'blackAlpha.100'}
@@ -43,6 +45,7 @@ const Footer = () => (
       justify={{ base: 'center', md: 'space-between' }}
       align={{ base: 'center', md: 'center' }}
     >
+      <Logo />
       <Text>© Made by Daniela Vornic</Text>
       <Stack direction={'row'} spacing={6}>
         <SocialButton
