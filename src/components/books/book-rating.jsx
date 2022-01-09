@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
+import { useToast, useBreakpointValue } from '@chakra-ui/react';
 import ReactStars from 'react-stars';
 
 import {
@@ -12,6 +13,7 @@ import {
 import {
   selectBookRating,
   selectBookKey,
+  selectBookRatingError,
   selectBookStatus,
 } from '../../redux/books/books.selectors';
 
@@ -19,20 +21,49 @@ const BookRating = ({
   bookKey,
   bookRating,
   bookStatus,
+  bookRatingError,
   fetchBookRating,
   updateBookRating,
   updateBookStatus,
 }) => {
-  useEffect(() => {
-    fetchBookRating(bookKey);
-  }, [fetchBookRating, bookKey]);
+  const [displayToast, setDisplayToast] = useState(false);
+  const toast = useToast();
+  const toastPosition = useBreakpointValue({
+    base: 'bottom',
+    md: 'bottom',
+    lg: 'bottom-right',
+  });
 
   const handleChange = (newRating) => {
     newRating *= newRating * 2 === bookRating ? 0 : 2;
     updateBookRating(bookKey, newRating);
+    setDisplayToast(true);
+    console.log(bookStatus);
     if (bookStatus !== 'read' && newRating !== 0)
       updateBookStatus(bookKey, 'read');
   };
+
+  useEffect(() => fetchBookRating(bookKey), [fetchBookRating, bookKey]);
+
+  useEffect(() => {
+    if (displayToast) {
+      const toastStatus = bookRatingError ? 'error' : 'success';
+      const toastDescription = bookRatingError
+        ? 'Failed to update rating'
+        : bookRating > 0
+        ? `Book rating set to ${bookRating / 2} stars`
+        : 'Book rating removed';
+      toast({
+        description: toastDescription,
+        position: toastPosition,
+        status: toastStatus,
+        duration: 2500,
+        isClosable: true,
+      });
+      setDisplayToast(false);
+    }
+    // eslint-disable-next-line
+  }, [bookRating]);
 
   return (
     <ReactStars
@@ -47,8 +78,9 @@ const BookRating = ({
 };
 
 const mapStateToProps = createStructuredSelector({
-  bookRating: selectBookRating,
   bookKey: selectBookKey,
+  bookRating: selectBookRating,
+  bookRatingError: selectBookRatingError,
   bookStatus: selectBookStatus,
 });
 
