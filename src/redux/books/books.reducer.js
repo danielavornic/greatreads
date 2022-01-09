@@ -46,7 +46,7 @@ const booksReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isBookStatusLoading: true,
-        bookError: null,
+        bookStatusError: null,
       };
     case BooksActionTypes.FETCH_BOOK_STATUS_SUCCESS:
     case BooksActionTypes.UPDATE_BOOK_STATUS_SUCCESS:
@@ -54,7 +54,7 @@ const booksReducer = (state = INITIAL_STATE, action) => {
         ...state,
         bookStatus: action.payload,
         isBookStatusLoading: false,
-        bookError: null,
+        bookStatusError: null,
       };
     case BooksActionTypes.FETCH_BOOK_STATUS_FAILURE:
     case BooksActionTypes.UPDATE_BOOK_STATUS_FAILURE:
