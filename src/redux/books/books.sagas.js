@@ -39,6 +39,7 @@ import {
   createNewBookObj,
   statuses,
 } from '../../utils/books';
+import { createUpdateObj, getStoredUpdateObj } from '../../utils/user';
 
 function* getBookAuthors(book) {
   if (book.authors) return book.authors;
@@ -89,6 +90,13 @@ function* getUserBooks() {
   return userData.books;
 }
 
+function* getUserUpdates() {
+  const userRef = yield getUserRef();
+  const userSnap = yield getDoc(userRef);
+  const userData = userSnap.data();
+  return userData.updates;
+}
+
 function* fetchBookAsync({ payload }) {
   try {
     const response = yield fetch(
@@ -121,9 +129,12 @@ function* updateBookStatus({ payload: { bookKey, status } }) {
   try {
     const userRef = yield getUserRef();
     const userBooks = yield getUserBooks();
+    const userUpdates = yield getUserUpdates();
     const book = yield select(selectBook);
     const storedBookObj = getStoredBookObj(userBooks, bookKey);
+    const storedUpdateObj = getStoredUpdateObj(userUpdates, bookKey);
     const newBookObj = createNewBookObj(book, bookKey);
+    const updateObj = createUpdateObj('book', status, bookKey, book);
     if (status) {
       for (const s of statuses)
         if (s !== status && isBookStored(userBooks['statuses'][s], bookKey))
@@ -133,8 +144,13 @@ function* updateBookStatus({ payload: { bookKey, status } }) {
       yield updateDoc(userRef, {
         'books.all': arrayUnion(newBookObj),
         [`books.statuses.${status}`]: arrayUnion(newBookObj),
+        updates: arrayUnion(updateObj),
       });
     } else {
+      for (const update of storedUpdateObj)
+        yield updateDoc(userRef, {
+          updates: arrayRemove(update),
+        });
       yield updateDoc(userRef, {
         'books.all': arrayRemove(storedBookObj),
       });

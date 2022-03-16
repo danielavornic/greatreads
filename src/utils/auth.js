@@ -70,11 +70,12 @@ export async function getUserSnap(user) {
   return userSnap;
 }
 
-export const firestoreUserObj = (user) => ({
+export const createFirestoreUserObj = (user) => ({
   email: user.email,
   displayName: user.displayName,
   username: user.username,
   photoURL: user.photoURL,
+  updates: [],
   books: {
     all: [],
     statuses: {
